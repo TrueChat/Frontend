@@ -13,7 +13,6 @@ export default class AuthFormInput extends React.Component<AuthFormInputProps> {
     const { label, value, changeHandler } = this.props;
     return (
       <div className="Auth-form-input">
-        <label>
           <div className="label">{label}</div>
           <input
             className="input"
@@ -21,7 +20,6 @@ export default class AuthFormInput extends React.Component<AuthFormInputProps> {
             value={value}
             onChange={event => changeHandler(event.currentTarget.value)}
           />
-        </label>
       </div>
     )
   }

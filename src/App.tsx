@@ -10,7 +10,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div style={{
-        width: "500px",
+        width: "25rem",
         margin: "0 auto"
       }}>
         <AuthForm />

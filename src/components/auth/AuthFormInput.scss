@@ -13,7 +13,7 @@
     position: absolute;
     top: $i-p-top * 0.95;
     left: $i-p-left * 1.25;
-    background-color: $AUTH_FORM_BACKGROUND_COLOR;
+    background-color: $AUTH_FORM_BG_COLOR;
     color: $OUTLINE_COLOR;
   }
 
@@ -24,6 +24,7 @@
     border: 0.1rem solid $OUTLINE_COLOR;
     border-radius: 5px;
     color: $OUTLINE_COLOR;
+    background-color: $AUTH_FORM_BG_COLOR;
 
     &:focus {
       outline-width: 0;
