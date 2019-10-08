@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthFormInput from "./components/auth/AuthFormInput";
+import AuthForm from "./components/AuthForm";
 
 export default class App extends React.Component {
 
@@ -10,20 +10,11 @@ export default class App extends React.Component {
   render() {
     return (
       <div style={{
-        width: "300px",
-        margin: "100px auto"
+        width: "500px",
+        margin: "0 auto"
       }}>
-        <AuthFormInput
-          label="Label"
-          value={this.state.value}
-          changeHandler={value => {
-            this.setState(state => ({
-              ...state,
-              value
-            }))
-          }}
-        />
+        <AuthForm />
       </div>
-    )
+    );
   }
 }

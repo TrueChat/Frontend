@@ -1,5 +1,31 @@
 $AUTH_FORM_BACKGROUND_COLOR: white;
+$OUTLINE_COLOR: rgb(153, 153, 153);
 
 .Auth-form {
+  $border-width: 0.1rem;
+  $border-radius: 5px;
+  padding: 1.25rem;
 
+  border-bottom: $border-width solid $OUTLINE_COLOR;
+  border-right: $border-width solid $OUTLINE_COLOR;
+  border-left: $border-width solid $OUTLINE_COLOR;
+
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+
+  .tab-controls {
+    .control {
+      margin: 0 auto;
+      max-width: 5rem;
+      text-align: center;
+
+      &.active {
+        border-bottom: 0.25rem solid $OUTLINE_COLOR;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }

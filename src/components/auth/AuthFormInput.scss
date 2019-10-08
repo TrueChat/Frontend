@@ -1,7 +1,6 @@
 @import "../AuthForm";
 
 .Auth-form-input {
-  $common-color: rgb(153, 153, 153);
   position: relative;
   padding-top: 1.2rem;
 
@@ -15,16 +14,16 @@
     top: $i-p-top * 0.95;
     left: $i-p-left * 1.25;
     background-color: $AUTH_FORM_BACKGROUND_COLOR;
-    color: $common-color;
+    color: $OUTLINE_COLOR;
   }
 
   .input {
     width: 100%;
     box-sizing: border-box;
     padding: $i-p-top $i-p-right $i-p-bottom $i-p-left;
-    border: 0.1rem solid $common-color;
+    border: 0.1rem solid $OUTLINE_COLOR;
     border-radius: 5px;
-    color: $common-color;
+    color: $OUTLINE_COLOR;
 
     &:focus {
       outline-width: 0;
