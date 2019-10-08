@@ -13,7 +13,7 @@ interface LogoutResponse {
 }
 
 export default class AuthService {
-  private domain: string;
+  private readonly domain: string;
 
   constructor(domain: string) {
     this.domain = domain;
