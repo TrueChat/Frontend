@@ -1,6 +1,6 @@
 import React from "react";
 import "./AuthForm.scss";
-import AuthFormInput from "./auth/AuthFormInput";
+import AuthFormInput from "./form-inputs/AuthFormInput";
 require("bootstrap/dist/css/bootstrap.css");
 
 enum Tab {
@@ -13,27 +13,30 @@ const SubmitButton = () => (
   </span>
 );
 
-class SignUpTab extends React.Component {
+class SignInTab extends React.Component {
 
   state = {
-    login: "",
-    password: ""
+    formData: {
+      login: "",
+      password: ""
+    }
   };
 
   render() {
+    const { formData } = this.state;
     return (
       <div>
         <div className="tab-section">
           <AuthFormInput
             label={"Login"}
-            value={this.state.login}
+            value={formData.login}
             changeHandler={value => this.setField("login", value)}
           />
         </div>
         <div className="tab-section">
           <AuthFormInput
             label={"Password"}
-            value={this.state.password}
+            value={formData.password}
             changeHandler={value => this.setField("password", value)}
           />
         </div>
@@ -45,12 +48,70 @@ class SignUpTab extends React.Component {
   }
 
   setField = (field: string, value: string) => {
-    this.setState(state => ({
-      ...state,
-      [field]: value
-    }));
+    this.setState((state: any) => {
+      state.formData[field] = value;
+      return state;
+    });
+  };
+}
+
+class SignUpTab extends React.Component {
+
+  state = {
+    formData: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      login: ""
+    }
+  };
+
+  render() {
+    const { formData } = this.state;
+    return (
+      <div>
+        <div className="tab-section">
+          <AuthFormInput
+            label={"Login"}
+            value={formData.login}
+            changeHandler={value => this.setField("login", value)}
+          />
+        </div>
+        <div className="tab-section">
+          <AuthFormInput
+            label={"Email"}
+            value={formData.email}
+            changeHandler={value => this.setField("email", value)}
+          />
+        </div>
+        <div className="tab-section">
+          <AuthFormInput
+            label={"Password"}
+            value={formData.password}
+            changeHandler={value => this.setField("password", value)}
+          />
+        </div>
+        <div className="tab-section">
+          <AuthFormInput
+            label={"Confirm password"}
+            value={formData.confirmPassword}
+            changeHandler={value => this.setField("confirmPassword", value)}
+          />
+        </div>
+        <div className="tab-section text-right">
+          {/* TODO: add validation */}
+          <SubmitButton />
+        </div>
+      </div>
+    )
   }
 
+  setField = (field: string, value: string) => {
+    this.setState((state: any) => {
+      state.formData[field] = value;
+      return state;
+    });
+  };
 }
 
 export default class AuthForm extends React.Component {
@@ -85,8 +146,8 @@ export default class AuthForm extends React.Component {
         </div>
         <div className="body">
           {this.state.activeTab === Tab.SignIn
-            ? <SignUpTab />
-            : null
+            ? <SignInTab />
+            : <SignUpTab />
           }
         </div>
       </div>
