@@ -1,6 +1,7 @@
 import React from "react";
 import AuthFormInput from "../form-inputs/AuthFormInput";
 import SubmitButton from "../common/SubmitButton";
+import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 
 export type SignUpData = {
   email: string,
@@ -57,6 +58,12 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             changeHandler={value => this.setField("confirmPassword", value)}
           />
         </div>
+        <div className="tab-section">
+          <AuthFormCheckbox
+            onChange={value => this.setField("remember", value)}
+            label="Remember me"
+          />
+        </div>
         <div className="tab-section text-right">
           {/* TODO: add validation */}
           <SubmitButton onClick={event => {
@@ -72,7 +79,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
 
   }
 
-  setField = (field: string, value: string) => {
+  setField = (field: string, value: any) => {
     this.setState((state: any) => {
       state.formData[field] = value;
       return state;

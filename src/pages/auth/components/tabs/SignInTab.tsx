@@ -1,6 +1,7 @@
 import React from "react";
 import AuthFormInput from "../form-inputs/AuthFormInput";
 import SubmitButton from "../common/SubmitButton"
+import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 
 export type SignInData = {
   login: string,
@@ -41,6 +42,12 @@ export default class SignInTab extends React.Component<SignInTabProps> {
             changeHandler={value => this.setField("password", value)}
           />
         </div>
+        <div className="tab-section">
+          <AuthFormCheckbox
+            onChange={value => this.setField("remember", value)}
+            label="Remember me"
+          />
+        </div>
         <div className="text-right tab-section">
           <SubmitButton onClick={event => {
             this.validate();
@@ -54,7 +61,7 @@ export default class SignInTab extends React.Component<SignInTabProps> {
   private validate() {
   }
 
-  private setField = (field: string, value: string) => {
+  private setField = (field: string, value: any) => {
     this.setState((state: any) => {
       state.formData[field] = value;
       return state;
