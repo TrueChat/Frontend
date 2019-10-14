@@ -13,10 +13,10 @@ interface LogoutResponse {
 }
 
 export default class AuthService {
-  private readonly domain: string;
+  private readonly baseUrl: string;
 
-  constructor(domain: string) {
-    this.domain = domain;
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
   }
 
   public register(username: string, email: string, password: string) : Promise<RegistrationResponse> {
@@ -26,7 +26,7 @@ export default class AuthService {
       password1: password,
       password2: password
     };
-    return axios.post(`${this.domain}/rest-auth/registration/`, credentials);
+    return axios.post(`${this.baseUrl}/rest-auth/registration/`, credentials);
   }
 
   public login(username: string, email: string, password: string) : Promise<LoginResponse> {
@@ -35,11 +35,11 @@ export default class AuthService {
       email: email,
       password: password
     };
-    return axios.post(`${this.domain}/rest-auth/login/`, credentials);
+    return axios.post(`${this.baseUrl}/rest-auth/login/`, credentials);
   }
 
   public logout() : Promise<LogoutResponse> {
-    return axios.post(`${this.domain}/rest-auth/logout/`);
+    return axios.post(`${this.baseUrl}/rest-auth/logout/`);
   }
 
 }

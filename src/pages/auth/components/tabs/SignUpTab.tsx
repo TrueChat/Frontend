@@ -41,6 +41,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
           <AuthFormInput
             label={"Email"}
             value={formData.email}
+            type="email"
             changeHandler={value => this.setField("email", value)}
           />
         </div>
@@ -48,6 +49,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
           <AuthFormInput
             label={"Password"}
             value={formData.password}
+            type="password"
             changeHandler={value => this.setField("password", value)}
           />
         </div>
@@ -55,6 +57,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
           <AuthFormInput
             label={"Confirm password"}
             value={formData.confirmPassword}
+            type="password"
             changeHandler={value => this.setField("confirmPassword", value)}
           />
         </div>

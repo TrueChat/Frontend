@@ -39,6 +39,7 @@ export default class SignInTab extends React.Component<SignInTabProps> {
           <AuthFormInput
             label={"Password"}
             value={formData.password}
+            type="password"
             changeHandler={value => this.setField("password", value)}
           />
         </div>
