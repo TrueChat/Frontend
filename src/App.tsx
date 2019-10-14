@@ -8,7 +8,7 @@ export default class App extends React.Component {
     value: ""
   };
 
-  private authService = new AuthService("https://true-chat.herokuapp.com/");
+  private authService = new AuthService("https://true-chat.herokuapp.com");
 
   render() {
     return <AuthenticationPage authService={this.authService}/>

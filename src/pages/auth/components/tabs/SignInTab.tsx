@@ -2,6 +2,8 @@ import React from "react";
 import AuthFormInput from "../form-inputs/AuthFormInput";
 import SubmitButton from "../common/SubmitButton"
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
+import {ConstraintViolation} from "../../AuthenticationPage";
+import ErrorMessage from "../common/ErrorMessage";
 
 export type SignInData = {
   login: string,
@@ -10,7 +12,8 @@ export type SignInData = {
 }
 
 type SignInTabProps = {
-  onSubmit: (data: SignInData) => void
+  onSubmit: (data: SignInData) => void,
+  violations?: ConstraintViolation[]
 }
 
 export default class SignInTab extends React.Component<SignInTabProps> {
@@ -21,7 +24,6 @@ export default class SignInTab extends React.Component<SignInTabProps> {
       password: "",
       remember: false
     },
-    validationErrors: []
   };
 
   render() {
@@ -34,6 +36,7 @@ export default class SignInTab extends React.Component<SignInTabProps> {
             value={formData.login}
             changeHandler={value => this.setField("login", value)}
           />
+          {this.renderConstraintViolationMessageIfAny("login")}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -42,6 +45,7 @@ export default class SignInTab extends React.Component<SignInTabProps> {
             type="password"
             changeHandler={value => this.setField("password", value)}
           />
+          {this.renderConstraintViolationMessageIfAny("password")}
         </div>
         <div className="tab-section">
           <AuthFormCheckbox
@@ -51,7 +55,6 @@ export default class SignInTab extends React.Component<SignInTabProps> {
         </div>
         <div className="text-right tab-section">
           <SubmitButton onClick={event => {
-            this.validate();
             this.props.onSubmit(this.state.formData);
           }}/>
         </div>
@@ -59,7 +62,17 @@ export default class SignInTab extends React.Component<SignInTabProps> {
     );
   }
 
-  private validate() {
+  private renderConstraintViolationMessageIfAny(name: string) {
+    const { violations } = this.props;
+    if (violations !== undefined) {
+      for (let violation of violations) {
+        if (violation.property === name && violation.violates) {
+          return <ErrorMessage message={violation.message}/>
+        }
+      }
+    } else {
+      return null;
+    }
   }
 
   private setField = (field: string, value: any) => {

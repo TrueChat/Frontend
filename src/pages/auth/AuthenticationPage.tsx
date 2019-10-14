@@ -7,7 +7,18 @@ type AuthenticationPageProps = {
   authService: AuthService
 }
 
+export type ConstraintViolation = {
+  property: string,
+  violates: boolean,
+  message: string
+}
+
 export default class AuthenticationPage extends React.Component<AuthenticationPageProps> {
+
+  state : { signUpViolations: ConstraintViolation[], signInViolations: [] } = {
+    signUpViolations: [],
+    signInViolations: []
+  };
 
   render() {
     const { authService } = this.props;
@@ -18,8 +29,16 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
         </div>
         <div className="form-container">
           <AuthForm
-            onSignInSubmit={data => console.log(data)}
-            onSignUpSubmit={data => console.log(data)}
+            onSignIn={data => {
+
+            }}
+            onSignUp={data => {
+              authService
+                .register(data.login, data.email, data.password)
+                .then(response => {
+                  // do smth with key
+                });
+            }}
           />
         </div>
       </div>

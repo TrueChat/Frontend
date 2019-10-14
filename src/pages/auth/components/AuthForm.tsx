@@ -4,6 +4,7 @@ import {SignInData} from "./tabs/SignInTab";
 import {SignUpData} from "./tabs/SignUpTab";
 import SignInTab from "./tabs/SignInTab";
 import SignUpTab from "./tabs/SignUpTab";
+import {ConstraintViolation} from "../AuthenticationPage";
 
 require("bootstrap/dist/css/bootstrap.css");
 
@@ -12,8 +13,10 @@ enum Tab {
 }
 
 type AuthFormProperties = {
-  onSignInSubmit: (data: SignInData) => void,
-  onSignUpSubmit: (data: SignUpData) => void
+  onSignIn: (data: SignInData) => void,
+  onSignUp: (data: SignUpData) => void,
+  signInViolations?: ConstraintViolation[],
+  signUpViolations?: ConstraintViolation[]
 }
 
 export default class AuthForm extends React.Component<AuthFormProperties> {
@@ -48,8 +51,8 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
         </div>
         <div className="body">
           {this.state.activeTab === Tab.SignIn
-            ? <SignInTab onSubmit={data => this.props.onSignInSubmit(data)}/>
-            : <SignUpTab onSubmit={data => this.props.onSignUpSubmit(data)}/>
+            ? <SignInTab onSubmit={data => this.props.onSignIn(data)}/>
+            : <SignUpTab onSubmit={data => this.props.onSignUp(data)}/>
           }
         </div>
       </div>

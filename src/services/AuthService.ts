@@ -26,7 +26,9 @@ export default class AuthService {
       password1: password,
       password2: password
     };
-    return axios.post(`${this.baseUrl}/rest-auth/registration/`, credentials);
+    return axios
+      .post(`${this.baseUrl}/rest-auth/registration/`, credentials)
+      .then(response => response.data);
   }
 
   public login(username: string, email: string, password: string) : Promise<LoginResponse> {
@@ -35,11 +37,15 @@ export default class AuthService {
       email: email,
       password: password
     };
-    return axios.post(`${this.baseUrl}/rest-auth/login/`, credentials);
+    return axios
+      .post(`${this.baseUrl}/rest-auth/login/`, credentials)
+      .then(response => response.data);
   }
 
   public logout() : Promise<LogoutResponse> {
-    return axios.post(`${this.baseUrl}/rest-auth/logout/`);
+    return axios
+      .post(`${this.baseUrl}/rest-auth/logout/`)
+      .then(response => response.data);
   }
 
 }

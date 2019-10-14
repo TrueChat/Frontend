@@ -2,6 +2,7 @@ import React from "react";
 import AuthFormInput from "../form-inputs/AuthFormInput";
 import SubmitButton from "../common/SubmitButton";
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
+import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
 
 export type SignUpData = {
@@ -13,6 +14,7 @@ export type SignUpData = {
 
 type SignUpTabProps = {
   onSubmit: (data: SignUpData) => void;
+  violations?: ConstraintViolation[]
 }
 
 export default class SignUpTab extends React.Component<SignUpTabProps> {
@@ -26,11 +28,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
       remember: false
     },
     isValid: true,
-    violations: {
-      passwordsDontMatch: false,
-      invalidEmail: false,
-      invalidLogin: false
-    }
+    violations: []
   };
 
   render() {
@@ -43,7 +41,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             value={formData.login}
             changeHandler={value => this.setField("login", value)}
           />
-          {violations.invalidLogin ? <ErrorMessage message={"invalid login"} /> : null}
+          {this.renderViolationMessageIfPresent("login", violations)}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -52,7 +50,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             type="email"
             changeHandler={value => this.setField("email", value)}
           />
-          {violations.invalidEmail ? <ErrorMessage message={"invalid email"} /> : null}
+          {this.renderViolationMessageIfPresent("email", violations)}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -61,6 +59,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             type="password"
             changeHandler={value => this.setField("password", value)}
           />
+          {this.renderViolationMessageIfPresent("password", violations)}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -69,7 +68,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             type="password"
             changeHandler={value => this.setField("confirmPassword", value)}
           />
-          {violations.passwordsDontMatch ? <ErrorMessage message={"passwords don't match"} /> : null}
+          {this.renderViolationMessageIfPresent("confirmPassword", violations)}
         </div>
         <div className="tab-section">
           <AuthFormCheckbox
@@ -88,12 +87,20 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     )
   }
 
+  private renderViolationMessageIfPresent(property: string, violations: ConstraintViolation[]) {
+    const violation = this.findViolation(property, violations);
+    if (violation !== null) {
+      return <ErrorMessage message={violation.message}/>
+    }
+  }
+
   private validate(onSuccess: (formData: SignUpData) => void) {
     this.setState((state: any) => {
       const formData = state.formData;
-      state.violations.invalidEmail = !this.emailIsValid(formData.email);
-      state.violations.invalidLogin = !this.loginIsValid(formData.login);
-      state.violations.passwordsDontMatch = !this.passwordsMatch(formData.password, formData.confirmPassword);
+      const violations = state.violations as ConstraintViolation[];
+      this.checkEmail(formData.email, violations);
+      this.checkLogin(formData.login, violations);
+      this.checkPasswordMatch(formData.password, formData.confirmPassword, violations);
       return state;
     }, () => {
       if (this.isValid()) {
@@ -102,15 +109,64 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     });
   }
 
-  private loginIsValid(login: string) {
-    return login.length !== 0;
+  private checkLogin(value: string, violations: ConstraintViolation[]) {
+    const loginIsValid = (login: string) => login.length !== 0;
+    if (!loginIsValid(value)) {
+      if (!this.violationIsPresent("login", violations)) {
+        violations.push({property: "login", violates: true, message: "invalid login"})
+      }
+    } else {
+      this.removeViolation("login", violations);
+    }
   }
 
-  private emailIsValid(email: string) {
-    if (email.length < 3) {
-      return false;
+  private checkEmail(value: string, violations: ConstraintViolation[]) {
+    const emailIsValid = (email: string) => {
+      return email.length >= 3 && email.indexOf("@") !== -1;
+    };
+    if (!emailIsValid(value)) {
+      if (!this.violationIsPresent("email", violations)) {
+        violations.push({property: "email", violates: true, message: "invalid email" })
+      }
+    } else {
+      this.removeViolation("email", violations);
     }
-    return email.indexOf("@") !== -1;
+  }
+
+  private checkPasswordMatch(p1: string, p2: string, violations: ConstraintViolation[]) {
+    if (p1 !== p2) {
+      if (!this.violationIsPresent("confirmPassword", violations)) {
+        violations.push({property: "confirmPassword", violates: true, message: "password dont match"});
+      }
+    } else {
+      this.removeViolation("confirmPassword", violations);
+    }
+  }
+
+  private violationIsPresent(property: string, violations: ConstraintViolation[]) : boolean {
+    return this.findViolation(property, violations) !== null;
+  }
+
+  private findViolation(property: string, violations: ConstraintViolation[]) : null | ConstraintViolation {
+    let i = violations.findIndex(violation => violation.property === property);
+    if (i === -1) {
+      return null;
+    } else {
+      return violations[i];
+    }
+  }
+
+  private removeViolation(property: string, violations: ConstraintViolation[]) {
+    let index = -1;
+    for (let i = 0; i < violations.length; i++) {
+      if (violations[i].property === property) {
+        index = i;
+        break;
+      }
+    }
+    if (index !== -1) {
+      violations.splice(index, 1);
+    }
   }
 
   private passwordsMatch(p1: string, p2: string) {
@@ -118,8 +174,8 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
   }
 
   private isValid() {
-    for (let violation of Object.values(this.state.violations)) {
-      if (violation) {
+    for (let violation of Object.values(this.state.violations) as ConstraintViolation[]) {
+      if (violation.violates) {
         return false;
       }
     }
