@@ -11,7 +11,10 @@ export default class AuthenticationPage extends React.Component {
           
         </div>
         <div className="form-container">
-          <AuthForm />
+          <AuthForm
+            onSignInSubmit={data => console.log(data)}
+            onSignUpSubmit={data => console.log(data) }
+          />
         </div>
       </div>
     );
