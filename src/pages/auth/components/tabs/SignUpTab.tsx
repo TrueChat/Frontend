@@ -109,6 +109,8 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     });
   }
 
+
+  // TODO code duplication: check functions have the same structure but differ only for several parameters
   private checkLogin(value: string, violations: ConstraintViolation[]) {
     const loginIsValid = (login: string) => login.length !== 0;
     if (!loginIsValid(value)) {
@@ -167,10 +169,6 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     if (index !== -1) {
       violations.splice(index, 1);
     }
-  }
-
-  private passwordsMatch(p1: string, p2: string) {
-    return p1 === p2;
   }
 
   private isValid() {
