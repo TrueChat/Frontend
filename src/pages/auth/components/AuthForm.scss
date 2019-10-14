@@ -1,9 +1,4 @@
-$AUTH_FORM_BG_COLOR: rgba(35, 35, 45, 1);
-$OUTLINE_COLOR: rgb(153, 153, 153);
-
-body {
-  background: linear-gradient(116.025389464351deg, rgba(25, 25, 40, 1) 0%, rgba(50, 50, 60, 1) 100%);
-}
+@import "../Common";
 
 .Auth-form {
   $border-width: 0.1rem;
@@ -11,13 +6,6 @@ body {
   padding: 2.5rem;
   box-sizing: border-box;
   color: $OUTLINE_COLOR;
-
-  border-bottom: $border-width solid $OUTLINE_COLOR;
-  border-right: $border-width solid $OUTLINE_COLOR;
-  border-left: $border-width solid $OUTLINE_COLOR;
-
-  border-bottom-left-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
 
   .tab-controls {
     .control {

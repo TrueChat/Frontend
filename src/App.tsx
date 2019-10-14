@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from "./components/AuthForm";
+import AuthenticationPage from "./pages/auth/AuthenticationPage";
 
 export default class App extends React.Component {
 
@@ -8,13 +8,6 @@ export default class App extends React.Component {
   };
 
   render() {
-    return (
-      <div style={{
-        width: "25rem",
-        margin: "0 auto"
-      }}>
-        <AuthForm />
-      </div>
-    );
+    return <AuthenticationPage />
   }
 }
