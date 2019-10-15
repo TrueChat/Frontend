@@ -36,6 +36,7 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
 
   render() {
     const TabControl = this.TabControl;
+    const { signUpViolations, signInViolations } = this.props;
 
     return (
       <div className="Auth-form">
@@ -51,8 +52,8 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
         </div>
         <div className="body">
           {this.state.activeTab === Tab.SignIn
-            ? <SignInTab onSubmit={data => this.props.onSignIn(data)}/>
-            : <SignUpTab onSubmit={data => this.props.onSignUp(data)}/>
+            ? <SignInTab onSubmit={data => this.props.onSignIn(data)} violations={signInViolations}/>
+            : <SignUpTab onSubmit={data => this.props.onSignUp(data)} violations={signUpViolations}/>
           }
         </div>
       </div>

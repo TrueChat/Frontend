@@ -39,7 +39,8 @@ export default class AuthService {
     };
     return axios
       .post(`${this.baseUrl}/rest-auth/login/`, credentials)
-      .then(response => response.data);
+      .then(response => response.data)
+      .catch(response => response.response.data);
   }
 
   public logout() : Promise<LogoutResponse> {

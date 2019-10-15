@@ -32,7 +32,8 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
   };
 
   render() {
-    const { formData, violations } = this.state;
+    const { formData } = this.state;
+    const violations = this.determineViolations();
     return (
       <div>
         <div className="tab-section">
@@ -85,6 +86,16 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
         </div>
       </div>
     )
+  }
+
+  private determineViolations() : ConstraintViolation[] {
+    const stateViolations = this.state.violations;
+    const propsViolations = this.props.violations;
+    if (stateViolations.length !== 0 || !propsViolations) {
+      return stateViolations;
+    } else {
+      return propsViolations;
+    }
   }
 
   private renderViolationMessageIfPresent(property: string, violations: ConstraintViolation[]) {
