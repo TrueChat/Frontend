@@ -13,10 +13,14 @@ enum Tab {
 }
 
 type AuthFormProperties = {
-  onSignIn: (data: SignInData) => void,
-  onSignUp: (data: SignUpData) => void,
-  signInViolations?: ConstraintViolation[],
-  signUpViolations?: ConstraintViolation[]
+  onSignIn: (
+    data: SignInData,
+    onFail: (violations: ConstraintViolation[]) => void
+  ) => void,
+  onSignUp: (
+    data: SignUpData,
+    onFail: (violations: ConstraintViolation[]) => void
+  ) => void,
 }
 
 export default class AuthForm extends React.Component<AuthFormProperties> {
@@ -36,7 +40,6 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
 
   render() {
     const TabControl = this.TabControl;
-    const { signUpViolations, signInViolations } = this.props;
 
     return (
       <div className="Auth-form">
@@ -52,8 +55,12 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
         </div>
         <div className="body">
           {this.state.activeTab === Tab.SignIn
-            ? <SignInTab onSubmit={data => this.props.onSignIn(data)} violations={signInViolations}/>
-            : <SignUpTab onSubmit={data => this.props.onSignUp(data)} violations={signUpViolations}/>
+            ? <SignInTab onSubmit={(data, onFail) => {
+              this.props.onSignIn(data, onFail);
+            }}/>
+            : <SignUpTab onSubmit={(data, onFail) => {
+              this.props.onSignUp(data, onFail)
+            }}/>
           }
         </div>
       </div>

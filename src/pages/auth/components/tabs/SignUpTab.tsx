@@ -13,7 +13,7 @@ export type SignUpData = {
 }
 
 type SignUpTabProps = {
-  onSubmit: (data: SignUpData) => void;
+  onSubmit: (data: SignUpData, onFailure: (violations: ConstraintViolation[]) => void ) => void;
   violations?: ConstraintViolation[]
 }
 
@@ -33,7 +33,9 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
 
   render() {
     const { formData } = this.state;
-    const violations = this.determineViolations();
+    const onSubmissionFailure = (violations: ConstraintViolation[]) => {
+      this.setState(state => ({...state, violations: violations }))
+    };
     return (
       <div>
         <div className="tab-section">
@@ -42,7 +44,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             value={formData.login}
             changeHandler={value => this.setField("login", value)}
           />
-          {this.renderViolationMessageIfPresent("login", violations)}
+          {this.renderViolationMessageIfPresent("login")}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -51,7 +53,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             type="email"
             changeHandler={value => this.setField("email", value)}
           />
-          {this.renderViolationMessageIfPresent("email", violations)}
+          {this.renderViolationMessageIfPresent("email")}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -60,7 +62,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             type="password"
             changeHandler={value => this.setField("password", value)}
           />
-          {this.renderViolationMessageIfPresent("password", violations)}
+          {this.renderViolationMessageIfPresent("password")}
         </div>
         <div className="tab-section">
           <AuthFormInput
@@ -69,7 +71,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             type="password"
             changeHandler={value => this.setField("confirmPassword", value)}
           />
-          {this.renderViolationMessageIfPresent("confirmPassword", violations)}
+          {this.renderViolationMessageIfPresent("confirmPassword")}
         </div>
         <div className="tab-section">
           <AuthFormCheckbox
@@ -80,7 +82,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
         <div className="tab-section text-right">
           <SubmitButton onClick={_ => {
             this.validate(formData => {
-              this.props.onSubmit(formData);
+              this.props.onSubmit(formData, onSubmissionFailure);
             });
           }}/>
         </div>
@@ -88,18 +90,8 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     )
   }
 
-  private determineViolations() : ConstraintViolation[] {
-    const stateViolations = this.state.violations;
-    const propsViolations = this.props.violations;
-    if (stateViolations.length !== 0 || !propsViolations) {
-      return stateViolations;
-    } else {
-      return propsViolations;
-    }
-  }
-
-  private renderViolationMessageIfPresent(property: string, violations: ConstraintViolation[]) {
-    const violation = this.findViolation(property, violations);
+  private renderViolationMessageIfPresent(property: string) {
+    const violation = this.findViolation(property, this.state.violations);
     if (violation !== null) {
       return <ErrorMessage message={violation.message}/>
     }
@@ -108,10 +100,11 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
   private validate(onSuccess: (formData: SignUpData) => void) {
     this.setState((state: any) => {
       const formData = state.formData;
-      const violations = state.violations as ConstraintViolation[];
+      const violations: ConstraintViolation[] = [];
       this.checkEmail(formData.email, violations);
       this.checkLogin(formData.login, violations);
       this.checkPasswordMatch(formData.password, formData.confirmPassword, violations);
+      state.violations = violations;
       return state;
     }, () => {
       if (this.isValid()) {

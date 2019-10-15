@@ -31,16 +31,14 @@ export default class AuthService {
       .then(response => response.data);
   }
 
-  public login(username: string, email: string, password: string) : Promise<LoginResponse> {
+  public login(username: string, password: string) : Promise<LoginResponse> {
     const credentials = {
       username: username,
-      email: email,
       password: password
     };
     return axios
       .post(`${this.baseUrl}/rest-auth/login/`, credentials)
       .then(response => response.data)
-      .catch(response => response.response.data);
   }
 
   public logout() : Promise<LogoutResponse> {

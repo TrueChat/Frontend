@@ -2,6 +2,8 @@ import React from "react";
 import "./AuthenticationPage.scss";
 import AuthForm from "./components/AuthForm";
 import AuthService from "../../services/AuthService";
+import {SignInData} from "./components/tabs/SignInTab";
+import {SignUpData} from "./components/tabs/SignUpTab";
 
 type AuthenticationPageProps = {
   authService: AuthService
@@ -19,14 +21,7 @@ type ServerErrorResponse = {
 
 export default class AuthenticationPage extends React.Component<AuthenticationPageProps> {
 
-  state : { signUpViolations: ConstraintViolation[], signInViolations: ConstraintViolation[] } = {
-    signUpViolations: [],
-    signInViolations: []
-  };
-
   render() {
-    const { authService } = this.props;
-    const { signInViolations, signUpViolations } = this.state;
     return (
       <div className="Authentication-page">
         <div className="header">
@@ -34,32 +29,35 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
         </div>
         <div className="form-container">
           <AuthForm
-            onSignIn={data => {
-
-            }}
-            onSignUp={data => {
-              authService
-                .register(data.login, data.email, data.password)
-                .then(response => {
-                  this.setState(state => ({
-                    ...state,
-                    signUpViolations: []
-                  }));
-                })
-                .catch(error => {
-                  this.setState(state => ({
-                    ...state,
-                    signUpViolations: this.translateConstraintViolations(error.response.data)
-                  }));
-                })
-            }}
-            signInViolations={signInViolations}
-            signUpViolations={signUpViolations}
+            onSignIn={this.handleSignIn}
+            onSignUp={this.handleSignUp}
           />
         </div>
       </div>
     );
   }
+
+  private handleSignIn = (data: SignInData, onFail: (violations: ConstraintViolation[]) => void) => {
+    this.props.authService
+      .login(data.login, data.password)
+      .then(response => {
+        alert("successfully signed in");
+      })
+      .catch(error => {
+        onFail(this.translateConstraintViolations(error.response.data));
+      })
+  };
+
+  private handleSignUp = (data: SignUpData, onFail: (violations: ConstraintViolation[]) => void) => {
+    this.props.authService
+      .register(data.login, data.email, data.password)
+      .then(response => {
+        alert("successfully signed up");
+      })
+      .catch(error => {
+        onFail(this.translateConstraintViolations(error.response.data));
+      })
+  };
 
   private translateConstraintViolations(errors: ServerErrorResponse) {
     const violations: ConstraintViolation[] = [];
@@ -70,7 +68,9 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
       } else if (key === "password2") {
         violation = this.newViolation("confirmPassword", errors[key][0]);
       } else if (key === "username") {
-        violation = this.newViolation("username", errors[key][0]);
+        violation = this.newViolation("login", errors[key][0]);
+      } else if (key === "non_field_errors") {
+        violation = this.newViolation("_other", errors[key][0]);
       } else {
         violation = this.newViolation(key, errors[key][0]);
       }
