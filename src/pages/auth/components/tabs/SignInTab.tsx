@@ -4,6 +4,8 @@ import SubmitButton from "../common/SubmitButton"
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
+import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../AuthForm";
+import {ClipLoader} from "react-spinners";
 
 export type SignInData = {
   login: string,
@@ -14,7 +16,8 @@ export type SignInData = {
 type SignInTabProps = {
   onSubmit: (
     data: SignInData,
-    onFailure: (violations: ConstraintViolation[]) => void
+    onFailure: SubmissionFailureHandler,
+    onSuccess: SubmissionSuccessHandler
   ) => void,
 }
 
@@ -26,14 +29,12 @@ export default class SignInTab extends React.Component<SignInTabProps> {
       password: "",
       remember: false
     },
-    violations: []
+    violations: [],
+    loading: false
   };
 
   render() {
     const { formData } = this.state;
-    const onSubmissionFailure = (violations: ConstraintViolation[]) => {
-      this.setState(state => ({...state, violations: violations }));
-    };
     return (
       <div>
         <div className="tab-section">
@@ -60,14 +61,32 @@ export default class SignInTab extends React.Component<SignInTabProps> {
           />
         </div>
         <div className="text-right tab-section">
-          <SubmitButton onClick={event => {
-            this.props.onSubmit(this.state.formData, onSubmissionFailure);
-          }}/>
+          <SubmitButton onClick={this.submit}/>
         </div>
         {this.renderConstraintViolationMessageIfAny("_other")}
+        {this.state.loading
+          ? <div className="tab-section text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
+          : null
+        }
       </div>
     );
   }
+
+  private submit = () => {
+    const onSubmissionFailure = (violations: ConstraintViolation[]) => {
+      this.setState(state => ({...state, violations: violations, loading: false }));
+    };
+    const onSubmissionSuccess = () => {
+      this.setState(state => ({...state, violations: [], loading: false}))
+    };
+    this.setState((state: any) => {
+      this.props.onSubmit(state.formData, onSubmissionFailure, onSubmissionSuccess);
+      return {
+        ...state,
+        loading: true
+      };
+    });
+  };
 
   private renderConstraintViolationMessageIfAny(name: string) {
     const { violations } = this.state;

@@ -4,6 +4,8 @@ import SubmitButton from "../common/SubmitButton";
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
+import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../AuthForm";
+import {ClipLoader} from "react-spinners";
 
 export type SignUpData = {
   email: string,
@@ -13,7 +15,11 @@ export type SignUpData = {
 }
 
 type SignUpTabProps = {
-  onSubmit: (data: SignUpData, onFailure: (violations: ConstraintViolation[]) => void ) => void;
+  onSubmit: (
+    data: SignUpData,
+    onFailure: SubmissionFailureHandler,
+    onSuccess: SubmissionSuccessHandler
+  ) => void;
   violations?: ConstraintViolation[]
 }
 
@@ -28,14 +34,12 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
       remember: false
     },
     isValid: true,
-    violations: []
+    violations: [],
+    loading: false
   };
 
   render() {
     const { formData } = this.state;
-    const onSubmissionFailure = (violations: ConstraintViolation[]) => {
-      this.setState(state => ({...state, violations: violations }))
-    };
     return (
       <div>
         <div className="tab-section">
@@ -80,77 +84,35 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
           />
         </div>
         <div className="tab-section text-right">
-          <SubmitButton onClick={_ => {
-            this.validate(formData => {
-              this.props.onSubmit(formData, onSubmissionFailure);
-            });
-          }}/>
+          <SubmitButton onClick={this.submitData}/>
         </div>
+        {this.state.loading
+          ? <div className="tab-section text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
+          : null
+        }
       </div>
-    )
+    );
   }
+
+  private submitData = () => {
+    const onSubmissionFailure = (violations: ConstraintViolation[]) => {
+      this.setState(state => ({...state, violations: violations, loading: false }))
+    };
+    const onSubmissionSuccess = () => {
+      this.setState(state => ({ ...state, loading: false }));
+    };
+    this.setState((state: any) => {
+      this.props.onSubmit(state.formData, onSubmissionFailure, onSubmissionSuccess);
+      state.loading = true;
+      return state;
+    });
+  };
 
   private renderViolationMessageIfPresent(property: string) {
     const violation = this.findViolation(property, this.state.violations);
     if (violation !== null) {
       return <ErrorMessage message={violation.message}/>
     }
-  }
-
-  private validate(onSuccess: (formData: SignUpData) => void) {
-    this.setState((state: any) => {
-      const formData = state.formData;
-      const violations: ConstraintViolation[] = [];
-      this.checkEmail(formData.email, violations);
-      this.checkLogin(formData.login, violations);
-      this.checkPasswordMatch(formData.password, formData.confirmPassword, violations);
-      state.violations = violations;
-      return state;
-    }, () => {
-      if (this.isValid()) {
-        onSuccess(this.state.formData);
-      }
-    });
-  }
-
-
-  // TODO code duplication: check functions have the same structure but differ only for several parameters
-  private checkLogin(value: string, violations: ConstraintViolation[]) {
-    const loginIsValid = (login: string) => login.length !== 0;
-    if (!loginIsValid(value)) {
-      if (!this.violationIsPresent("login", violations)) {
-        violations.push({property: "login", violates: true, message: "invalid login"})
-      }
-    } else {
-      this.removeViolation("login", violations);
-    }
-  }
-
-  private checkEmail(value: string, violations: ConstraintViolation[]) {
-    const emailIsValid = (email: string) => {
-      return email.length >= 3 && email.indexOf("@") !== -1;
-    };
-    if (!emailIsValid(value)) {
-      if (!this.violationIsPresent("email", violations)) {
-        violations.push({property: "email", violates: true, message: "invalid email" })
-      }
-    } else {
-      this.removeViolation("email", violations);
-    }
-  }
-
-  private checkPasswordMatch(p1: string, p2: string, violations: ConstraintViolation[]) {
-    if (p1 !== p2) {
-      if (!this.violationIsPresent("confirmPassword", violations)) {
-        violations.push({property: "confirmPassword", violates: true, message: "password dont match"});
-      }
-    } else {
-      this.removeViolation("confirmPassword", violations);
-    }
-  }
-
-  private violationIsPresent(property: string, violations: ConstraintViolation[]) : boolean {
-    return this.findViolation(property, violations) !== null;
   }
 
   private findViolation(property: string, violations: ConstraintViolation[]) : null | ConstraintViolation {
@@ -160,28 +122,6 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     } else {
       return violations[i];
     }
-  }
-
-  private removeViolation(property: string, violations: ConstraintViolation[]) {
-    let index = -1;
-    for (let i = 0; i < violations.length; i++) {
-      if (violations[i].property === property) {
-        index = i;
-        break;
-      }
-    }
-    if (index !== -1) {
-      violations.splice(index, 1);
-    }
-  }
-
-  private isValid() {
-    for (let violation of Object.values(this.state.violations) as ConstraintViolation[]) {
-      if (violation.violates) {
-        return false;
-      }
-    }
-    return true;
   }
 
   setField = (field: string, value: any) => {
