@@ -1,0 +1,32 @@
+@import "../AuthForm";
+@import "../../Common";
+
+.Auth-form-input {
+  position: relative;
+  padding-top: 1.2rem;
+
+  $i-p-top: 0.5rem;
+  $i-p-bottom: 0.25rem;
+  $i-p-right: 0.25rem;
+  $i-p-left: 0.5rem;
+
+  .label {
+    position: absolute;
+    top: $i-p-top * 0.95;
+    left: $i-p-left * 1.25;
+    color: $OUTLINE_COLOR;
+  }
+
+  .input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: $i-p-top $i-p-right $i-p-bottom $i-p-left;
+    border: 0.1rem solid $OUTLINE_COLOR;
+    border-radius: $BORDER_RADIUS;
+    color: $OUTLINE_COLOR;
+
+    &:focus {
+      outline-width: 0;
+    }
+  }
+}
