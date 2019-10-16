@@ -3,6 +3,7 @@ import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import AuthService from "./services/AuthService";
 import UserService from "./services/UserService";
 import { BrowserRouter, Route } from "react-router-dom";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 export default class App extends React.Component {
 
@@ -18,6 +19,9 @@ export default class App extends React.Component {
       <BrowserRouter>
         <Route path="/auth">
           <AuthenticationPage userService={this.userService} />
+        </Route>
+        <Route path="/profile">
+          <ProfilePage userService={this.userService} />
         </Route>
       </BrowserRouter>
     )

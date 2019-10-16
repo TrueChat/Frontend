@@ -1,0 +1,13 @@
+@import "../styles/Common";
+
+.Profile-page {
+  .form-container {
+    max-width: 25rem;
+    margin: 0 auto;
+    border-bottom: 2px solid $OUTLINE_COLOR;
+    border-right: 2px solid $OUTLINE_COLOR;
+    border-left: 2px solid $OUTLINE_COLOR;
+    border-bottom-left-radius: $BORDER_RADIUS;
+    border-bottom-right-radius: $BORDER_RADIUS;
+  }
+}

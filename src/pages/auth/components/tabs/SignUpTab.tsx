@@ -1,6 +1,6 @@
 import React from "react";
 import AuthFormInput from "../form-inputs/AuthFormInput";
-import SubmitButton from "../common/SubmitButton";
+import SubmitButton from "../../../common/SubmitButton";
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
