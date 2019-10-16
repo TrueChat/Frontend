@@ -1,6 +1,7 @@
 import React from 'react';
 import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import AuthService from "./services/AuthService";
+import UserService from "./services/UserService";
 
 export default class App extends React.Component {
 
@@ -8,9 +9,9 @@ export default class App extends React.Component {
     value: ""
   };
 
-  private authService = new AuthService("https://true-chat.herokuapp.com");
+  private userService = new UserService(new AuthService("https://true-chat.herokuapp.com"));
 
   render() {
-    return <AuthenticationPage authService={this.authService}/>
+    return <AuthenticationPage userService={this.userService}/>
   }
 }

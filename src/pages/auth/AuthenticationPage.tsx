@@ -1,12 +1,12 @@
 import React from "react";
 import "./AuthenticationPage.scss";
-import AuthForm from "./components/AuthForm";
-import AuthService from "../../services/AuthService";
+import AuthForm, {SubmissionFailureHandler, SubmissionSuccessHandler} from "./components/AuthForm";
 import {SignInData} from "./components/tabs/SignInTab";
 import {SignUpData} from "./components/tabs/SignUpTab";
+import UserService from "../../services/UserService";
 
 type AuthenticationPageProps = {
-  authService: AuthService
+  userService: UserService
 }
 
 export type ConstraintViolation = {
@@ -15,9 +15,6 @@ export type ConstraintViolation = {
   message: string
 }
 
-type ServerErrorResponse = {
-  [key: string]: string[]
-}
 
 export default class AuthenticationPage extends React.Component<AuthenticationPageProps> {
 
@@ -37,52 +34,25 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
     );
   }
 
-  private handleSignIn = (data: SignInData, onFail: (violations: ConstraintViolation[]) => void) => {
-    this.props.authService
-      .login(data.login, data.password)
-      .then(response => {
-        alert("successfully signed in");
-      })
-      .catch(error => {
-        onFail(this.translateConstraintViolations(error.response.data));
-      })
+  private handleSignIn = (data: SignInData, onFail: SubmissionFailureHandler, onSuccess: SubmissionSuccessHandler) => {
+    let _onSuccess = () =>{
+      onSuccess();
+      this.redirectToProfilePage();
+    };
+    this.props.userService
+      .login(data.login, data.password, _onSuccess, onFail);
   };
 
-  private handleSignUp = (data: SignUpData, onFail: (violations: ConstraintViolation[]) => void) => {
-    this.props.authService
-      .register(data.login, data.email, data.password)
-      .then(response => {
-        alert("successfully signed up");
-      })
-      .catch(error => {
-        onFail(this.translateConstraintViolations(error.response.data));
-      })
+  private handleSignUp = (data: SignUpData, onFail: SubmissionFailureHandler, onSuccess: SubmissionSuccessHandler) => {
+    const _onSuccess = () => {
+      onSuccess();
+      this.redirectToProfilePage();
+    };
+    this.props.userService
+      .register(data.login, data.email, data.password, _onSuccess, onFail)
   };
 
-  private translateConstraintViolations(errors: ServerErrorResponse) {
-    const violations: ConstraintViolation[] = [];
-    for (let key of Object.keys(errors)) {
-      let violation: ConstraintViolation;
-      if (key === "password1") {
-        violation = this.newViolation("password", errors[key][0]);
-      } else if (key === "password2") {
-        violation = this.newViolation("confirmPassword", errors[key][0]);
-      } else if (key === "username") {
-        violation = this.newViolation("login", errors[key][0]);
-      } else if (key === "non_field_errors") {
-        violation = this.newViolation("_other", errors[key][0]);
-      } else {
-        violation = this.newViolation(key, errors[key][0]);
-      }
-      violations.push(violation)
-    }
-    return violations;
-  }
-
-  private newViolation(property: string, message: string) : ConstraintViolation {
-    return {
-      property: property, violates: true, message: message
-    }
-  }
-
-}
+  private redirectToProfilePage = () => {
+    console.log("implement redirect to profile page");
+  };
+};
