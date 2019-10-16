@@ -1,7 +1,7 @@
 import AuthService from "./AuthService";
 import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../pages/auth/components/AuthForm";
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
-const Cookies = require("js-cookie");
+import Cookies from "js-cookie";
 
 type UserData = {
   authToken: string
@@ -64,6 +64,10 @@ export default class UserService {
           onFailure(this.translateConstraintViolations(error.response.data));
         }
       });
+  }
+
+  public userIsPresent() : boolean {
+    return Cookies.get("userData") !== undefined;
   }
 
   private saveUserToCookies(userData: UserData) {

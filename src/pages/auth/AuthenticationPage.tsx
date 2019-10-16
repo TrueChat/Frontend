@@ -4,6 +4,7 @@ import AuthForm, {SubmissionFailureHandler, SubmissionSuccessHandler} from "./co
 import {SignInData} from "./components/tabs/SignInTab";
 import {SignUpData} from "./components/tabs/SignUpTab";
 import UserService from "../../services/UserService";
+import { Redirect } from "react-router-dom";
 
 type AuthenticationPageProps = {
   userService: UserService
@@ -18,7 +19,14 @@ export type ConstraintViolation = {
 
 export default class AuthenticationPage extends React.Component<AuthenticationPageProps> {
 
+  state : {redirectTo?: string}  = {
+    redirectTo: undefined
+  };
+
   render() {
+    if (this.state.redirectTo) {
+      return <Redirect to={this.state.redirectTo}/>
+    }
     return (
       <div className="Authentication-page">
         <div className="header">
@@ -53,6 +61,11 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
   };
 
   private redirectToProfilePage = () => {
-    console.log("implement redirect to profile page");
+    this.setState(state => {
+      return {
+        ...state,
+        redirectTo: "/profile"
+      }
+    })
   };
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import AuthService from "./services/AuthService";
 import UserService from "./services/UserService";
+import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {
 
@@ -12,6 +13,13 @@ export default class App extends React.Component {
   private userService = new UserService(new AuthService("https://true-chat.herokuapp.com"));
 
   render() {
-    return <AuthenticationPage userService={this.userService}/>
+    // return <AuthenticationPage userService={this.userService}/>
+    return (
+      <BrowserRouter>
+        <Route path="/auth">
+          <AuthenticationPage userService={this.userService} />
+        </Route>
+      </BrowserRouter>
+    )
   }
 }
