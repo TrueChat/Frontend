@@ -78,6 +78,7 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
           : null
         }
         {submitResult !== undefined
+          // TODO render more app specific styled messages
           ? !submitResult
             ? <div className="text-center text-danger">Something went wrong</div>
             : <div className="text-center text-success">Successfully updated</div>
