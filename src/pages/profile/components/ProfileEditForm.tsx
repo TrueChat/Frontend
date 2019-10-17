@@ -4,6 +4,7 @@ import "./ProfileEditForm.scss";
 import SubmitButton from "../../common/SubmitButton";
 import {UserProfile} from "../../../services/UserService";
 import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../services/UserService";
+import {ClipLoader} from "react-spinners";
 require("bootstrap/dist/css/bootstrap.css");
 
 type ProfileEditFormProps = {
@@ -16,8 +17,14 @@ type ProfileEditFormProps = {
 
 export default class ProfileEditForm extends React.Component<ProfileEditFormProps> {
 
+  state = {
+    loading: false,
+    submitResult: undefined
+  };
+
   render() {
-    const { userProfile, onSubmit } = this.props;
+    const { userProfile } = this.props;
+    const { loading, submitResult } = this.state;
 
     return (
       <div className="Profile-edit-form">
@@ -64,13 +71,45 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
           </div>
         </div>
         <div className="row submit-container text-right">
-          <SubmitButton onClick={() => {
-            onSubmit();
-          }}/>
+          <SubmitButton onClick={this.handleSubmit}/>
         </div>
+        {loading
+          ? <div className="text-center"><ClipLoader/></div>
+          : null
+        }
+        {submitResult !== undefined
+          ? !submitResult
+            ? <div className="text-center text-danger">Something went wrong</div>
+            : <div className="text-center text-success">Successfully updated</div>
+          : null
+        }
       </div>
     );
   }
+
+  private handleSubmit = () => {
+    const onSuccess = () => {
+      this.setState(state => ({
+        ...state,
+        loading: false,
+        submitResult: true
+      }));
+    };
+    const onFail = () => {
+      this.setState(state => ({
+        ...state,
+        loading: false,
+        submitResult: false
+      }));
+    };
+    this.setState(state => {
+      this.setState(state => ({
+        ...state,
+        loading: true
+      }));
+      this.props.onSubmit(onSuccess, onFail);
+    });
+  };
 
   private updateUsername = (value: string) => {
     this.props.userProfile.username = value;

@@ -3,6 +3,7 @@ import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler, UserPro
 import ProfileEditForm from "./components/ProfileEditForm";
 import "./ProfilePage.scss";
 import {ClipLoader} from "react-spinners";
+import { Redirect } from "react-router-dom";
 
 type ProfilePageProps = {
   userService: UserService,
@@ -20,6 +21,9 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
   }
 
   render() {
+    if (!this.props.userService.userIsPresent()) {
+      return <Redirect to="auth" />
+    }
     return (
       <div className="Profile-page">
         <div className="form-container">
@@ -43,6 +47,9 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
   };
 
   private loadUserProfile() {
+    if (!this.props.userService.userIsPresent()) {
+      return;
+    }
     this.props.userService.loadProfileForCurrentUser()
       .then(userProfile => {
         this.setState(state => ({

@@ -89,6 +89,7 @@ export default class UserService {
     Cookies.set("userData", userData);
   }
 
+  // TODO fix
   public loadProfileForCurrentUser() : Promise<UserProfile> {
     let userData: UserData = Cookies.getJSON("userData");
     return axios
