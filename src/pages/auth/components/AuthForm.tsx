@@ -5,15 +5,13 @@ import {SignUpData} from "./tabs/SignUpTab";
 import SignInTab from "./tabs/SignInTab";
 import SignUpTab from "./tabs/SignUpTab";
 import {ConstraintViolation} from "../AuthenticationPage";
+import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../services/UserService";
 
 require("bootstrap/dist/css/bootstrap.css");
 
 enum Tab {
   SignIn, SignUp
 }
-
-export type SubmissionFailureHandler = (violations: ConstraintViolation[]) => void;
-export type SubmissionSuccessHandler = () => void;
 
 type AuthFormProperties = {
   onSignIn: (

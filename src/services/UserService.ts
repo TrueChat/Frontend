@@ -1,21 +1,34 @@
 import AuthService from "./AuthService";
-import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../pages/auth/components/AuthForm";
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 type UserData = {
-  authToken: string
+  authToken: string,
+  username: string
 }
 
 type ServerErrorResponse = {
   [key: string]: string[]
 }
 
+export type UserProfile = {
+  first_name: string,
+  last_name: string,
+  username: string,
+  about: string
+}
+
+export type SubmissionFailureHandler = (violations: ConstraintViolation[]) => void;
+export type SubmissionSuccessHandler = () => void;
+
 export default class UserService {
+  private readonly baseUrl: string;
   private readonly authService: AuthService;
 
-  constructor(authService: AuthService) {
+  constructor(baseUrl: string, authService: AuthService) {
     this.authService = authService;
+    this.baseUrl = baseUrl;
   }
 
   public login(
@@ -28,7 +41,8 @@ export default class UserService {
       .login(username, password)
       .then(response => {
         this.saveUserToCookies({
-          authToken: response.key
+          authToken: response.key,
+          username: username
         });
         if (onSuccess) {
           onSuccess();
@@ -53,7 +67,8 @@ export default class UserService {
       .register(username, email, password)
       .then(response => {
         this.saveUserToCookies({
-          authToken: response.key
+          authToken: response.key,
+          username: username
         });
         if (onSuccess) {
           onSuccess();
@@ -72,6 +87,38 @@ export default class UserService {
 
   private saveUserToCookies(userData: UserData) {
     Cookies.set("userData", userData);
+  }
+
+  // TODO fix
+  public loadProfileForCurrentUser() : Promise<UserProfile> {
+    let userData: UserData = Cookies.getJSON("userData");
+    return axios
+      .get(`${this.baseUrl}/profile/${userData.username}/`, {
+        headers: {
+          "Authorization": `Token ${userData.authToken}`
+        }
+      })
+      .then(response => response.data);
+  }
+
+  public updateProfileForCurrentUser(userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) {
+    let userData: UserData = Cookies.getJSON("userData");
+    axios
+      .put(`${this.baseUrl}/profile/${userData.username}/`, userProfile, {
+        headers: {
+          "Authorization": `Token ${userData.authToken}`
+        }
+      })
+      .then(_ => {
+        if (onSuccess) {
+          onSuccess()
+        }
+      })
+      .catch(error => {
+        if (onFailure) {
+          onFailure(this.translateConstraintViolations(error.response.data));
+        }
+      })
   }
 
   private translateConstraintViolations(errors: ServerErrorResponse) {

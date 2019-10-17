@@ -3,6 +3,8 @@ import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import AuthService from "./services/AuthService";
 import UserService from "./services/UserService";
 import { BrowserRouter, Route } from "react-router-dom";
+import ProfilePage from "./pages/profile/ProfilePage";
+import MainPage from "./pages/main/MainPage";
 
 export default class App extends React.Component {
 
@@ -10,14 +12,20 @@ export default class App extends React.Component {
     value: ""
   };
 
-  private userService = new UserService(new AuthService("https://true-chat.herokuapp.com"));
+  private readonly baseUrl = "https://true-chat.herokuapp.com";
+  private readonly userService = new UserService(this.baseUrl, new AuthService(this.baseUrl));
 
   render() {
-    // return <AuthenticationPage userService={this.userService}/>
     return (
       <BrowserRouter>
+        <Route path="/">
+          <MainPage userService={this.userService} />
+        </Route>
         <Route path="/auth">
           <AuthenticationPage userService={this.userService} />
+        </Route>
+        <Route path="/profile">
+          <ProfilePage userService={this.userService} />
         </Route>
       </BrowserRouter>
     )

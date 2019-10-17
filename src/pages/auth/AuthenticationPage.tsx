@@ -1,9 +1,9 @@
 import React from "react";
 import "./AuthenticationPage.scss";
-import AuthForm, {SubmissionFailureHandler, SubmissionSuccessHandler} from "./components/AuthForm";
+import AuthForm from "./components/AuthForm";
 import {SignInData} from "./components/tabs/SignInTab";
 import {SignUpData} from "./components/tabs/SignUpTab";
-import UserService from "../../services/UserService";
+import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../services/UserService";
 import { Redirect } from "react-router-dom";
 
 type AuthenticationPageProps = {
