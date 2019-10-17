@@ -11,6 +11,7 @@
     color: $TEXT_COLOR;
     width: 100%;
     font-weight: bold;
+    padding-right: 1.5rem;
 
     &.focus {
       outline-width: 0;
@@ -22,6 +23,7 @@
     position: absolute;
     top: 0.25rem;
     right: 0;
+    font-size: 1rem;
     .edit-icon {
       @extend .fa;
       @extend .fa-pencil;

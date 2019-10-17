@@ -4,8 +4,8 @@ import SubmitButton from "../../../common/SubmitButton"
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
-import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../AuthForm";
 import {ClipLoader} from "react-spinners";
+import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../services/UserService";
 
 export type SignInData = {
   login: string,

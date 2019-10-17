@@ -11,7 +11,8 @@ export default class App extends React.Component {
     value: ""
   };
 
-  private userService = new UserService(new AuthService("https://true-chat.herokuapp.com"));
+  private readonly baseUrl = "https://true-chat.herokuapp.com";
+  private readonly userService = new UserService(this.baseUrl, new AuthService(this.baseUrl));
 
   render() {
     // return <AuthenticationPage userService={this.userService}/>
