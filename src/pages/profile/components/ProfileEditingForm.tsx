@@ -9,9 +9,14 @@ export default class ProfileEditingForm extends React.Component {
   render() {
     return (
       <div className="Profile-editing-form">
-        <div className="row info-row">
+        <div className="header">
+          Your Profile
+        </div>
+        <div className="row info-row align-baseline">
           <div className="col-3">
-            {/* TODO Paste image */}
+            <div className="user-image-container">
+              <i className="user-image" />
+            </div>
           </div>
           <div className="col-9">
             <FormInput value={"Name Surname"} onChange={() => {}}/>
@@ -19,12 +24,18 @@ export default class ProfileEditingForm extends React.Component {
         </div>
         <div className="row info-row">
           <div className="col-12">
-            <FormInput onChange={() => {}} value={"Username"} />
+            <div className="row-title">Username</div>
+            <div>
+              <FormInput onChange={() => {}} value={"Username"} />
+            </div>
           </div>
         </div>
         <div className="row info-row">
           <div className="col-12">
-            <FormInput onChange={() => {}} value={"Bio"} />
+            <div className="row-title">Bio</div>
+            <div>
+              <FormInput onChange={() => {}} value={"Bio"} />
+            </div>
           </div>
         </div>
         <div className="row submit-container text-right">
