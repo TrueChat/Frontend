@@ -36,14 +36,19 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
     );
   }
 
-  private handleSubmit = (onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
+  private handleSubmit = (userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
     const _onSuccess = () => {
-      this.forceUpdate();
-      if (onSuccess) {
-        onSuccess();
-      }
+      this.setState(state => {
+        if (onSuccess) {
+          onSuccess();
+        }
+        return {
+          ...state,
+          userProfile: userProfile
+        }
+      })
     };
-    this.props.userService.updateProfileForCurrentUser((this.state.userProfile as UserProfile), _onSuccess, onFailure);
+    this.props.userService.updateProfileForCurrentUser(userProfile, _onSuccess, onFailure);
   };
 
   private loadUserProfile() {

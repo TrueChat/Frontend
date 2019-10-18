@@ -10,21 +10,38 @@ require("bootstrap/dist/css/bootstrap.css");
 type ProfileEditFormProps = {
   userProfile: UserProfile,
   onSubmit: (
+    userProfile: UserProfile,
     onSuccess?: SubmissionSuccessHandler,
     onFailure?: SubmissionFailureHandler
   ) => void
 }
 
-export default class ProfileEditForm extends React.Component<ProfileEditFormProps> {
+type ProfileEditFormState = {
+  userProfile: UserProfile,
+  submissionResult?: boolean,
+  loading: boolean
+}
 
-  state = {
-    loading: false,
-    submitResult: undefined
-  };
+export default class ProfileEditForm extends React.Component<ProfileEditFormProps, ProfileEditFormState> {
+
+  constructor(props: ProfileEditFormProps) {
+    super(props);
+    const userProfile = props.userProfile;
+
+    this.state = {
+      loading: false,
+      submissionResult: undefined,
+      userProfile: {
+        first_name: userProfile.last_name || "",
+        last_name: userProfile.last_name || "",
+        username: userProfile.username || "",
+        about: userProfile.about || ""
+      }
+    }
+  }
 
   render() {
-    const { userProfile } = this.props;
-    const { loading, submitResult } = this.state;
+    const { loading, submissionResult, userProfile } = this.state;
 
     return (
       <div className="Profile-edit-form">
@@ -77,9 +94,9 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
           ? <div className="text-center"><ClipLoader/></div>
           : null
         }
-        {submitResult !== undefined
+        {submissionResult !== undefined
           // TODO render more app specific styled messages
-          ? !submitResult
+          ? !submissionResult
             ? <div className="text-center text-danger">Something went wrong</div>
             : <div className="text-center text-success">Successfully updated</div>
           : null
@@ -108,27 +125,34 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
         ...state,
         loading: true
       }));
-      this.props.onSubmit(onSuccess, onFail);
+      this.props.onSubmit(state.userProfile, onSuccess, onFail);
     });
   };
 
+
   private updateUsername = (value: string) => {
-    this.props.userProfile.username = value;
-    this.forceUpdate();
+    this.updateProfileField("username", value);
   };
 
   private updateFirstName = (value: string) => {
-    this.props.userProfile.first_name = value;
-    this.forceUpdate();
+    this.updateProfileField("first_name", value);
   };
 
   private updateBio = (value: string) => {
-    this.props.userProfile.about = value;
-    this.forceUpdate();
+    this.updateProfileField("about", value);
   };
 
   private updateLastName = (value: string) => {
-    this.props.userProfile.last_name = value;
-    this.forceUpdate();
+    this.updateProfileField("last_name", value);
+  };
+
+  private updateProfileField(field: string, value: string) {
+    this.setState(state => ({
+      ...state,
+      userProfile: {
+        ...state.userProfile,
+        [field]: value
+      }
+    }));
   }
 }
