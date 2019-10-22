@@ -35,7 +35,8 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     },
     isValid: true,
     violations: [],
-    loading: false
+    loading: false,
+    emailSent: false
   };
 
   render() {
@@ -99,7 +100,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
       this.setState(state => ({...state, violations: violations, loading: false }))
     };
     const onSubmissionSuccess = () => {
-      this.setState(state => ({ ...state, loading: false }));
+      this.setState(state => ({ ...state, loading: false, emailSent: true }));
     };
     this.setState((state: any) => {
       this.props.onSubmit(state.formData, onSubmissionFailure, onSubmissionSuccess);

@@ -66,10 +66,6 @@ export default class UserService {
     this.authService
       .register(username, email, password)
       .then(response => {
-        this.saveUserToCookies({
-          authToken: response.key,
-          username: username
-        });
         if (onSuccess) {
           onSuccess();
         }

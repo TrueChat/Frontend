@@ -1,7 +1,6 @@
 import axios from "axios";
 
 interface RegistrationResponse {
-  key: string
 }
 
 interface LoginResponse {

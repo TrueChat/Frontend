@@ -17,7 +17,6 @@ type AuthFormProperties = {
   onSignIn: (
     data: SignInData,
     onFail: SubmissionFailureHandler,
-    onSuccess: SubmissionSuccessHandler
   ) => void,
   onSignUp: (
     data: SignUpData,
@@ -58,8 +57,8 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
         </div>
         <div className="body">
           {this.state.activeTab === Tab.SignIn
-            ? <SignInTab onSubmit={(data, onFail, onSuccess) => {
-              this.props.onSignIn(data, onFail, onSuccess);
+            ? <SignInTab onSubmit={(data, onFail) => {
+              this.props.onSignIn(data, onFail);
             }}/>
             : <SignUpTab onSubmit={(data, onFail, onSuccess) => {
               this.props.onSignUp(data, onFail, onSuccess)

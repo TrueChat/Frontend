@@ -42,9 +42,8 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
     );
   }
 
-  private handleSignIn = (data: SignInData, onFail: SubmissionFailureHandler, onSuccess: SubmissionSuccessHandler) => {
+  private handleSignIn = (data: SignInData, onFail: SubmissionFailureHandler) => {
     let _onSuccess = () =>{
-      onSuccess();
       this.redirectToProfilePage();
     };
     this.props.userService
@@ -54,7 +53,6 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
   private handleSignUp = (data: SignUpData, onFail: SubmissionFailureHandler, onSuccess: SubmissionSuccessHandler) => {
     const _onSuccess = () => {
       onSuccess();
-      this.redirectToProfilePage();
     };
     this.props.userService
       .register(data.login, data.email, data.password, _onSuccess, onFail)
