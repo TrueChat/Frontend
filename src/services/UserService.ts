@@ -98,7 +98,7 @@ export default class UserService {
   public updateProfileForCurrentUser(userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) {
     let userData: UserData = Cookies.getJSON("userData");
     axios
-      .put(`${this.baseUrl}/profile/${userData.username}/`, userProfile, {
+      .put(`${this.baseUrl}/profile/`, userProfile, {
         headers: {
           "Authorization": `Token ${userData.authToken}`
         }

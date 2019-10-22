@@ -38,6 +38,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
 
   private handleSubmit = (userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
     const _onSuccess = () => {
+      // TODO some error-prone code
       this.setState(state => {
         if (onSuccess) {
           onSuccess();
