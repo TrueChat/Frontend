@@ -107,6 +107,8 @@ export default class UserService {
         if (onSuccess) {
           onSuccess()
         }
+        userData.username = userProfile.username;
+        Cookies.set("userData", userData);
       })
       .catch(error => {
         if (onFailure) {
