@@ -36,7 +36,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
     isValid: true,
     violations: [],
     loading: false,
-    emailSent: false
+    submitted: false
   };
 
   render() {
@@ -84,13 +84,42 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
             label="Remember me"
           />
         </div>
-        <div className="tab-section text-right">
-          <SubmitButton onClick={this.submitData}/>
+        {this.state.loading ? this.showSpinner() : null}
+        {this.state.submitted ? this.showSuccessMessage() : this.showSubmitButton()}
+      </div>
+    );
+  }
+
+  private showSubmitButton() {
+    return (
+      <div className="tab-section text-right">
+        <SubmitButton onClick={this.submitData}/>
+      </div>
+    );
+  }
+
+  private showSpinner() {
+    return (
+      <div className="tab-section text-center">
+        <ClipLoader color="rgb(153, 153, 153)"/>
+      </div>
+    );
+  }
+
+  private showSuccessMessage() {
+    return (
+      <div>
+        <div className="tab-section text-center">
+          <div className="c-attention">
+            Verification email has been sent. Check your mail.
+          </div>
         </div>
-        {this.state.loading
-          ? <div className="tab-section text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
-          : null
-        }
+        <div className="tab-section text-center">
+          {/*//TODO should use React Router*/}
+          <a className="Submit-button a-none" href="/profile">
+            OK
+          </a>
+        </div>
       </div>
     );
   }
@@ -100,7 +129,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
       this.setState(state => ({...state, violations: violations, loading: false }))
     };
     const onSubmissionSuccess = () => {
-      this.setState(state => ({ ...state, loading: false, emailSent: true }));
+      this.setState(state => ({ ...state, loading: false, submitted: true }));
     };
     this.setState((state: any) => {
       this.props.onSubmit(state.formData, onSubmissionFailure, onSubmissionSuccess);
