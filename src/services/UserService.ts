@@ -60,7 +60,7 @@ export default class UserService {
       data: RegistrationData,
       onSuccess?: SubmissionSuccessHandler,
       onFailure?: SubmissionFailureHandler) {
-
+    this.clearState();
     this.authService
       .register(data)
       .then(response => {
@@ -81,6 +81,10 @@ export default class UserService {
 
   private saveUserToCookies(userData: UserData) {
     Cookies.set("userData", userData);
+  }
+
+  private clearState() {
+    Cookies.remove("userData");
   }
 
   // TODO fix

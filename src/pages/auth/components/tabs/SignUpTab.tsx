@@ -118,7 +118,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
         </div>
         <div className="tab-section text-center">
           {/*//TODO should use React Router*/}
-          <a className="Submit-button a-none" href="/profile">
+          <a className="Submit-button a-none" href="/auth">
             OK
           </a>
         </div>
