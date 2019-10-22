@@ -87,7 +87,7 @@ export default class UserService {
   public loadProfileForCurrentUser() : Promise<UserProfile> {
     let userData: UserData = Cookies.getJSON("userData");
     return axios
-      .get(`${this.baseUrl}/profile/${userData.username}/`, {
+      .get(`${this.baseUrl}/profile/`, {
         headers: {
           "Authorization": `Token ${userData.authToken}`
         }
