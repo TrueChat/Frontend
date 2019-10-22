@@ -22,7 +22,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
 
   render() {
     if (!this.props.userService.userIsPresent()) {
-      return <Redirect to="auth" />
+      return <Redirect to="/auth" />
     }
     return (
       <div className="Profile-page">
@@ -61,6 +61,9 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
           ...state,
           userProfile
         }))
+      })
+      .catch(error => {
+        // TODO handle loading errors
       })
   }
 

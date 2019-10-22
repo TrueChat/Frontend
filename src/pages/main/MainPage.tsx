@@ -9,7 +9,7 @@ type MainPageProps = {
 export default class MainPage extends React.Component<MainPageProps> {
 
   render() {
-    return <Redirect to="auth" />
+    return <Redirect to="/auth" />
   }
 
 }
