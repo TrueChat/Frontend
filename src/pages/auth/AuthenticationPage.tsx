@@ -58,7 +58,12 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
       onSuccess();
     };
     this.props.userService
-      .register(data.login, data.email, data.password, _onSuccess, onFail)
+      .register({
+        username: data.login,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword
+      }, _onSuccess, onFail)
   };
 
   private redirectToProfilePage = () => {

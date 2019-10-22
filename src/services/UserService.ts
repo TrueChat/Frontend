@@ -1,4 +1,4 @@
-import AuthService from "./AuthService";
+import AuthService, {RegistrationData} from "./AuthService";
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -57,14 +57,12 @@ export default class UserService {
 
 
   public register(
-      username: string,
-      email: string,
-      password: string,
+      data: RegistrationData,
       onSuccess?: SubmissionSuccessHandler,
       onFailure?: SubmissionFailureHandler) {
 
     this.authService
-      .register(username, email, password)
+      .register(data)
       .then(response => {
         if (onSuccess) {
           onSuccess();
