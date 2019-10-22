@@ -5,6 +5,7 @@ import {SignInData} from "./components/tabs/SignInTab";
 import {SignUpData} from "./components/tabs/SignUpTab";
 import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../services/UserService";
 import { Redirect } from "react-router-dom";
+import HeaderImage from "../../resources/Form-Header.png";
 
 type AuthenticationPageProps = {
   userService: UserService
@@ -30,7 +31,9 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
     return (
       <div className="Authentication-page">
         <div className="header">
-          
+          <div className="header-image-container">
+            <img src={HeaderImage}/>
+          </div>
         </div>
         <div className="form-container">
           <AuthForm
