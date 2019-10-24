@@ -1,4 +1,4 @@
-import AuthService from "./AuthService";
+import AuthService, {RegistrationData} from "./AuthService";
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -57,19 +57,13 @@ export default class UserService {
 
 
   public register(
-      username: string,
-      email: string,
-      password: string,
+      data: RegistrationData,
       onSuccess?: SubmissionSuccessHandler,
       onFailure?: SubmissionFailureHandler) {
-
+    this.clearState();
     this.authService
-      .register(username, email, password)
+      .register(data)
       .then(response => {
-        this.saveUserToCookies({
-          authToken: response.key,
-          username: username
-        });
         if (onSuccess) {
           onSuccess();
         }
@@ -89,11 +83,15 @@ export default class UserService {
     Cookies.set("userData", userData);
   }
 
+  private clearState() {
+    Cookies.remove("userData");
+  }
+
   // TODO fix
   public loadProfileForCurrentUser() : Promise<UserProfile> {
     let userData: UserData = Cookies.getJSON("userData");
     return axios
-      .get(`${this.baseUrl}/profile/${userData.username}/`, {
+      .get(`${this.baseUrl}/profile/`, {
         headers: {
           "Authorization": `Token ${userData.authToken}`
         }
@@ -104,7 +102,7 @@ export default class UserService {
   public updateProfileForCurrentUser(userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) {
     let userData: UserData = Cookies.getJSON("userData");
     axios
-      .put(`${this.baseUrl}/profile/${userData.username}/`, userProfile, {
+      .put(`${this.baseUrl}/profile/`, userProfile, {
         headers: {
           "Authorization": `Token ${userData.authToken}`
         }
@@ -113,6 +111,8 @@ export default class UserService {
         if (onSuccess) {
           onSuccess()
         }
+        userData.username = userProfile.username;
+        Cookies.set("userData", userData);
       })
       .catch(error => {
         if (onFailure) {

@@ -5,7 +5,7 @@ import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
 import {ClipLoader} from "react-spinners";
-import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../services/UserService";
+import {SubmissionFailureHandler} from "../../../../services/UserService";
 
 export type SignInData = {
   login: string,
@@ -17,7 +17,6 @@ type SignInTabProps = {
   onSubmit: (
     data: SignInData,
     onFailure: SubmissionFailureHandler,
-    onSuccess: SubmissionSuccessHandler
   ) => void,
 }
 
@@ -76,11 +75,8 @@ export default class SignInTab extends React.Component<SignInTabProps> {
     const onSubmissionFailure = (violations: ConstraintViolation[]) => {
       this.setState(state => ({...state, violations: violations, loading: false }));
     };
-    const onSubmissionSuccess = () => {
-      this.setState(state => ({...state, violations: [], loading: false}))
-    };
     this.setState((state: any) => {
-      this.props.onSubmit(state.formData, onSubmissionFailure, onSubmissionSuccess);
+      this.props.onSubmit(state.formData, onSubmissionFailure);
       return {
         ...state,
         loading: true

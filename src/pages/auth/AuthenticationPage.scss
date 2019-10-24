@@ -12,6 +12,14 @@
     position: absolute;
     top: 0;
     background-color: darken($PAGE_BG_COLOR, 2.5%);
+    text-align: center;
+
+    .header-image-container {
+      padding-top: $header-height / 6;
+      img {
+        height: $header-height / 1.5;
+      }
+    }
   }
 
   .form-container {

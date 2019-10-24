@@ -22,7 +22,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
 
   render() {
     if (!this.props.userService.userIsPresent()) {
-      return <Redirect to="auth" />
+      return <Redirect to="/auth" />
     }
     return (
       <div className="Profile-page">
@@ -36,14 +36,20 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
     );
   }
 
-  private handleSubmit = (onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
+  private handleSubmit = (userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
     const _onSuccess = () => {
-      this.forceUpdate();
-      if (onSuccess) {
-        onSuccess();
-      }
+      // TODO some error-prone code
+      this.setState(state => {
+        if (onSuccess) {
+          onSuccess();
+        }
+        return {
+          ...state,
+          userProfile: userProfile
+        }
+      })
     };
-    this.props.userService.updateProfileForCurrentUser((this.state.userProfile as UserProfile), _onSuccess, onFailure);
+    this.props.userService.updateProfileForCurrentUser(userProfile, _onSuccess, onFailure);
   };
 
   private loadUserProfile() {
@@ -56,6 +62,9 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
           ...state,
           userProfile
         }))
+      })
+      .catch(error => {
+        // TODO handle loading errors
       })
   }
 

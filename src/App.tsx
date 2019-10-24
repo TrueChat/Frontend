@@ -18,13 +18,13 @@ export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Route path="/">
+        <Route exact path="/">
           <MainPage userService={this.userService} />
         </Route>
-        <Route path="/auth">
+        <Route exact path="/auth">
           <AuthenticationPage userService={this.userService} />
         </Route>
-        <Route path="/profile">
+        <Route exact path="/profile">
           <ProfilePage userService={this.userService} />
         </Route>
       </BrowserRouter>
