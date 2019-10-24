@@ -1,7 +1,6 @@
 import axios from "axios";
 
 interface RegistrationResponse {
-  key: string
 }
 
 interface LoginResponse {
@@ -12,6 +11,13 @@ interface LogoutResponse {
   detail: string
 }
 
+export type RegistrationData = {
+  username: string
+  email: string,
+  password: string,
+  confirmPassword: string
+}
+
 export default class AuthService {
   private readonly baseUrl: string;
 
@@ -19,12 +25,12 @@ export default class AuthService {
     this.baseUrl = baseUrl;
   }
 
-  public register(username: string, email: string, password: string) : Promise<RegistrationResponse> {
+  public register(data: RegistrationData) : Promise<RegistrationResponse> {
     const credentials = {
-      username: username,
-      email: email,
-      password1: password,
-      password2: password
+      username: data.username,
+      email: data.email,
+      password1: data.password,
+      password2: data.confirmPassword
     };
     return axios
       .post(`${this.baseUrl}/rest-auth/registration/`, credentials)

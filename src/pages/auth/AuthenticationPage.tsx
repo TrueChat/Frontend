@@ -1,10 +1,11 @@
 import React from "react";
 import "./AuthenticationPage.scss";
-import AuthForm, {SubmissionFailureHandler, SubmissionSuccessHandler} from "./components/AuthForm";
+import AuthForm from "./components/AuthForm";
 import {SignInData} from "./components/tabs/SignInTab";
 import {SignUpData} from "./components/tabs/SignUpTab";
-import UserService from "../../services/UserService";
+import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../services/UserService";
 import { Redirect } from "react-router-dom";
+import HeaderImage from "../../resources/Form-Header.png";
 
 type AuthenticationPageProps = {
   userService: UserService
@@ -30,7 +31,9 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
     return (
       <div className="Authentication-page">
         <div className="header">
-          
+          <div className="header-image-container">
+            <img src={HeaderImage}/>
+          </div>
         </div>
         <div className="form-container">
           <AuthForm
@@ -42,10 +45,8 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
     );
   }
 
-  private handleSignIn = (data: SignInData, onFail: SubmissionFailureHandler, onSuccess: SubmissionSuccessHandler) => {
+  private handleSignIn = (data: SignInData, onFail: SubmissionFailureHandler) => {
     let _onSuccess = () =>{
-      onSuccess();
-      this.redirectToProfilePage();
     };
     this.props.userService
       .login(data.login, data.password, _onSuccess, onFail);
@@ -54,18 +55,14 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
   private handleSignUp = (data: SignUpData, onFail: SubmissionFailureHandler, onSuccess: SubmissionSuccessHandler) => {
     const _onSuccess = () => {
       onSuccess();
-      this.redirectToProfilePage();
     };
     this.props.userService
-      .register(data.login, data.email, data.password, _onSuccess, onFail)
+      .register({
+        username: data.login,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword
+      }, _onSuccess, onFail)
   };
 
-  private redirectToProfilePage = () => {
-    this.setState(state => {
-      return {
-        ...state,
-        redirectTo: "/profile"
-      }
-    })
-  };
 };

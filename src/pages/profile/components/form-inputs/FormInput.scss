@@ -1,0 +1,37 @@
+@import "~font-awesome/css/font-awesome";
+@import "../../../styles/Common";
+
+.Form-input {
+  position: relative;
+  width: 100%;
+
+  .input {
+    background-color: transparent;
+    border: 0;
+    color: $TEXT_COLOR;
+    width: 100%;
+    font-weight: bold;
+    padding-right: 1.5rem;
+
+    &.focus {
+      outline-width: 0;
+      border-bottom: 0.1rem solid $ORANGE;
+    }
+  }
+
+  .edit-icon-wrapper {
+    position: absolute;
+    top: 0.25rem;
+    right: 0;
+    font-size: 1rem;
+    .edit-icon {
+      @extend .fa;
+      @extend .fa-pencil;
+      color: $OUTLINE_COLOR;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

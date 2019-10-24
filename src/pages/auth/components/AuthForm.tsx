@@ -4,7 +4,7 @@ import {SignInData} from "./tabs/SignInTab";
 import {SignUpData} from "./tabs/SignUpTab";
 import SignInTab from "./tabs/SignInTab";
 import SignUpTab from "./tabs/SignUpTab";
-import {ConstraintViolation} from "../AuthenticationPage";
+import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../services/UserService";
 
 require("bootstrap/dist/css/bootstrap.css");
 
@@ -12,14 +12,10 @@ enum Tab {
   SignIn, SignUp
 }
 
-export type SubmissionFailureHandler = (violations: ConstraintViolation[]) => void;
-export type SubmissionSuccessHandler = () => void;
-
 type AuthFormProperties = {
   onSignIn: (
     data: SignInData,
     onFail: SubmissionFailureHandler,
-    onSuccess: SubmissionSuccessHandler
   ) => void,
   onSignUp: (
     data: SignUpData,
@@ -60,8 +56,8 @@ export default class AuthForm extends React.Component<AuthFormProperties> {
         </div>
         <div className="body">
           {this.state.activeTab === Tab.SignIn
-            ? <SignInTab onSubmit={(data, onFail, onSuccess) => {
-              this.props.onSignIn(data, onFail, onSuccess);
+            ? <SignInTab onSubmit={(data, onFail) => {
+              this.props.onSignIn(data, onFail);
             }}/>
             : <SignUpTab onSubmit={(data, onFail, onSuccess) => {
               this.props.onSignUp(data, onFail, onSuccess)
