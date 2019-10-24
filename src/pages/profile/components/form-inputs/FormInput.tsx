@@ -15,7 +15,10 @@ export default class FormInput extends React.Component<FormInputProps> {
   inputRef = React.createRef<HTMLInputElement>();
 
   render() {
-    const EditIcon = () => <div className="edit-icon-wrapper"><i className="edit-icon" /></div>;
+    const EditIcon = () =>
+      <div className="edit-icon-wrapper" onClick={this.focusInput}>
+        <i className="edit-icon" />
+      </div>;
     const { onChange, value } = this.props;
     const { focus } = this.state;
     return (
@@ -28,10 +31,16 @@ export default class FormInput extends React.Component<FormInputProps> {
           onChange={e => onChange(e.currentTarget.value)} value={value}
           ref={this.inputRef}
         />
-        {focus ? null : <EditIcon/> }
+        {focus ? null : <EditIcon /> }
       </div>
     );
   }
+
+  private focusInput = () => {
+    if (this.inputRef.current) {
+      this.inputRef.current.focus();
+    }
+  };
 
   private setFocus(value: boolean) {
     this.setState(state => {
