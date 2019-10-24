@@ -4,8 +4,11 @@ import AuthService, {RegistrationData} from "../services/AuthService";
 
 export default class MockUserService extends UserService {
 
-  constructor() {
+  private timeout?: number;
+
+  constructor(timeout?: number) {
     super("", new AuthService(""));
+    this.timeout = timeout;
   }
 
   loadProfileForCurrentUser(): Promise<UserProfile> {
@@ -20,9 +23,11 @@ export default class MockUserService extends UserService {
   }
 
   login(username: string, password: string, onSuccess?: () => void, onFailure?: (violations: ConstraintViolation[]) => void) {
-    if (onSuccess) {
-      onSuccess();
-    }
+    this.useTimeout(() => {
+      if (onSuccess) {
+        onSuccess();
+      }
+    });
   }
 
   userIsPresent(): boolean {
@@ -30,14 +35,26 @@ export default class MockUserService extends UserService {
   }
 
   updateProfileForCurrentUser(userProfile: UserProfile, onSuccess?: () => void, onFailure?: (violations: ConstraintViolation[]) => void) {
-    if (onSuccess) {
-      onSuccess();
-    }
+    this.useTimeout(() => {
+      if (onSuccess) {
+        onSuccess();
+      }
+    });
   }
 
   register(data: RegistrationData, onSuccess?: () => void, onFailure?: (violations: ConstraintViolation[]) => void) {
-    if (onSuccess) {
-      onSuccess();
+    this.useTimeout(() => {
+      if (onSuccess) {
+        onSuccess();
+      }
+    });
+  }
+
+  private useTimeout(func: () => void) {
+    if (this.timeout) {
+      setTimeout(func, this.timeout)
+    } else {
+      func();
     }
   }
 

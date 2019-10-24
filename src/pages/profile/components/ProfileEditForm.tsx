@@ -27,7 +27,6 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
   constructor(props: ProfileEditFormProps) {
     super(props);
     const userProfile = props.userProfile;
-
     this.state = {
       loading: false,
       submissionResult: undefined,
@@ -42,6 +41,11 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
 
   render() {
     const { loading, submissionResult, userProfile } = this.state;
+    const SubmissionMessage = ({message} : {message: string}) => (
+      <div className="text-center m-1 c-attention">
+        {message}
+      </div>
+    );
 
     return (
       <div className="Profile-edit-form">
@@ -91,14 +95,14 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
           <SubmitButton onClick={this.handleSubmit}/>
         </div>
         {loading
-          ? <div className="text-center"><ClipLoader/></div>
+          ? <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
           : null
         }
+        {/* TODO should remove message on input focus?? */}
         {submissionResult !== undefined
-          // TODO render more app specific styled messages
           ? !submissionResult
-            ? <div className="text-center text-danger">Something went wrong</div>
-            : <div className="text-center text-success">Successfully updated</div>
+            ? <SubmissionMessage message="Error: something went wrong" />
+            : <SubmissionMessage message="Successfully updated" />
           : null
         }
       </div>
@@ -110,22 +114,21 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
       this.setState(state => ({
         ...state,
         loading: false,
-        submitResult: true
+        submissionResult: true
       }));
     };
     const onFail = () => {
       this.setState(state => ({
         ...state,
         loading: false,
-        submitResult: false
+        submissionResult: false
       }));
     };
-    this.setState(state => {
-      this.setState(state => ({
-        ...state,
-        loading: true
-      }));
-      this.props.onSubmit(state.userProfile, onSuccess, onFail);
+    this.setState(state => ({
+      ...state,
+      loading: true
+    }), () => {
+      this.props.onSubmit(this.state.userProfile, onSuccess, onFail);
     });
   };
 

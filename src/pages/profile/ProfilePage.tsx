@@ -29,7 +29,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
         <div className="form-container">
           {this.state.userProfile
             ? <ProfileEditForm userProfile={this.state.userProfile} onSubmit={this.handleSubmit} />
-            : <div className="text-center"><ClipLoader /></div>
+            : <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
           }
         </div>
       </div>
@@ -38,7 +38,6 @@ export default class ProfilePage extends React.Component<ProfilePageProps> {
 
   private handleSubmit = (userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
     const _onSuccess = () => {
-      // TODO some error-prone code
       this.setState(state => {
         if (onSuccess) {
           onSuccess();

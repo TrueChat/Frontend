@@ -14,8 +14,8 @@ export default class App extends React.Component {
   };
 
   private readonly baseUrl = "https://true-chat.herokuapp.com";
-  private readonly userService = new UserService(this.baseUrl, new AuthService(this.baseUrl));
-  // private readonly userService = new MockUserService();
+  // private readonly userService = new UserService(this.baseUrl, new AuthService(this.baseUrl));
+  private readonly userService = new MockUserService(1000);
 
   render() {
     return (
