@@ -48,7 +48,7 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
           : "NS"
         }
       </span>
-    )
+    );
     const SubmissionMessage = ({message} : {message: string}) => (
       <div className="text-center m-1 c-attention">
         {message}
