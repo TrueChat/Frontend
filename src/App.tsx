@@ -5,6 +5,7 @@ import UserService from "./services/UserService";
 import { BrowserRouter, Route } from "react-router-dom";
 import ProfilePage from "./pages/profile/ProfilePage";
 import MainPage from "./pages/main/MainPage";
+import MockUserService from "./testing/MockUserService";
 
 export default class App extends React.Component {
 
@@ -14,6 +15,9 @@ export default class App extends React.Component {
 
   private readonly baseUrl = "https://true-chat.herokuapp.com";
   private readonly userService = new UserService(this.baseUrl, new AuthService(this.baseUrl));
+
+  // For testing purposes
+  // private readonly userService = new MockUserService(1000);
 
   render() {
     return (
