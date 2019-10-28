@@ -41,6 +41,14 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
 
   render() {
     const { loading, submissionResult, userProfile } = this.state;
+    const Avatar = ({userProfile} : {userProfile: UserProfile}) => (
+      <span className="initials">
+        {userProfile.first_name && userProfile.last_name 
+          ? `${userProfile.first_name[0]}${userProfile.last_name[0]}`
+          : "NS"
+        }
+      </span>
+    )
     const SubmissionMessage = ({message} : {message: string}) => (
       <div className="text-center m-1 c-attention">
         {message}
@@ -55,7 +63,7 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
         <div className="row info-row align-center">
           <div className="col-3">
             <div className="user-image-container">
-              <i className="user-image" />
+              <Avatar userProfile={userProfile} />
             </div>
           </div>
           <div className="col-9">
