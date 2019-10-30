@@ -1,15 +1,12 @@
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
-import RemoteUserService from "../services/impl/RemoteUserService";
-import RemoteAuthService from "../services/impl/RemoteAuthService";
-import {UserProfile} from "../services/UserService";
+import UserService, {UserProfile} from "../services/UserService";
 import {RegistrationData} from "../services/AuthService";
 
-export default class MockUserService extends RemoteUserService {
+export default class MockUserService implements UserService{
 
   private timeout?: number;
 
   constructor(timeout?: number) {
-    super("", new RemoteAuthService(""));
     this.timeout = timeout;
   }
 
