@@ -1,12 +1,13 @@
 import React from "react";
-import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../services/UserService";
+import RemoteUserService from "../../services/impl/RemoteUserService";
 import ProfileEditForm from "./components/ProfileEditForm";
 import "./ProfilePage.scss";
 import {ClipLoader} from "react-spinners";
 import { Redirect } from "react-router-dom";
+import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../services/UserService";
 
 type ProfilePageProps = {
-  userService: UserService,
+  userService: RemoteUserService,
 }
 
 export default class ProfilePage extends React.Component<ProfilePageProps> {

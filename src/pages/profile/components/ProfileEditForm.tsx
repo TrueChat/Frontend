@@ -2,9 +2,8 @@ import React from "react";
 import FormInput from "./form-inputs/FormInput";
 import "./ProfileEditForm.scss";
 import SubmitButton from "../../common/SubmitButton";
-import {UserProfile} from "../../../services/UserService";
-import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../services/UserService";
 import {ClipLoader} from "react-spinners";
+import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../services/UserService";
 require("bootstrap/dist/css/bootstrap.css");
 
 type ProfileEditFormProps = {

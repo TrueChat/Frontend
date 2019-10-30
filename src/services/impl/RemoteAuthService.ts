@@ -1,24 +1,7 @@
 import axios from "axios";
+import AuthService, {LoginResponse, LogoutResponse, RegistrationData, RegistrationResponse} from "../AuthService";
 
-interface RegistrationResponse {
-}
-
-interface LoginResponse {
-  key: string
-}
-
-interface LogoutResponse {
-  detail: string
-}
-
-export type RegistrationData = {
-  username: string
-  email: string,
-  password: string,
-  confirmPassword: string
-}
-
-export default class AuthService {
+export default class RemoteAuthService implements AuthService {
   private readonly baseUrl: string;
 
   constructor(baseUrl: string) {

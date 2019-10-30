@@ -1,13 +1,12 @@
-import UserService, {UserProfile} from "../services/UserService";
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
-import AuthService, {RegistrationData} from "../services/AuthService";
+import UserService, {UserProfile} from "../services/UserService";
+import {RegistrationData} from "../services/AuthService";
 
-export default class MockUserService extends UserService {
+export default class MockUserService implements UserService{
 
   private timeout?: number;
 
   constructor(timeout?: number) {
-    super("", new AuthService(""));
     this.timeout = timeout;
   }
 
