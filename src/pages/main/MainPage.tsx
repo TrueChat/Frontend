@@ -1,6 +1,6 @@
-import UserService from "../../services/UserService";
 import React from "react";
 import { Redirect } from "react-router-dom";
+import UserService from "../../services/UserService";
 
 type MainPageProps = {
   userService: UserService

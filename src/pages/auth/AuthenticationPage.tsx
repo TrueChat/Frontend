@@ -3,9 +3,9 @@ import "./AuthenticationPage.scss";
 import AuthForm from "./components/AuthForm";
 import {SignInData} from "./components/tabs/SignInTab";
 import {SignUpData} from "./components/tabs/SignUpTab";
-import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../services/UserService";
 import { Redirect } from "react-router-dom";
 import HeaderImage from "../../resources/Form-Header.png";
+import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../services/UserService";
 
 type AuthenticationPageProps = {
   userService: UserService

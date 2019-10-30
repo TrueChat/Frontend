@@ -1,7 +1,13 @@
-import AuthService, {RegistrationData} from "./AuthService";
-import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
+import RemoteAuthService from "./RemoteAuthService";
+import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
 import axios from "axios";
+import UserService, {
+  SubmissionFailureHandler,
+  SubmissionSuccessHandler,
+  UserProfile
+} from "../UserService";
+import {RegistrationData} from "../AuthService";
 
 type UserData = {
   authToken: string,
@@ -12,21 +18,11 @@ type ServerErrorResponse = {
   [key: string]: string[]
 }
 
-export type UserProfile = {
-  first_name: string,
-  last_name: string,
-  username: string,
-  about: string
-}
-
-export type SubmissionFailureHandler = (violations: ConstraintViolation[]) => void;
-export type SubmissionSuccessHandler = () => void;
-
-export default class UserService {
+export default class RemoteUserService implements UserService {
   private readonly baseUrl: string;
-  private readonly authService: AuthService;
+  private readonly authService: RemoteAuthService;
 
-  constructor(baseUrl: string, authService: AuthService) {
+  constructor(baseUrl: string, authService: RemoteAuthService) {
     this.authService = authService;
     this.baseUrl = baseUrl;
   }

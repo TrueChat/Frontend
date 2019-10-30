@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticationPage from "./pages/auth/AuthenticationPage";
-import AuthService from "./services/AuthService";
-import UserService from "./services/UserService";
+import RemoteAuthService from "./services/impl/RemoteAuthService";
+import RemoteUserService from "./services/impl/RemoteUserService";
 import { BrowserRouter, Route } from "react-router-dom";
 import ProfilePage from "./pages/profile/ProfilePage";
 import MainPage from "./pages/main/MainPage";
@@ -14,7 +14,7 @@ export default class App extends React.Component {
   };
 
   private readonly baseUrl = "https://true-chat.herokuapp.com";
-  private readonly userService = new UserService(this.baseUrl, new AuthService(this.baseUrl));
+  private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
 
   // For testing purposes
   // private readonly userService = new MockUserService(1000);
