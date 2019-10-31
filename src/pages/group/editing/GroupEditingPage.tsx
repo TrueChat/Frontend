@@ -13,7 +13,7 @@ export default class GroupEditingPage
     };
     this.state.tabStack.push({
       header: "Group Info",
-      body: <GroupInfoTab stackController={this} />
+      body: <GroupInfoTab stackController={this} groupData={{name: "", description: ""}}/>
     });
   }
 
@@ -22,10 +22,10 @@ export default class GroupEditingPage
     return (
       <div className="Group-editing-page">
         <div className="header">
-          <div className="previous-tab" onClick={_ => this.pop()}>
-            <i className="fas fa-arrow-left" />
+          <div className="previous-tab-control" onClick={_ => this.pop()}>
+            <i className="fas fa-arrow-left "/>
           </div>
-          <div className="tab-header">
+          <div className="header-text">
             {currentTab.header}
           </div>
         </div>

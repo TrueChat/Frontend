@@ -1,1 +1,41 @@
-@import "~font-awesome/css/font-awesome.min.css";
+@import "../../styles/Common";
+
+.Group-editing-page {
+  @import "tabs/info/GroupInfoTab";
+  @import "tabs/members/GroupAddMembersTab";
+
+  max-width: 25rem;
+  border: 0.125rem solid $OUTLINE_COLOR;
+  border-radius: $BORDER_RADIUS;
+  margin: 0 auto;
+
+  .header {
+    $tab-control-width: 3rem;
+    position: relative;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem $tab-control-width 0.5rem $tab-control-width;
+
+    background-color: rgba(0, 0, 0, 0.3);
+
+    .header-text {
+      color: $ORANGE;
+      text-align: center;
+    }
+
+    .previous-tab-control {
+      position: absolute;
+      width: $tab-control-width;
+      left: $tab-control-width / 2;
+      color: $TEXT_COLOR;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .body {
+    padding-top: 0.25rem;
+    background-color: rgba(45, 45, 51, 0.3);
+  }
+}

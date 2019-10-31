@@ -1,5 +1,4 @@
 @import "../../styles/Common";
-@import "~font-awesome/css/font-awesome";
 
 .Profile-page .Profile-edit-form {
   padding-left: 1px;
@@ -20,10 +19,6 @@
     width: $width;
     color: $TEXT_COLOR;
     border-radius: 50%;
-    .user-image {
-      @extend .fa;
-      @extend .fa-user;
-    }
   }
 
 

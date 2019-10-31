@@ -1,0 +1,16 @@
+.Initials-avatar {
+  display: block;
+  $width: 5rem;
+  $font-size: $width / 2;
+
+  text-align: center;
+  font-size: $font-size;
+  padding-top: $font-size / 4;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: $width;
+  width: $width;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: bold;
+  border-radius: 50%;
+  margin: 0 auto;
+}

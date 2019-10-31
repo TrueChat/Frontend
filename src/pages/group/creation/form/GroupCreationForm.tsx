@@ -6,7 +6,7 @@ import {
 import React from "react";
 import SubmitButton from "../../../common/SubmitButton";
 import {GroupInitialsAvatar, Spinner} from "../../../../widgets/Widgets";
-import Input from "./Input";
+import Input from "../../common/Input";
 require("bootstrap/dist/css/bootstrap.min.css");
 
 type Props = {
