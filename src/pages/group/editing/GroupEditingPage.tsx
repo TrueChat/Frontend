@@ -1,6 +1,7 @@
 import React from "react";
 import "./GroupEditingPage.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
+import GroupService from "../../../services/GroupService";
 
 export default class GroupEditingPage
     extends React.Component<Props, State>
@@ -13,7 +14,12 @@ export default class GroupEditingPage
     };
     this.state.tabStack.push({
       header: "Group Info",
-      body: <GroupInfoTab stackController={this} groupData={{name: "", description: ""}}/>
+      body:
+        <GroupInfoTab
+          stackController={this}
+          groupService={props.groupService}
+          groupId={""} // TODO retrieve group id form url
+        />
     });
   }
 
@@ -23,7 +29,7 @@ export default class GroupEditingPage
       <div className="Group-editing-page">
         <div className="header">
           <div className="previous-tab-control" onClick={_ => this.pop()}>
-            <i className="fas fa-arrow-left "/>
+            <i className="fas fa-arrow-left"/>
           </div>
           <div className="header-text">
             {currentTab.header}
@@ -65,7 +71,7 @@ export interface StackController {
 }
 
 type Props = {
-
+  groupService: GroupService
 }
 
 type State = {

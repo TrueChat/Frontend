@@ -37,7 +37,7 @@ export default class App extends React.Component {
           <GroupCreationPage groupService={this.groupService}/>
         </Route>
         <Route exact path="/group-editing">
-          <GroupEditingPage />
+          <GroupEditingPage groupService={this.groupService} />
         </Route>
         <Route exact path="/profile">
           <ProfilePage userService={this.userService} />

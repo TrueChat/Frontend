@@ -8,6 +8,20 @@ export type GroupData = {
   description: string
 }
 
+export type GroupMember = {
+  id: string,
+  firstName: string,
+  lastName: string
+  name: string
+}
+
+export type GroupDetails = {
+  groupId: string,
+  name: string,
+  description: string,
+  members: GroupMember[]
+}
+
 export type GroupCreationSuccessHandler = () => void;
 export type GroupCreationFailureHandler = () => void;
 
@@ -17,5 +31,17 @@ export default interface GroupService {
     data: GroupCreationData,
     onSuccess?: GroupCreationSuccessHandler,
     onFailure?: GroupCreationFailureHandler
-  ): void;
+  ) : void;
+
+  loadDetails(
+    groupId: string,
+    onSuccess: (details: GroupDetails) => void,
+    onFailure: () => void
+  ) : void;
+
+  update(
+    groupDetails: GroupDetails,
+    onSuccess: () => void,
+    onFailure: () => void
+  ) : void;
 }

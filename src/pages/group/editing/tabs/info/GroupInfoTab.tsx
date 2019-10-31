@@ -1,30 +1,54 @@
 import React from "react";
 import "./GroupInfoTab.scss";
 import {StackController} from "../../GroupEditingPage";
-import {GroupInitialsAvatar} from "../../../../../widgets/Widgets";
+import {GroupInitialsAvatar, Spinner} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
-import {GroupData} from "../../../../../services/GroupService";
+import GroupService, {GroupDetails} from "../../../../../services/GroupService";
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      groupData: {
-        name: props.groupData.name,
-        description: props.groupData.description
-      }
+      groupDetails: undefined,
+      detailsAreLoaded: false
+    };
+
+    props.groupService
+      .loadDetails(
+        props.groupId,
+        details => {
+          this.setState(state => ({
+            ...state,
+            detailsAreLoaded: true,
+            groupDetails: details
+          }));
+        },
+        () => { }
+      )
+  };
+
+  render() {
+    if (!this.state.detailsAreLoaded) {
+      return this.renderSpinner()
+    } else {
+      return this.renderTab();
     }
   }
 
-  render() {
-    const { groupData } = this.state;
+  renderSpinner() {
+    return <div className="text-center"><Spinner /></div>
+  }
+
+  renderTab() {
+    const groupDetails = (this.state.groupDetails as GroupDetails);
+
     return (
       <div className="Group-info-tab">
         <div className="data-section">
           <div className="row">
             <div className="col-3">
-              <GroupInitialsAvatar groupData={groupData}/>
+              <GroupInitialsAvatar groupData={groupDetails}/>
             </div>
             <div className="col-9">
               <div>
@@ -33,7 +57,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
                 </div>
               </div>
               <div>
-                <Input value={groupData.name} onChange={this.updateGroupName}/>
+                <Input value={groupDetails.name} onChange={this.updateGroupName}/>
               </div>
             </div>
           </div>
@@ -44,7 +68,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               </div>
             </div>
             <div className="col-12">
-              <Input value={groupData.description} onChange={this.updateGroupDescription}/>
+              <Input value={groupDetails.description} onChange={this.updateGroupDescription}/>
             </div>
           </div>
         </div>
@@ -58,8 +82,8 @@ export default class GroupInfoTab extends React.Component<Props, State> {
   updateGroupName = (name: string) => {
     this.setState(state => ({
       ...state,
-      groupData: {
-        ...state.groupData,
+      groupDetails: {
+        ...state.groupDetails as GroupDetails,
         name: name
       }
     }));
@@ -68,8 +92,8 @@ export default class GroupInfoTab extends React.Component<Props, State> {
   updateGroupDescription = (description: string) => {
     this.setState(state => ({
       ...state,
-      groupData: {
-        ...state.groupData,
+      groupDetails: {
+        ...state.groupDetails as GroupDetails,
         description: description
       }
     }))
@@ -78,9 +102,11 @@ export default class GroupInfoTab extends React.Component<Props, State> {
 
 type Props = {
   stackController: StackController,
-  groupData: GroupData
+  groupService: GroupService,
+  groupId: string
 }
 
 type State = {
-  groupData: GroupData
+  groupDetails?: GroupDetails,
+  detailsAreLoaded: boolean
 }
