@@ -2,10 +2,10 @@ import {
   GroupCreationData,
   GroupCreationFailureHandler,
   GroupCreationSuccessHandler
-} from "../../../services/GroupService";
+} from "../../../../services/GroupService";
 import React from "react";
-import SubmitButton from "../../common/SubmitButton";
-import {GroupInitialsAvatar, Spinner} from "../../../widgets/Widgets";
+import SubmitButton from "../../../common/SubmitButton";
+import {GroupInitialsAvatar, Spinner} from "../../../../widgets/Widgets";
 import Input from "./Input";
 require("bootstrap/dist/css/bootstrap.min.css");
 

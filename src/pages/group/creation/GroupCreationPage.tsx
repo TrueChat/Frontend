@@ -3,7 +3,7 @@ import GroupService, {
   GroupCreationData,
   GroupCreationFailureHandler,
   GroupCreationSuccessHandler
-} from "../../services/GroupService";
+} from "../../../services/GroupService";
 import GroupCreationForm from "./form/GroupCreationForm";
 import "./GroupCreationPage.scss";
 

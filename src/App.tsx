@@ -6,9 +6,10 @@ import { BrowserRouter, Route } from "react-router-dom";
 import ProfilePage from "./pages/profile/ProfilePage";
 import MainPage from "./pages/main/MainPage";
 import MockUserService from "./testing/MockUserService";
-import GroupCreationPage from "./pages/group/GroupCreationPage";
+import GroupCreationPage from "./pages/group/creation/GroupCreationPage";
 import GroupService from "./services/GroupService";
 import MockGroupService from "./testing/MockGroupService";
+import GroupEditingPage from "./pages/group/editing/GroupEditingPage";
 
 export default class App extends React.Component {
 
@@ -34,6 +35,9 @@ export default class App extends React.Component {
         </Route>
         <Route exact path="/group-creation">
           <GroupCreationPage groupService={this.groupService}/>
+        </Route>
+        <Route exact path="/group-editing">
+          <GroupEditingPage />
         </Route>
         <Route exact path="/profile">
           <ProfilePage userService={this.userService} />
