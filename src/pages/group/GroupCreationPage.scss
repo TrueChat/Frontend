@@ -1,0 +1,11 @@
+.Group-creation-page {
+  @import "form/GroupCreationForm";
+
+  width: 25rem;
+  margin: 0 auto;
+  background-color: rgba(45, 45, 51, 0.3);
+
+  border: 0.15rem solid $OUTLINE_COLOR;
+  border-radius: $BORDER_RADIUS;
+
+}

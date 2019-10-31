@@ -1,10 +1,21 @@
-import Any = jasmine.Any;
-
 export type GroupCreationData = {
   name: string,
   description: string
 }
 
+export type GroupData = {
+  name: string,
+  description: string
+}
+
+export type GroupCreationSuccessHandler = () => void;
+export type GroupCreationFailureHandler = () => void;
+
 export default interface GroupService {
-  createGroup: (data: GroupCreationData) => Promise<Any> // Any because subsequent behaviour will be defined later
+
+  createGroup(
+    data: GroupCreationData,
+    onSuccess?: GroupCreationSuccessHandler,
+    onFailure?: GroupCreationFailureHandler
+  ): void;
 }

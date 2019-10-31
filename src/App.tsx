@@ -6,6 +6,9 @@ import { BrowserRouter, Route } from "react-router-dom";
 import ProfilePage from "./pages/profile/ProfilePage";
 import MainPage from "./pages/main/MainPage";
 import MockUserService from "./testing/MockUserService";
+import GroupCreationPage from "./pages/group/GroupCreationPage";
+import GroupService from "./services/GroupService";
+import MockGroupService from "./testing/MockGroupService";
 
 export default class App extends React.Component {
 
@@ -18,6 +21,7 @@ export default class App extends React.Component {
 
   // For testing purposes
   // private readonly userService = new MockUserService(1000);
+  private readonly groupService = new MockGroupService(1000);
 
   render() {
     return (
@@ -27,6 +31,9 @@ export default class App extends React.Component {
         </Route>
         <Route exact path="/auth">
           <AuthenticationPage userService={this.userService} />
+        </Route>
+        <Route exact path="/group-creation">
+          <GroupCreationPage groupService={this.groupService}/>
         </Route>
         <Route exact path="/profile">
           <ProfilePage userService={this.userService} />

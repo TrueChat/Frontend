@@ -1,0 +1,72 @@
+@import "../../styles/Common";
+
+.Group-creation-form {
+  $input-color: rgba(255, 255, 255, 0.8);
+  $header-bg: rgba(0, 0, 0, 0.3);
+
+  border-radius: $BORDER_RADIUS;
+  border-color: $OUTLINE_COLOR;
+  border-width: 0.25rem;
+
+  .input {
+    background-color: transparent;
+    border: 0;
+    color: $input-color;
+    width: 100%;
+    font-weight: bold;
+    padding-right: 1.5rem;
+
+    border-bottom: 0.125rem solid $ORANGE;
+
+    &:focus {
+      outline-width: 0;
+    }
+  }
+
+  .row {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0.25rem 0 0.25rem 0;
+  }
+
+  .header {
+    background-color: $header-bg;
+    font-size: 1.5rem;
+    color: $ORANGE;
+    text-align: center;
+    font-weight: bold;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .body {
+    .row {
+      background-color: rgba(41, 41, 51, 1);
+    }
+
+    .input-label {
+      color: $TEXT_COLOR;
+    }
+  }
+
+  .footer {
+
+  }
+
+  .Initials-avatar {
+    display: block;
+    $width: 4.5rem;
+    $font-size: $width / 2;
+
+    text-align: center;
+    font-size: $font-size;
+    padding-top: $font-size / 4;
+    background-color: $header-bg;
+    height: $width;
+    width: $width;
+    color: $input-color;
+    font-weight: bold;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+}
