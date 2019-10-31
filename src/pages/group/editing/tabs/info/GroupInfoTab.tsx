@@ -1,7 +1,7 @@
 import React from "react";
 import "./GroupInfoTab.scss";
 import {StackController} from "../../GroupEditingPage";
-import {GroupInitialsAvatar, Spinner} from "../../../../../widgets/Widgets";
+import {GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
 import GroupService, {GroupDetails} from "../../../../../services/GroupService";
 
@@ -72,8 +72,37 @@ export default class GroupInfoTab extends React.Component<Props, State> {
             </div>
           </div>
         </div>
-        <div className="group-users">
-
+        <div className="group-members">
+          <div className="row actions-row">
+            <div className="col-4">
+              {groupDetails.members.length} members
+            </div>
+            <div className="col-8 text-right">
+              <span>Add</span>
+              &nbsp;&nbsp;&nbsp;
+              <span>Edit</span>
+            </div>
+          </div>
+          <div className="members">
+            {groupDetails.members.map(member => (
+              <div
+                key={`${groupDetails.groupId}-${member.id}`}
+                className="row member-details"
+              >
+                <div className="col-2 member-initials">
+                  <Initials initials={`${member.firstName[0]}${member.lastName[0]}`}/>
+                </div>
+                <div className="col-10">
+                  <div className="member-full-name">
+                    {member.firstName} {member.lastName}
+                  </div>
+                  <div className="member-username">
+                    @{member.name}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
