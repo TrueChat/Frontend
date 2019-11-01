@@ -1,14 +1,13 @@
-@import "~font-awesome/css/font-awesome";
 @import "../../../styles/Common";
 
-.ProfilePage .Form-input {
+.Form-input {
   position: relative;
   width: 100%;
 
   .input {
     background-color: transparent;
     border: 0;
-    color: $TEXT_COLOR;
+    color: $WHITE_60;
     width: 100%;
     font-weight: bold;
     padding-right: 1.5rem;
@@ -25,9 +24,7 @@
     right: 0;
     font-size: 1rem;
     .edit-icon {
-      @extend .fa;
-      @extend .fa-pencil;
-      color: $OUTLINE_COLOR;
+      color: $WHITE_70;
     }
 
     &:hover {

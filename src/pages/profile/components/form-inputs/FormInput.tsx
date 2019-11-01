@@ -17,7 +17,7 @@ export default class FormInput extends React.Component<FormInputProps> {
   render() {
     const EditIcon = () =>
       <div className="edit-icon-wrapper" onClick={this.focusInput}>
-        <i className="edit-icon" />
+        <i className="edit-icon fas fa-pencil-alt" />
       </div>;
     const { onChange, value } = this.props;
     const { focus } = this.state;

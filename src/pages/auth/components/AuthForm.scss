@@ -5,7 +5,7 @@
   $border-radius: 5px;
   padding: 2.5rem;
   box-sizing: border-box;
-  color: $OUTLINE_COLOR;
+  color: $WHITE_70;
 
   .tab-controls {
     .control {
@@ -14,7 +14,7 @@
       text-align: center;
 
       &.active {
-        border-bottom: 0.25rem solid $OUTLINE_COLOR;
+        border-bottom: 0.25rem solid $WHITE_70;
       }
 
       &:hover {

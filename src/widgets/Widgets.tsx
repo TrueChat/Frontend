@@ -12,7 +12,7 @@ export const Initials = ({initials} : {initials: string}) => (
 export const UserInitialsAvatar = ({profile}: {profile: UserProfile}) => (
   <Initials initials={
     profile.first_name && profile.last_name
-      ? profile.first_name[0] + " " + profile.last_name[0]
+      ? `${profile.first_name[0]}${profile.last_name[0]}`
       : "NS"
   }/>
 );

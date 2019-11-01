@@ -10,7 +10,7 @@
 
     .actions-row {
       background-color: rgba(0, 0, 0, 0.3);
-      color: $TEXT_COLOR;
+      color: $WHITE_60;
     }
 
     .member-details {
@@ -27,29 +27,24 @@
 
       .member-full-name {
         font-weight: bold;
-        color: rgba(255, 255, 255, 0.8);
+        color: $WHITE_90;
       }
 
       .member-username {
-        color: rgba(255, 255, 255, 0.6);
+        color: $WHITE_70;
         font-weight: bold;
       }
-
     }
-
   }
 
-
-
-
   .row {
-    background-color: rgba(45, 45, 55, 0.3);
+    background-color: $DARK;
     margin: 0.5rem 0;
     padding: 0.5rem 0;
   }
 
   .input-label {
-    color: $TEXT_COLOR;
+    color: $WHITE_60;
   }
 
 }

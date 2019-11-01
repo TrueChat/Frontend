@@ -1,36 +1,30 @@
 @import "../../styles/Common";
 
-.Profile-page .Profile-edit-form {
+.Profile-edit-form {
+  @import "form-inputs/FormInput";
+  @import "../../../widgets/InitialsAvatar";
   padding-left: 1px;
 
-  border: 0.1rem solid $OUTLINE_COLOR;
+  border: 0.1rem solid $WHITE_70;
   border-radius: $BORDER_RADIUS;
-  background-color: rgba(45, 45, 51, 0.3);
+  background-color: $BACKGROUND;
 
-  .user-image-container {
-    $width: 5rem;
-    $font-size: $width / 2;
-    
-    text-align: center;
-    font-size: $font-size;
-    padding-top: $font-size / 4;
-    background: $ORANGE;
-    height: $width;
-    width: $width;
-    color: $TEXT_COLOR;
-    border-radius: 50%;
+  .Form-input {
+    .input {
+      color: $WHITE_90;
+    }
   }
-
 
   .info-row {
     padding: 0.25rem;
-    background-color: rgba(41, 41, 51, 1);
+    background-color: $DARK;
     margin-top: 0.5rem;
     margin-left: 0;
     margin-right: 0;
 
     .row-title {
-      color: darken($TEXT_COLOR, 25%);
+      font-weight: bold;
+      color: $WHITE_70;
     }
   }
 
@@ -52,10 +46,11 @@
 
   .header {
     font-size: 1.5rem;
+    padding: 0.5rem 0 0.5rem 0;
     text-align: center;
     position: relative;
     font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: $DARKER;
     color: $ORANGE;
   }
 

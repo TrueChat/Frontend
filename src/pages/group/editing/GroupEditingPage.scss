@@ -5,7 +5,7 @@
   @import "tabs/members/GroupAddMembersTab";
 
   max-width: 25rem;
-  border: 0.125rem solid $OUTLINE_COLOR;
+  border: 0.125rem solid $WHITE_70;
   border-radius: $BORDER_RADIUS;
   margin: 0 auto;
 
@@ -16,7 +16,7 @@
     font-weight: bold;
     padding: 0.5rem $tab-control-width 0.5rem $tab-control-width;
 
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: $DARKER;
 
     .header-text {
       color: $ORANGE;
@@ -27,7 +27,7 @@
       position: absolute;
       width: $tab-control-width;
       left: $tab-control-width / 2;
-      color: $TEXT_COLOR;
+      color: $WHITE_60;
       &:hover {
         cursor: pointer;
       }
@@ -36,6 +36,6 @@
 
   .body {
     padding-top: 0.25rem;
-    background-color: rgba(45, 45, 51, 0.3);
+    background-color: $BACKGROUND;
   }
 }

@@ -1,6 +1,7 @@
 @import "../styles/Common";
 
 .Profile-page {
+  @import "components/ProfileEditForm";
   .form-container {
     max-width: 25rem;
     margin: 3.5rem auto;
