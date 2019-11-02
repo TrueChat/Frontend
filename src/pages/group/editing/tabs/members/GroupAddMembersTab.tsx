@@ -57,13 +57,37 @@ export default class GroupAddMembersTab extends React.Component<Props, State> {
           </div>
           <div className="col-2">
             {isMember
-              ? <i className="action-icon fas fa-check"/>
-              : <i className="action-icon fas fa-plus"/>
+              ? <div onClick={_ => this.removeFromGroup(user)}><i className="action-icon fas fa-check"/></div>
+              : <div onClick={_ => this.addToGroup(user)} ><i className="action-icon fas fa-plus" /></div>
             }
           </div>
         </div>
       )
     })
+  };
+
+  private addToGroup = (user: GroupUser) => {
+    this.setState(state => {
+      user.isMember = true;
+      return state;
+    }, () => {
+      this.props.groupService.addUser(
+        this.props.groupId,
+        user.profile.username
+      );
+    });
+  };
+
+  private removeFromGroup = (user: GroupUser) => {
+    this.setState(state => {
+      user.isMember = false;
+      return state;
+    }, () => {
+      this.props.groupService.removeUser(
+        this.props.groupId,
+        user.profile.username
+      )
+    });
   };
 
   private updateSearchString = (newValue: string) => {
@@ -104,7 +128,8 @@ type GroupUser = {
 
 type Props = {
   userService: UserService,
-  groupService: GroupService
+  groupService: GroupService,
+  groupId: string
 }
 
 type State = {

@@ -44,4 +44,18 @@ export default interface GroupService {
     onSuccess: () => void,
     onFailure: () => void
   ) : void;
+
+  addUser(
+    groupId: string,
+    username: string,
+    onSuccess?: () => void,
+    onFailure?: () => void
+  ) : void;
+
+  removeUser(
+    groupId: string,
+    username: string,
+    onSuccess?: () => void,
+    onFailure?: () => void
+  ) : void
 }

@@ -50,4 +50,16 @@ export default class MockGroupService implements GroupService {
     });
   }
 
+  addUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess();
+    })
+  }
+
+  removeUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess();
+    });
+  }
+
 }
