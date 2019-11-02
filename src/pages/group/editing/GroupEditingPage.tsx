@@ -3,6 +3,7 @@ import "./GroupEditingPage.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
 import GroupService from "../../../services/GroupService";
 import UserService from "../../../services/UserService";
+require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupEditingPage
     extends React.Component<Props, State>

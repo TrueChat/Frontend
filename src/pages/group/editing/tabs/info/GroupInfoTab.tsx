@@ -6,6 +6,7 @@ import Input from "../../../common/Input";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
 import GroupAddMembersTab from "../members/GroupAddMembersTab";
 import UserService from "../../../../../services/UserService";
+require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 

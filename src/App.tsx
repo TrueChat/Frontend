@@ -18,8 +18,8 @@ export default class App extends React.Component {
   // private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
 
   // For testing purposes
-  private readonly userService = new MockUserService(1000);
-  private readonly groupService = new MockGroupService(1000);
+  private readonly userService = new MockUserService(300);
+  private readonly groupService = new MockGroupService(300);
 
   render() {
     return (
