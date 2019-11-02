@@ -1,9 +1,9 @@
 import React from "react";
 import "./GroupInfoTab.scss";
 import {StackController} from "../../GroupEditingPage";
-import {GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
+import {Dropdown, GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
-import GroupService, {GroupDetails} from "../../../../../services/GroupService";
+import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 
@@ -85,22 +85,11 @@ export default class GroupInfoTab extends React.Component<Props, State> {
           </div>
           <div className="members">
             {groupDetails.members.map(member => (
-              <div
-                key={`${groupDetails.groupId}-${member.id}`}
-                className="row member-details"
-              >
-                <div className="col-2 member-initials">
-                  <Initials initials={`${member.firstName[0]}${member.lastName[0]}`}/>
-                </div>
-                <div className="col-10">
-                  <div className="member-full-name">
-                    {member.firstName} {member.lastName}
-                  </div>
-                  <div className="member-username">
-                    @{member.name}
-                  </div>
-                </div>
-              </div>
+              <MemberDetails
+                key={`${groupDetails.groupId}-member-${member.id}-details`}
+                member={member}
+                onActionSelected={() => { }}
+              />
             ))}
           </div>
         </div>
@@ -128,6 +117,36 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     }))
   }
 }
+
+type MemberDetailsProps = {
+  member: GroupMember,
+  onActionSelected: (action: string) => void
+}
+
+const MemberDetails = (props: MemberDetailsProps) => (
+  <div className="row member-details">
+    <div className="col-2 member-initials">
+      <Initials initials={`${props.member.firstName[0]}${props.member.lastName[0]}`}/>
+    </div>
+    <div className="col-8">
+      <div className="member-full-name">
+        {props.member.firstName} {props.member.lastName}
+      </div>
+      <div className="member-username">
+        @{props.member.name}
+      </div>
+    </div>
+    <div className="col-2">
+      <div className="actions-dropdown">
+        <Dropdown
+          toggle={(<i className="fas fa-bars"/>)}
+          options={["Profile", "Kick", "Ban"]}
+          onSelect={option => console.log(option)}
+        />
+      </div>
+    </div>
+  </div>
+);
 
 type Props = {
   stackController: StackController,

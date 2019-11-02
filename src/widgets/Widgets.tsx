@@ -28,3 +28,98 @@ export const GroupInitialsAvatar = ({groupData} : {groupData: GroupData}) => (
 export const Spinner = () => (
   <ClipLoader color="rgb(153, 153, 153)"/>
 );
+
+type DropdownProps = {
+  toggle: string|React.ReactElement;
+  options: string[],
+  onSelect: (option: string) => void
+}
+
+type DropdownState = {
+  expanded: boolean
+}
+
+export class Dropdown extends React.Component<DropdownProps, DropdownState> {
+
+  private readonly elementRef = React.createRef<HTMLDivElement>();
+
+  state = {
+    expanded: false
+  };
+
+  windowClickListener = (event: Event) => {
+    event.stopPropagation();
+    if (!this.elementIsInside(event.target as Element, this.elementRef.current as Element)) {
+      this.hide();
+    }
+  };
+
+  elementIsInside(target: Element, parent: Element) {
+    if (parent === target) {
+      return true;
+    }
+    let children = parent.children;
+    for (let i = 0; i < children.length; i++) {
+      let child = children[i];
+      if (child === target) {
+        return true;
+      }
+      if (this.elementIsInside(target, child)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  componentDidMount(): void {
+    window.addEventListener("click", this.windowClickListener);
+  }
+
+  componentWillUnmount(): void {
+    window.removeEventListener("click", this.windowClickListener);
+  }
+
+  render() {
+    const { toggle, options, onSelect } = this.props;
+    const { expanded } = this.state;
+    return (
+      <div className="Dropdown" ref={this.elementRef}>
+        <div className="toggle" onClick={this.toggle}>
+          {toggle}
+        </div>
+        <div className={`options${expanded ? " expand" : ""}`}>
+          {options.map(option => (
+            <div
+              className="option"
+              key={this.optionKey(option)}
+              onClick={_ =>
+                this.hide(() => onSelect(option))
+              }
+            >
+              {option}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  optionKey = (option: string) => {
+    return "Dropdown-option-" + option;
+  };
+
+  private toggle = (event: React.MouseEvent<HTMLDivElement>) => {
+    this.setState(state => ({
+      ...state,
+      expanded: !state.expanded
+    }))
+  };
+
+  private hide = (afterHide?: () => void) => {
+    this.setState(state => ({
+      ...state,
+      expanded: false
+    }), () => afterHide && afterHide());
+  }
+
+}
