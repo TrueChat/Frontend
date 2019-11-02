@@ -34,5 +34,7 @@ export default interface UserService {
     onFailure?: SubmissionFailureHandler
   ) : void;
 
-  userIsPresent: () => boolean;
+  userIsPresent(): boolean;
+
+  searchUsers(searchString: string): Promise<UserProfile[]>
 }

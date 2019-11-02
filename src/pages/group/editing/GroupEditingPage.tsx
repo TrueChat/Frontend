@@ -2,6 +2,7 @@ import React from "react";
 import "./GroupEditingPage.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
 import GroupService from "../../../services/GroupService";
+import UserService from "../../../services/UserService";
 
 export default class GroupEditingPage
     extends React.Component<Props, State>
@@ -18,6 +19,7 @@ export default class GroupEditingPage
         <GroupInfoTab
           stackController={this}
           groupService={props.groupService}
+          userService={props.userService}
           groupId={""} // TODO retrieve group id form url
         />
     });
@@ -71,7 +73,8 @@ export interface StackController {
 }
 
 type Props = {
-  groupService: GroupService
+  groupService: GroupService,
+  userService: UserService
 }
 
 type State = {

@@ -21,7 +21,6 @@ type ServerErrorResponse = {
 export default class RemoteUserService implements UserService {
   private readonly baseUrl: string;
   private readonly authService: RemoteAuthService;
-
   constructor(baseUrl: string, authService: RemoteAuthService) {
     this.authService = authService;
     this.baseUrl = baseUrl;
@@ -51,7 +50,6 @@ export default class RemoteUserService implements UserService {
       });
   }
 
-
   public register(
       data: RegistrationData,
       onSuccess?: SubmissionSuccessHandler,
@@ -70,6 +68,7 @@ export default class RemoteUserService implements UserService {
         }
       });
   }
+
 
   public userIsPresent() : boolean {
     return Cookies.get("userData") !== undefined;
@@ -141,5 +140,9 @@ export default class RemoteUserService implements UserService {
     return {
       property: property, violates: true, message: message
     }
+  }
+
+  public searchUsers(searchString: string): Promise<UserProfile[]> {
+    throw new Error("Method not implemented.");
   }
 }

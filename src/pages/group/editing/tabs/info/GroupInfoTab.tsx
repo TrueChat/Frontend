@@ -1,9 +1,11 @@
 import React from "react";
 import "./GroupInfoTab.scss";
 import {StackController} from "../../GroupEditingPage";
-import {Dropdown, GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
+import {Dropdown, GroupInitialsAvatar, Initials, Spinner} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
+import GroupAddMembersTab from "../members/GroupAddMembersTab";
+import UserService from "../../../../../services/UserService";
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 
@@ -78,9 +80,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               {groupDetails.members.length} members
             </div>
             <div className="col-8 text-right">
-              <span>Add</span>
-              &nbsp;&nbsp;&nbsp;
-              <span>Edit</span>
+              <span onClick={this.showMembersSearchTab}>Add</span>
             </div>
           </div>
           <div className="members">
@@ -96,6 +96,19 @@ export default class GroupInfoTab extends React.Component<Props, State> {
       </div>
     );
   }
+
+  showMembersSearchTab = () => {
+    this.props.stackController.push({
+      body: (
+        <GroupAddMembersTab
+          groupService={this.props.groupService}
+          userService={this.props.userService}
+        />
+      ),
+      header: "Add members"
+
+    })
+  };
 
   updateGroupName = (name: string) => {
     this.setState(state => ({
@@ -151,6 +164,7 @@ const MemberDetails = (props: MemberDetailsProps) => (
 type Props = {
   stackController: StackController,
   groupService: GroupService,
+  userService: UserService
   groupId: string
 }
 

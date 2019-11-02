@@ -57,4 +57,20 @@ export default class MockUserService implements UserService{
     }
   }
 
+  searchUsers(searchString: string): Promise<UserProfile[]> {
+    return new Promise<UserProfile[]>((resolve, reject) => {
+      this.useTimeout(() => {
+        resolve([
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"},
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"},
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"},
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"},
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"},
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"},
+          { username: "mock_user", first_name: "mock_fist_name", last_name: "mock_last_name", about: "mock_about"}
+        ]);
+      })
+    })
+  }
+
 }
