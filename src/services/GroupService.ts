@@ -1,3 +1,5 @@
+import {ResponseHandler} from "./types";
+
 export type GroupCreationData = {
   name: string,
   description: string
@@ -23,15 +25,13 @@ export type GroupDetails = {
   creator: GroupMember
 }
 
-export type GroupCreationSuccessHandler = () => void;
-export type GroupCreationFailureHandler = () => void;
 
 export default interface GroupService {
 
   createGroup(
     data: GroupCreationData,
-    onSuccess?: GroupCreationSuccessHandler,
-    onFailure?: GroupCreationFailureHandler
+    onSuccess?: ResponseHandler<any>,
+    onFailure?: ResponseHandler<any>
   ) : void;
 
   loadDetails(
@@ -42,35 +42,35 @@ export default interface GroupService {
 
   update(
     groupDetails: GroupDetails,
-    onSuccess: () => void,
-    onFailure: () => void
+    onSuccess: ResponseHandler<any>,
+    onFailure: ResponseHandler<any>
   ) : void;
 
   addUser(
     groupId: string,
     username: string,
-    onSuccess?: () => void,
-    onFailure?: () => void
+    onSuccess?: ResponseHandler<any>,
+    onFailure?: ResponseHandler<any>
   ) : void;
 
   removeUser(
     groupId: string,
     username: string,
-    onSuccess?: () => void,
-    onFailure?: () => void
+    onSuccess?: ResponseHandler<any>,
+    onFailure?: ResponseHandler<any>
   ) : void;
 
   banUser(
     groupId: string,
     username: string,
-    onSuccess?: () => void,
-    onFailure?: () => void
+    onSuccess?: ResponseHandler<any>,
+    onFailure?: ResponseHandler<any>
   ) : void;
 
   kickUser(
     groupId: string,
     username: string,
-    onSuccess?: () => void,
-    onFailure?: () => void
+    onSuccess?: ResponseHandler<any>,
+    onFailure?: ResponseHandler<any>
   ) : void;
 }

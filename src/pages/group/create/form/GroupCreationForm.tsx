@@ -1,19 +1,18 @@
 import {
-  GroupCreationData,
-  GroupCreationFailureHandler,
-  GroupCreationSuccessHandler
+  GroupCreationData
 } from "../../../../services/GroupService";
 import React from "react";
 import SubmitButton from "../../../common/SubmitButton";
 import {GroupInitialsAvatar, Spinner} from "../../../../widgets/Widgets";
 import Input from "../../common/Input";
+import {ResponseHandler} from "../../../../services/types";
 require("bootstrap/dist/css/bootstrap.min.css");
 
 type Props = {
   onSubmit: (
     data: GroupCreationData,
-    onSuccess: GroupCreationSuccessHandler,
-    onFailure: GroupCreationFailureHandler
+    onSuccess: ResponseHandler,
+    onFailure: ResponseHandler
   ) => void
 }
 

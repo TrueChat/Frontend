@@ -18,9 +18,9 @@ export type RegistrationData = {
 
 export default interface AuthService {
 
-  register: (data: RegistrationData) => Promise<RegistrationResponse>
+  register(data: RegistrationData) : Promise<RegistrationResponse>
 
-  login: (username: string, password: string) => Promise<LoginResponse>
+  login(username: string, password: string) : Promise<LoginResponse>
 
-  logout: () => Promise<LogoutResponse>
+  logout() : Promise<LogoutResponse>
 }

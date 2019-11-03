@@ -1,4 +1,5 @@
 import GroupService, {GroupCreationData, GroupDetails} from "../GroupService";
+import {ResponseHandler, Response} from "../types";
 
 export default class MockGroupService implements GroupService {
   private readonly timeout?: number;
@@ -7,11 +8,11 @@ export default class MockGroupService implements GroupService {
     this.timeout = timeout;
   }
 
-  createGroup(data: GroupCreationData, onSuccess?: () => void, onFailure?: () => void): void {
+  createGroup(data: GroupCreationData, onSuccess?: ResponseHandler, onFailure?: ResponseHandler): void {
     this.useTimeout(() => {
       console.log(data);
       if (onSuccess) {
-        onSuccess();
+        onSuccess(this.mockResponse());
       }
     });
   }
@@ -44,34 +45,42 @@ export default class MockGroupService implements GroupService {
     }
   }
 
-  update(groupDetails: GroupDetails, onSuccess: () => void, onFailure: () => void): void {
+  update(groupDetails: GroupDetails, onSuccess?: ResponseHandler, onFailure?: ResponseHandler): void {
     this.useTimeout(() => {
-      !!onSuccess && onSuccess();
+      !!onSuccess && onSuccess(this.mockResponse());
     });
   }
 
-  addUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void): void {
+  addUser(groupId: string, username: string, onSuccess?: ResponseHandler, onFailure?: ResponseHandler): void {
     this.useTimeout(() => {
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(this.mockResponse());
     })
   }
 
-  removeUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void): void {
+  removeUser(groupId: string, username: string, onSuccess?: ResponseHandler, onFailure?: ResponseHandler): void {
     this.useTimeout(() => {
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(this.mockResponse());
     });
   }
 
-  banUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void ): void {
+  banUser(groupId: string, username: string, onSuccess?: ResponseHandler, onFailure?: ResponseHandler ): void {
     this.useTimeout(() => {
-      onSuccess && onSuccess()
+      onSuccess && onSuccess(this.mockResponse())
     });
   }
 
-  kickUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void ): void {
+  kickUser(groupId: string, username: string, onSuccess?: ResponseHandler, onFailure?: ResponseHandler ): void {
     this.useTimeout(() => {
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(this.mockResponse());
     })
+  }
+
+  private mockResponse() : Response {
+    return {
+      headers: [],
+      status: 200,
+      data: "Mock Response"
+    }
   }
 
 }

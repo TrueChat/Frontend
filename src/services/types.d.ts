@@ -15,3 +15,5 @@ export type Response<T = any> = {
   status: number,
   headers: Header[]
 }
+
+export type ResponseHandler<T = any> = (response: Response<T>) => void
