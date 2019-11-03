@@ -29,7 +29,7 @@ export default class GroupEditPage
   render() {
     const currentTab = this.currentTab();
     return (
-      <div className="Group-editing-page">
+      <div className="Group-page-layout">
         <div className="header">
           <div className="previous-tab-control" onClick={_ => this.pop()}>
             <i className="fas fa-arrow-left"/>

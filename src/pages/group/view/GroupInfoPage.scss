@@ -1,0 +1,16 @@
+@import "../edit/GroupEditPage";
+
+.Group-page-layout {
+  .Group-info-page {
+    @extend .Group-info-tab;
+
+    .label {
+      color: $WHITE_70;
+    }
+
+    .label-value {
+      color: $WHITE_90;
+      font-weight: bold;
+    }
+  }
+}

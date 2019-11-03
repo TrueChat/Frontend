@@ -4,6 +4,7 @@ import GroupService, {GroupDetails} from "../../services/GroupService";
 import UserService from "../../services/UserService";
 import {Spinner} from "../../widgets/Widgets";
 import GroupEditPage from "./edit/GroupEditPage";
+import GroupInfoPage from "./view/GroupInfoPage";
 
 export default class GroupPage extends React.Component<Props, State> {
 
@@ -42,7 +43,13 @@ export default class GroupPage extends React.Component<Props, State> {
         />
       );
     } else {
-      return <div>View Group</div>
+      return (
+        <GroupInfoPage
+          groupService={groupService}
+          userService={userService}
+          groupId={groupDetails.groupId}
+        />
+      );
     }
   }
 
