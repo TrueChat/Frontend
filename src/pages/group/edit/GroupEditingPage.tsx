@@ -21,7 +21,7 @@ export default class GroupEditingPage
           stackController={this}
           groupService={props.groupService}
           userService={props.userService}
-          groupId={""} // TODO retrieve group id form url
+          groupId={props.groupId}
         />
     });
   }
@@ -75,7 +75,8 @@ export interface StackController {
 
 type Props = {
   groupService: GroupService,
-  userService: UserService
+  userService: UserService,
+  groupId: string
 }
 
 type State = {

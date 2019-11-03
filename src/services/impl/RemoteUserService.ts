@@ -1,7 +1,7 @@
 import RemoteAuthService from "./RemoteAuthService";
 import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import UserService, {
   SubmissionFailureHandler,
   SubmissionSuccessHandler,
@@ -145,4 +145,73 @@ export default class RemoteUserService implements UserService {
   public searchUsers(searchString: string): Promise<UserProfile[]> {
     throw new Error("Method not implemented.");
   }
+
+  public sendAuthorizedRequest(
+    request: Request,
+    onSuccess: (response: Response<any>) => void,
+    onFailure: (response: Response<any>) => void
+  ) {
+    const currentUser = Cookies.get("userData") as UserData|undefined;
+    if (!currentUser) {
+      throw new Error("no user is present");
+    }
+
+    const headers = this.mergeHeaders(
+      [{"Authorization": `Token ${currentUser.authToken}`}],
+      request.headers ? request.headers : []
+    );
+
+    axios({
+      headers: headers,
+      method: request.method,
+      url: request.url,
+      data: request.body
+    })
+    .then(response => {
+      onSuccess({
+        headers: response.headers,
+        data: response.data,
+        status: response.status
+      });
+    })
+    .catch((error: AxiosError) => {
+      onFailure({
+        headers: error.response ? error.response.headers : [],
+        data: error.response && error.response.data,
+        status: error.response ? error.response.status: 400
+      });
+    })
+  }
+
+
+  private mergeHeaders(h1: Header[], h2: Header[]) : Header[] {
+    const result: Header[] = [];
+    for (let header of h1) {
+      result.push(header);
+    }
+    for (let header of h2) {
+      if (result.findIndex(h => h.key === header.key) === -1) {
+        result.push(header);
+      }
+    }
+    return result;
+  }
+}
+
+export type Header = {
+  [key: string]: string
+}
+
+export type Request = {
+  method: "GET"|"POST"|"PUT"|"PATCH"|"DELETE",
+  url: string,
+  headers?: Header[],
+  body?: any
+}
+
+
+export type Response<T = any> = {
+  data: T,
+  status: number,
+  headers: Header[]
 }
