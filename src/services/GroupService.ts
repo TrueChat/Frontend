@@ -57,5 +57,19 @@ export default interface GroupService {
     username: string,
     onSuccess?: () => void,
     onFailure?: () => void
-  ) : void
+  ) : void;
+
+  banUser(
+    groupId: string,
+    username: string,
+    onSuccess?: () => void,
+    onFailure?: () => void
+  ) : void;
+
+  kickUser(
+    groupId: string,
+    username: string,
+    onSuccess?: () => void,
+    onFailure?: () => void
+  ) : void;
 }

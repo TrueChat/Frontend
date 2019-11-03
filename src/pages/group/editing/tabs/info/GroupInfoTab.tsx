@@ -31,6 +31,30 @@ export default class GroupInfoTab extends React.Component<Props, State> {
       )
   };
 
+  componentDidMount(): void {
+    this.loadDetails();
+  }
+
+  private loadDetails = () => {
+    const { groupService, groupId } = this.props;
+    this.setState(state => ({
+      ...state,
+      detailsAreLoaded: false,
+    }), () => {
+      groupService.loadDetails(
+        groupId,
+        details => {
+          this.setState(state => ({
+            ...state,
+            detailsAreLoaded: true,
+            groupDetails: details
+          }))
+        },
+        () => { }
+      )
+    });
+  };
+
   render() {
     if (!this.state.detailsAreLoaded) {
       return this.renderSpinner()
@@ -39,7 +63,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     }
   }
 
-  renderSpinner() {
+  private renderSpinner() {
     return <div className="text-center"><Spinner /></div>
   }
 
@@ -89,7 +113,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               <MemberDetails
                 key={`${groupDetails.groupId}-member-${member.id}-details`}
                 member={member}
-                onActionSelected={() => { }}
+                onActionSelected={action => this.doActionOnMember(member, action)}
               />
             ))}
           </div>
@@ -98,7 +122,32 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     );
   }
 
-  showMembersSearchTab = () => {
+  private doActionOnMember = (member: GroupMember, action: string) => {
+    switch (action) {
+      case "Kick":
+        this.kickMember(member);
+        break;
+      case "Ban":
+        this.banMember(member);
+        break;
+    }
+  };
+
+  private kickMember = (member: GroupMember) => {
+    const { groupService, groupId } = this.props;
+    groupService.kickUser(groupId, member.name, this.reload);
+  };
+
+  private banMember = (member: GroupMember) => {
+    const { groupService, groupId } = this.props;
+    groupService.banUser(groupId, member.name, this.reload)
+  };
+
+  private reload = () => {
+    this.loadDetails()
+  };
+
+  private showMembersSearchTab = () => {
     this.props.stackController.push({
       body: (
         <GroupAddMembersTab
@@ -108,11 +157,10 @@ export default class GroupInfoTab extends React.Component<Props, State> {
         />
       ),
       header: "Add members"
-
-    })
+    });
   };
 
-  updateGroupName = (name: string) => {
+  private updateGroupName = (name: string) => {
     this.setState(state => ({
       ...state,
       groupDetails: {
@@ -122,7 +170,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     }));
   };
 
-  updateGroupDescription = (description: string) => {
+  private updateGroupDescription = (description: string) => {
     this.setState(state => ({
       ...state,
       groupDetails: {
@@ -155,8 +203,8 @@ const MemberDetails = (props: MemberDetailsProps) => (
       <div className="actions-dropdown">
         <Dropdown
           toggle={(<i className="fas fa-bars"/>)}
-          options={["Profile", "Kick", "Ban"]}
-          onSelect={option => console.log(option)}
+          options={["Kick", "Ban"]}
+          onSelect={option => props.onActionSelected(option)}
         />
       </div>
     </div>

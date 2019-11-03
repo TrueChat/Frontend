@@ -3,9 +3,9 @@ import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import { BrowserRouter, Route } from "react-router-dom";
 import ProfilePage from "./pages/profile/ProfilePage";
 import MainPage from "./pages/main/MainPage";
-import MockUserService from "./testing/MockUserService";
+import MockUserService from "./services/mock/MockUserService";
 import GroupCreationPage from "./pages/group/creation/GroupCreationPage";
-import MockGroupService from "./testing/MockGroupService";
+import MockGroupService from "./services/mock/MockGroupService";
 import GroupEditingPage from "./pages/group/editing/GroupEditingPage";
 
 export default class App extends React.Component {

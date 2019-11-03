@@ -1,6 +1,6 @@
-import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
-import UserService, {UserProfile} from "../services/UserService";
-import {RegistrationData} from "../services/AuthService";
+import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
+import UserService, {UserProfile} from "../UserService";
+import {RegistrationData} from "../AuthService";
 
 export default class MockUserService implements UserService{
 

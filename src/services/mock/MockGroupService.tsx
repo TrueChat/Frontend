@@ -1,7 +1,6 @@
-import GroupService, {GroupCreationData, GroupDetails} from "../services/GroupService";
+import GroupService, {GroupCreationData, GroupDetails} from "../GroupService";
 
 export default class MockGroupService implements GroupService {
-
   private readonly timeout?: number;
 
   constructor(timeout?: number) {
@@ -60,6 +59,18 @@ export default class MockGroupService implements GroupService {
     this.useTimeout(() => {
       onSuccess && onSuccess();
     });
+  }
+
+  banUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void ): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess()
+    });
+  }
+
+  kickUser(groupId: string, username: string, onSuccess?: () => void, onFailure?: () => void ): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess();
+    })
   }
 
 }
