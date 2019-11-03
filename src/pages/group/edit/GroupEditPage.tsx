@@ -1,11 +1,11 @@
 import React from "react";
-import "./GroupEditingPage.scss";
+import "./GroupEditPage.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
 import GroupService from "../../../services/GroupService";
 import UserService from "../../../services/UserService";
 require("bootstrap/dist/css/bootstrap.css");
 
-export default class GroupEditingPage
+export default class GroupEditPage
     extends React.Component<Props, State>
     implements StackController {
 

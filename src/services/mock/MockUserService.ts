@@ -74,4 +74,8 @@ export default class MockUserService implements UserService{
     })
   }
 
+  getCurrentUser(): string {
+    return "mock_user";
+  }
+
 }

@@ -8,6 +8,7 @@ import UserService, {
   UserProfile
 } from "../UserService";
 import {RegistrationData} from "../AuthService";
+import {Header, Response, Request} from "../types";
 
 type UserData = {
   authToken: string,
@@ -196,22 +197,8 @@ export default class RemoteUserService implements UserService {
     }
     return result;
   }
-}
 
-export type Header = {
-  [key: string]: string
-}
-
-export type Request = {
-  method: "GET"|"POST"|"PUT"|"PATCH"|"DELETE",
-  url: string,
-  headers?: Header[],
-  body?: any
-}
-
-
-export type Response<T = any> = {
-  data: T,
-  status: number,
-  headers: Header[]
+  public getCurrentUser(): string {
+    return (Cookies.getJSON("userData") as UserData).username;
+  }
 }

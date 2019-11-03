@@ -6,7 +6,7 @@ import MainPage from "./pages/main/MainPage";
 import MockUserService from "./services/mock/MockUserService";
 import GroupCreationPage from "./pages/group/create/GroupCreationPage";
 import MockGroupService from "./services/mock/MockGroupService";
-import GroupEditingPage from "./pages/group/edit/GroupEditingPage";
+import GroupEditPage from "./pages/group/edit/GroupEditPage";
 import GroupPage from "./pages/group/GroupPage";
 
 export default class App extends React.Component {

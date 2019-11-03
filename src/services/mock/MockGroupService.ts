@@ -23,12 +23,13 @@ export default class MockGroupService implements GroupService {
           groupId: "1234",
           name: "mock group",
           description: "mock description",
+          creator: { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
           members: [
-            { id: "1", firstName: "Name", lastName: "Surname", name: "username"},
-            { id: "2", firstName: "Name", lastName: "Surname", name: "username"},
-            { id: "3", firstName: "Name", lastName: "Surname", name: "username"},
-            { id: "4", firstName: "Name", lastName: "Surname", name: "username"},
-            { id: "5", firstName: "Name", lastName: "Surname", name: "username"},
+            { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
+            { id: "2", firstName: "Name", lastName: "Surname", username: "username"},
+            { id: "3", firstName: "Name", lastName: "Surname", username: "username"},
+            { id: "4", firstName: "Name", lastName: "Surname", username: "username"},
+            { id: "5", firstName: "Name", lastName: "Surname", username: "username"},
           ]
         })
       }

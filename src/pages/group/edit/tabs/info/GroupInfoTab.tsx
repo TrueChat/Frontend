@@ -1,6 +1,6 @@
 import React from "react";
 import "./GroupInfoTab.scss";
-import {StackController} from "../../GroupEditingPage";
+import {StackController} from "../../GroupEditPage";
 import {Dropdown, GroupInitialsAvatar, Initials, Spinner} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
@@ -135,12 +135,12 @@ export default class GroupInfoTab extends React.Component<Props, State> {
 
   private kickMember = (member: GroupMember) => {
     const { groupService, groupId } = this.props;
-    groupService.kickUser(groupId, member.name, this.reload);
+    groupService.kickUser(groupId, member.username, this.reload);
   };
 
   private banMember = (member: GroupMember) => {
     const { groupService, groupId } = this.props;
-    groupService.banUser(groupId, member.name, this.reload)
+    groupService.banUser(groupId, member.username, this.reload)
   };
 
   private reload = () => {
@@ -196,7 +196,7 @@ const MemberDetails = (props: MemberDetailsProps) => (
         {props.member.firstName} {props.member.lastName}
       </div>
       <div className="member-username">
-        @{props.member.name}
+        @{props.member.username}
       </div>
     </div>
     <div className="col-2">

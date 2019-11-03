@@ -12,14 +12,15 @@ export type GroupMember = {
   id: string,
   firstName: string,
   lastName: string
-  name: string
+  username: string
 }
 
 export type GroupDetails = {
   groupId: string,
   name: string,
   description: string,
-  members: GroupMember[]
+  members: GroupMember[],
+  creator: GroupMember
 }
 
 export type GroupCreationSuccessHandler = () => void;
