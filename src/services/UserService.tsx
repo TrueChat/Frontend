@@ -1,5 +1,6 @@
 import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
 import {RegistrationData} from "./AuthService";
+import {ResponseHandler} from "./types";
 
 export type UserProfile = {
   first_name: string,
@@ -27,6 +28,8 @@ export default interface UserService {
   ) : void;
 
   loadProfileForCurrentUser() : Promise<UserProfile>;
+
+  loadProfile(username: string) : Promise<UserProfile>;
 
   updateProfileForCurrentUser(
     profile: UserProfile,

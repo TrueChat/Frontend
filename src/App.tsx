@@ -1,13 +1,13 @@
 import React from 'react';
 import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import { BrowserRouter, Route } from "react-router-dom";
-import ProfilePage from "./pages/profile/ProfilePage";
+import ProfileEditPage from "./pages/profile/edit/ProfileEditPage";
 import MainPage from "./pages/main/MainPage";
 import MockUserService from "./services/mock/MockUserService";
 import GroupCreationPage from "./pages/group/create/GroupCreationPage";
 import MockGroupService from "./services/mock/MockGroupService";
-import GroupEditPage from "./pages/group/edit/GroupEditPage";
-import GroupPage from "./pages/group/GroupPage";
+import GroupProfilePage from "./pages/group/GroupProfilePage";
+import UserProfilePage from "./pages/profile/UserProfilePage";
 
 export default class App extends React.Component {
 
@@ -35,13 +35,16 @@ export default class App extends React.Component {
           <GroupCreationPage groupService={this.groupService}/>
         </Route>
         <Route path="/group/:groupId">
-          <GroupPage
+          <GroupProfilePage
             userService={this.userService}
             groupService={this.groupService}
           />
         </Route>
         <Route exact path="/profile">
-          <ProfilePage userService={this.userService} />
+          <ProfileEditPage userService={this.userService} />
+        </Route>
+        <Route path="/profile/:username">
+          <UserProfilePage userService={this.userService} />
         </Route>
       </BrowserRouter>
     )

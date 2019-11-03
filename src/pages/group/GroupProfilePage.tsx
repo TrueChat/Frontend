@@ -6,10 +6,11 @@ import {Spinner} from "../../widgets/Widgets";
 import GroupEditPage from "./edit/GroupEditPage";
 import GroupInfoPage from "./view/GroupInfoPage";
 
-export default class GroupPage extends React.Component<Props, State> {
+export default class GroupProfilePage extends React.Component<Props, State> {
 
   state = {
-    groupDetails: undefined
+    groupDetails: undefined,
+    redirect: undefined
   };
 
   componentDidMount(): void {
@@ -21,19 +22,30 @@ export default class GroupPage extends React.Component<Props, State> {
           groupDetails: details
         }))
       },
-      () => { }
+      () => {
+        this.setState(state => ({
+          ...state,
+          redirect: "/"
+        }))
+      }
     );
   }
 
   render() {
     const { userService, groupService } = this.props;
-    const groupDetails = (this.state.groupDetails as GroupDetails|undefined);
+    const groupDetails = this.state.groupDetails as GroupDetails|undefined;
+    const redirect = this.state.redirect as string|undefined;
+
+    if (redirect) {
+      return <Redirect to={redirect}/>
+    }
     if (!userService.userIsPresent()) {
-      return <Redirect to="/"/>
+      return <Redirect to="/auth"/>
     }
     if (groupDetails === undefined) {
       return this.showSpinner();
     }
+
     if (groupDetails.creator.username === userService.getCurrentUser()) {
       return (
         <GroupEditPage
@@ -75,4 +87,5 @@ type Props = {
 
 type State = {
   groupDetails?: GroupDetails,
+  redirect?: string
 }

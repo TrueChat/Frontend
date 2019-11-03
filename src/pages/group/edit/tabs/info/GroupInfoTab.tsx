@@ -6,6 +6,7 @@ import Input from "../../../common/Input";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
 import GroupAddMembersTab from "../members/GroupAddMembersTab";
 import UserService from "../../../../../services/UserService";
+import SubmitButton from "../../../../common/SubmitButton";
 require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoTab extends React.Component<Props, State> {
@@ -14,21 +15,9 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     super(props);
     this.state = {
       groupDetails: undefined,
-      detailsAreLoaded: false
+      loading: true
     };
 
-    props.groupService
-      .loadDetails(
-        props.groupId,
-        details => {
-          this.setState(state => ({
-            ...state,
-            detailsAreLoaded: true,
-            groupDetails: details
-          }));
-        },
-        () => { }
-      )
   };
 
   componentDidMount(): void {
@@ -39,14 +28,14 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     const { groupService, groupId } = this.props;
     this.setState(state => ({
       ...state,
-      detailsAreLoaded: false,
+      loading: true,
     }), () => {
       groupService.loadDetails(
         groupId,
         details => {
           this.setState(state => ({
             ...state,
-            detailsAreLoaded: true,
+            loading: false,
             groupDetails: details
           }))
         },
@@ -56,7 +45,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
   };
 
   render() {
-    if (!this.state.detailsAreLoaded) {
+    if (this.state.loading) {
       return this.renderSpinner()
     } else {
       return this.renderTab();
@@ -118,9 +107,28 @@ export default class GroupInfoTab extends React.Component<Props, State> {
             ))}
           </div>
         </div>
+        <div className="row">
+          <div className="col-12 text-right">
+            <SubmitButton onClick={() => this.updateDetails(groupDetails)}/>
+          </div>
+        </div>
       </div>
     );
   }
+
+  private updateDetails = (details: GroupDetails) => {
+    this.setState(state => ({
+      ...state, loading: true
+    }), () => {
+      this.props.groupService.update(
+        details, () => {
+          this.setState(state => ({
+            ...state, loading: false
+          }));
+        }, () => { }
+      );
+    })
+  };
 
   private doActionOnMember = (member: GroupMember, action: string) => {
     switch (action) {
@@ -220,5 +228,5 @@ type Props = {
 
 type State = {
   groupDetails?: GroupDetails,
-  detailsAreLoaded: boolean
+  loading: boolean
 }

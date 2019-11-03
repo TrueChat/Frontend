@@ -26,7 +26,6 @@ export default class RemoteUserService implements UserService {
     this.authService = authService;
     this.baseUrl = baseUrl;
   }
-
   public login(
       username: string,
       password: string,
@@ -70,10 +69,10 @@ export default class RemoteUserService implements UserService {
       });
   }
 
-
   public userIsPresent() : boolean {
     return Cookies.get("userData") !== undefined;
   }
+
 
   private saveUserToCookies(userData: UserData) {
     Cookies.set("userData", userData);
@@ -144,6 +143,10 @@ export default class RemoteUserService implements UserService {
   }
 
   public searchUsers(searchString: string): Promise<UserProfile[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  loadProfile(username: string): Promise<UserProfile> {
     throw new Error("Method not implemented.");
   }
 
