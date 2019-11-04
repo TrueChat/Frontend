@@ -25,8 +25,13 @@
       }
 
       .member-username {
-        color: $WHITE_70;
-        font-weight: bold;
+        .link {
+          color: $WHITE_70;
+          font-weight: bold;
+          &:hover {
+            text-decoration: none;
+          }
+        }
       }
 
       .actions-dropdown {

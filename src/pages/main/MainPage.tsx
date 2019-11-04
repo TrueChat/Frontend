@@ -1,12 +1,13 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import UserService from "../../services/UserService";
+import SearchPage from "./SearchPage";
 
-type MainPageProps = {
+type Props = {
   userService: UserService
 }
 
-export default class MainPage extends React.Component<MainPageProps> {
+export default class MainPage extends React.Component<Props> {
 
   render() {
     // TODO temporary solution (or it should work this way) for asynchronous page reloading
@@ -14,7 +15,7 @@ export default class MainPage extends React.Component<MainPageProps> {
     if (!this.props.userService.userIsPresent()) {
       return <Redirect to="/auth" />
     } else {
-      return <div>Main Page</div>
+      return <SearchPage userService={this.props.userService}/>
     }
   }
 

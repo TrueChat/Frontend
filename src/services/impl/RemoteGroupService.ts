@@ -57,7 +57,7 @@ export default class RemoteGroupService implements GroupService {
   update(groupDetails: GroupDetails, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "PUT",
-      url: `${this.baseUrl}/${groupDetails.groupId}`,
+      url: `${this.baseUrl}/chats/${groupDetails.groupId}/`,
       body: groupDetails
     }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure));
   }
@@ -65,28 +65,28 @@ export default class RemoteGroupService implements GroupService {
   addUser(groupId: string, username: string, onSuccess?: ResponseHandler<any>, onFailure?: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "POST",
-      url: `${this.baseUrl}/chats/${groupId}/add_member/${username}`
+      url: `${this.baseUrl}/chats/${groupId}/add_member/${username}/`
     }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure));
   }
   
   removeUser(groupId: string, username: string, onSuccess?: ResponseHandler<any>, onFailure?: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "DELETE",
-      url: `${this.baseUrl}/chats/${groupId}/delete_member/${username}`
+      url: `${this.baseUrl}/chats/${groupId}/delete_member/${username}/`
     }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure))
   }
   
   banUser(groupId: string, username: string, onSuccess?: ResponseHandler<any>, onFailure?: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "PUT",
-      url: `${this.baseUrl}/chats/${groupId}/ban_member/${username}`
+      url: `${this.baseUrl}/chats/${groupId}/ban_member/${username}/`
     }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure));
   }
   
   kickUser(groupId: string, username: string, onSuccess?: ResponseHandler<any>, onFailure?: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "DELETE",
-      url: `${this.baseUrl}/chats/${groupId}/delete_member/${username}`
+      url: `${this.baseUrl}/chats/${groupId}/delete_member/${username}/`
     }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure));
   }
 

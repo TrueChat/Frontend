@@ -1,12 +1,13 @@
 import React from "react";
 import "./GroupInfoTab.scss";
 import {StackController} from "../../GroupEditPage";
-import {Dropdown, GroupInitialsAvatar, Initials, Spinner} from "../../../../../widgets/Widgets";
+import {Dropdown, GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
 import GroupAddMembersTab from "../members/GroupAddMembersTab";
 import UserService from "../../../../../services/UserService";
 import SubmitButton from "../../../../common/SubmitButton";
+import {Link} from "react-router-dom";
 require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoTab extends React.Component<Props, State> {
@@ -197,14 +198,22 @@ type MemberDetailsProps = {
 const MemberDetails = (props: MemberDetailsProps) => (
   <div className="row member-details">
     <div className="col-2 member-initials">
-      <Initials initials={`${props.member.firstName[0]}${props.member.lastName[0]}`}/>
+      <UserInitialsAvatar
+        profile={{
+          first_name: props.member.firstName,
+          last_name: props.member.lastName,
+          about: "",
+          username: props.member.username
+        }}/>
     </div>
     <div className="col-8">
       <div className="member-full-name">
         {props.member.firstName} {props.member.lastName}
       </div>
       <div className="member-username">
-        @{props.member.username}
+        <Link to={`/profile/${props.member.username}`} className="link">
+          @{props.member.username}
+        </Link>
       </div>
     </div>
     <div className="col-2">
