@@ -1,7 +1,7 @@
 import React from "react";
 import "./GroupAddMembersTab.scss";
 import UserService, {UserProfile} from "../../../../../services/UserService";
-import GroupService from "../../../../../services/GroupService";
+import GroupService, {GroupDetails} from "../../../../../services/GroupService";
 import {Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
 require("bootstrap/dist/css/bootstrap.css");
@@ -66,7 +66,6 @@ export default class GroupAddMembersTab extends React.Component<Props, State> {
     })
   };
 
-  // As it searches all users, there might me 409 conflict when adding users that are already in group
   private addToGroup = (user: GroupUser) => {
     this.setState(state => {
       user.isMember = true;
@@ -115,10 +114,22 @@ export default class GroupAddMembersTab extends React.Component<Props, State> {
           this.setState(state => ({
             ...state,
             loading: false,
-            searchResults: result.map(user => ({profile: user, isMember: false}))
-          }))
+            searchResults: result
+              .filter(this.isNotMember)
+              .map(user => ({profile: user, isMember: false}))
+          }));
         })
     });
+  };
+
+  private isNotMember = (user: UserProfile) => {
+    const details = this.props.groupDetails;
+
+    return(
+      details.creator.username !== user.username &&
+      details.members
+        .findIndex(member => member.username === user.username) === -1
+    );
   }
 }
 
@@ -130,7 +141,8 @@ type GroupUser = {
 type Props = {
   userService: UserService,
   groupService: GroupService,
-  groupId: string
+  groupId: string,
+  groupDetails: GroupDetails
 }
 
 type State = {
