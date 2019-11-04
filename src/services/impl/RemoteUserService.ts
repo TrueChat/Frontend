@@ -8,7 +8,7 @@ import UserService, {
   UserProfile
 } from "../UserService";
 import {RegistrationData} from "../AuthService";
-import {Header, Response, Request} from "../types";
+import {Headers, Response, Request} from "../types";
 
 type UserData = {
   authToken: string,
@@ -143,8 +143,25 @@ export default class RemoteUserService implements UserService {
   }
 
   public searchUsers(searchString: string): Promise<UserProfile[]> {
-    throw new Error("Method not implemented.");
+    return new Promise<UserProfile[]>((resolve, reject) => {
+      this.sendAuthorizedRequest({
+        method: "GET",
+        url: `${this.baseUrl}/profiles/${searchString}`
+      }, response => {
+        resolve(
+          response.data.map((user: any) => ({
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            about: user.about
+          })) as UserProfile[]
+        );
+      }, response => {
+        reject(response);
+      })
+    });
   }
+
 
   loadProfile(username: string): Promise<UserProfile> {
     throw new Error("Method not implemented.");
@@ -155,14 +172,15 @@ export default class RemoteUserService implements UserService {
     onSuccess: (response: Response<any>) => void,
     onFailure: (response: Response<any>) => void
   ) {
-    const currentUser = Cookies.get("userData") as UserData|undefined;
+    const currentUser = Cookies.getJSON("userData") as UserData|undefined;
+
     if (!currentUser) {
       throw new Error("no user is present");
     }
 
     const headers = this.mergeHeaders(
-      [{"Authorization": `Token ${currentUser.authToken}`}],
-      request.headers ? request.headers : []
+      {"Authorization": `Token ${currentUser.authToken}`},
+      request.headers ? request.headers : { }
     );
 
     axios({
@@ -188,14 +206,14 @@ export default class RemoteUserService implements UserService {
   }
 
 
-  private mergeHeaders(h1: Header[], h2: Header[]) : Header[] {
-    const result: Header[] = [];
-    for (let header of h1) {
-      result.push(header);
+  private mergeHeaders(h1: Headers, h2: Headers) : Headers {
+    const result: Headers = { };
+    for (let header of Object.keys(h1)) {
+      result[header] = h1[header];
     }
-    for (let header of h2) {
-      if (result.findIndex(h => h.key === header.key) === -1) {
-        result.push(header);
+    for (let header of Object.keys(h2)) {
+      if (!result[header]) {
+        result[header] = h2[header];
       }
     }
     return result;

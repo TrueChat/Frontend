@@ -38,17 +38,20 @@ export default class App extends React.Component {
         <Route exact path="/group/">
           <GroupCreationPage groupService={this.groupService}/>
         </Route>
-        <Route path="/group/:groupId">
+        <Route path="/group/:groupId" render={props => (
           <GroupProfilePage
             userService={this.userService}
             groupService={this.groupService}
+            match={props.match}
           />
+        )}>
         </Route>
-        <Route exact path="/profile">
+        <Route exact path="/profile/">
           <ProfileEditPage userService={this.userService} />
         </Route>
-        <Route path="/profile/:username">
-          <UserProfilePage userService={this.userService} />
+        <Route path="/profile/:username" render={props => (
+          <UserProfilePage userService={this.userService} match={props.match}/>
+        )}>
         </Route>
       </BrowserRouter>
     )

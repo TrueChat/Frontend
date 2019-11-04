@@ -30,7 +30,7 @@ export default class RemoteGroupService implements GroupService {
     };
 
     this.userService.sendAuthorizedRequest({
-      method: "POST",
+      method: "GET",
       url: `${this.baseUrl}/chats/${groupId}`,
     }, _onSuccess, _onFailure);
   }
@@ -53,7 +53,7 @@ export default class RemoteGroupService implements GroupService {
       lastName: chatMember.last_name
     }
   }
-  
+
   update(groupDetails: GroupDetails, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "PUT",
