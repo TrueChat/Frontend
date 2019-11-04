@@ -163,6 +163,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
           groupService={this.props.groupService}
           userService={this.props.userService}
           groupId={this.props.groupId}
+          groupDetails={this.state.groupDetails as GroupDetails}
         />
       ),
       header: "Add members"
