@@ -1,0 +1,94 @@
+.Group-info-tab {
+  @import "../../../common/Input";
+  @import "../../../../../widgets/InitialsAvatar";
+
+  .group-members {
+    //.members {
+    //  max-height: 15rem;
+    //  overflow-y: scroll;
+    //}
+
+    .actions-row {
+      background-color: rgba(0, 0, 0, 0.3);
+      color: $WHITE_60;
+    }
+
+    .member-details {
+      align-items: center;
+      .member-initials {
+        @import "../../styles/InitialsAvatarOverride";
+      }
+
+      .member-full-name {
+        font-weight: bold;
+        color: $WHITE_90;
+      }
+
+      .member-username {
+        .link {
+          color: $WHITE_70;
+          font-weight: bold;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+
+      .actions-dropdown {
+        color: $WHITE_70;
+        text-align: center;
+        top: 0;
+
+        .Dropdown {
+          position: relative;
+          font-size: 1.5rem;
+          .toggle {
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          .options {
+            position: absolute;
+            display: none;
+            $width: 5rem;
+            left: -$width / 2;
+
+            font-size: 1rem;
+
+            &.expand {
+              display: block;
+              text-align: left;
+              border: 0.1rem solid $WHITE_70;
+              background-color: $BACKGROUND;
+              z-index: 9999;
+              padding: 0.2rem 0.2rem;
+
+              .option {
+                background-color: $DARK;
+                margin: 0.2rem 0 0.2rem 0;
+                min-width: $width;
+                padding: 0.15rem;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .row {
+    background-color: $DARK;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
+  }
+
+  .input-label {
+    color: $WHITE_60;
+  }
+
+}

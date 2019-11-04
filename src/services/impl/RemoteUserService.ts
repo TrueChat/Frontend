@@ -1,7 +1,14 @@
-import AuthService, {RegistrationData} from "./AuthService";
-import {ConstraintViolation} from "../pages/auth/AuthenticationPage";
+import RemoteAuthService from "./RemoteAuthService";
+import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
+import UserService, {
+  SubmissionFailureHandler,
+  SubmissionSuccessHandler,
+  UserProfile
+} from "../UserService";
+import {RegistrationData} from "../AuthService";
+import {Headers, Response, Request} from "../types";
 
 type UserData = {
   authToken: string,
@@ -12,25 +19,13 @@ type ServerErrorResponse = {
   [key: string]: string[]
 }
 
-export type UserProfile = {
-  first_name: string,
-  last_name: string,
-  username: string,
-  about: string
-}
-
-export type SubmissionFailureHandler = (violations: ConstraintViolation[]) => void;
-export type SubmissionSuccessHandler = () => void;
-
-export default class UserService {
+export default class RemoteUserService implements UserService {
   private readonly baseUrl: string;
-  private readonly authService: AuthService;
-
-  constructor(baseUrl: string, authService: AuthService) {
+  private readonly authService: RemoteAuthService;
+  constructor(baseUrl: string, authService: RemoteAuthService) {
     this.authService = authService;
     this.baseUrl = baseUrl;
   }
-
   public login(
       username: string,
       password: string,
@@ -55,7 +50,6 @@ export default class UserService {
       });
   }
 
-
   public register(
       data: RegistrationData,
       onSuccess?: SubmissionSuccessHandler,
@@ -78,6 +72,7 @@ export default class UserService {
   public userIsPresent() : boolean {
     return Cookies.get("userData") !== undefined;
   }
+
 
   private saveUserToCookies(userData: UserData) {
     Cookies.set("userData", userData);
@@ -145,5 +140,88 @@ export default class UserService {
     return {
       property: property, violates: true, message: message
     }
+  }
+
+  public searchUsers(searchString: string): Promise<UserProfile[]> {
+    return new Promise<UserProfile[]>((resolve, reject) => {
+      this.sendAuthorizedRequest({
+        method: "GET",
+        url: `${this.baseUrl}/profiles/${searchString}`
+      }, response => {
+        resolve(response.data);
+      }, response => {
+        reject(response);
+      })
+    });
+  }
+
+
+  loadProfile(username: string): Promise<UserProfile> {
+    return new Promise((resolve, reject) => {
+      this.sendAuthorizedRequest({
+        method: "GET",
+        url: `${this.baseUrl}/profile/${username}`
+      }, response => {
+        resolve(response.data);
+      }, response => {
+        reject(response);
+      });
+    });
+  }
+
+  public sendAuthorizedRequest(
+    request: Request,
+    onSuccess: (response: Response<any>) => void,
+    onFailure: (response: Response<any>) => void
+  ) {
+    const currentUser = Cookies.getJSON("userData") as UserData|undefined;
+
+    if (!currentUser) {
+      throw new Error("no user is present");
+    }
+
+    const headers = this.mergeHeaders(
+      {"Authorization": `Token ${currentUser.authToken}`},
+      request.headers ? request.headers : { }
+    );
+
+    axios({
+      headers: headers,
+      method: request.method,
+      url: request.url,
+      data: request.body
+    })
+    .then(response => {
+      onSuccess({
+        headers: response.headers,
+        data: response.data,
+        status: response.status
+      });
+    })
+    .catch((error: AxiosError) => {
+      onFailure({
+        headers: error.response ? error.response.headers : [],
+        data: error.response && error.response.data,
+        status: error.response ? error.response.status: 400
+      });
+    })
+  }
+
+
+  private mergeHeaders(h1: Headers, h2: Headers) : Headers {
+    const result: Headers = { };
+    for (let header of Object.keys(h1)) {
+      result[header] = h1[header];
+    }
+    for (let header of Object.keys(h2)) {
+      if (!result[header]) {
+        result[header] = h2[header];
+      }
+    }
+    return result;
+  }
+
+  public getCurrentUser(): string {
+    return (Cookies.getJSON("userData") as UserData).username;
   }
 }

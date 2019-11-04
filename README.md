@@ -1,6 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Usage
+
+There exists several pages. You can access them using following URLs:
+
+- `/` - main page where you can search users
+- `/auth` - login or register
+- `/profile` - show your profile
+- `/profile/{username}` - show the profile of a user with the username
+- `/group/` - create new group
+- `/group/{groupId}` - show group info (if you are the creator of the group you can edit it)
+
+
+## Build and run
 
 In the project directory, you can run:
 

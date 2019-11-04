@@ -2,9 +2,8 @@ import React from "react";
 import FormInput from "./form-inputs/FormInput";
 import "./ProfileEditForm.scss";
 import SubmitButton from "../../common/SubmitButton";
-import {UserProfile} from "../../../services/UserService";
-import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../services/UserService";
-import {ClipLoader} from "react-spinners";
+import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../services/UserService";
+import {Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
 require("bootstrap/dist/css/bootstrap.css");
 
 type ProfileEditFormProps = {
@@ -41,14 +40,6 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
 
   render() {
     const { loading, submissionResult, userProfile } = this.state;
-    const Avatar = ({userProfile} : {userProfile: UserProfile}) => (
-      <span className="initials">
-        {userProfile.first_name && userProfile.last_name 
-          ? `${userProfile.first_name[0]}${userProfile.last_name[0]}`
-          : "NS"
-        }
-      </span>
-    );
     const SubmissionMessage = ({message} : {message: string}) => (
       <div className="text-center m-1 c-attention">
         {message}
@@ -63,7 +54,7 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
         <div className="row info-row align-center">
           <div className="col-3">
             <div className="user-image-container">
-              <Avatar userProfile={userProfile} />
+              <UserInitialsAvatar profile={userProfile}/>
             </div>
           </div>
           <div className="col-9">
@@ -103,7 +94,7 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
           <SubmitButton onClick={this.handleSubmit}/>
         </div>
         {loading
-          ? <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
+          ? <div className="text-center"><Spinner /></div>
           : null
         }
         {/* TODO should remove message on input focus?? */}

@@ -4,8 +4,8 @@ import SubmitButton from "../../../common/SubmitButton";
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
-import {ClipLoader} from "react-spinners";
 import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../services/UserService";
+import {Spinner} from "../../../../widgets/Widgets";
 
 export type SignUpData = {
   email: string,
@@ -103,7 +103,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
   private showSpinner() {
     return (
       <div className="tab-section text-center">
-        <ClipLoader color="rgb(153, 153, 153)"/>
+        <Spinner />
       </div>
     );
   }

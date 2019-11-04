@@ -4,8 +4,8 @@ import SubmitButton from "../../../common/SubmitButton"
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
 import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
-import {ClipLoader} from "react-spinners";
 import {SubmissionFailureHandler} from "../../../../services/UserService";
+import {Spinner} from "../../../../widgets/Widgets";
 
 export type SignInData = {
   login: string,
@@ -64,7 +64,7 @@ export default class SignInTab extends React.Component<SignInTabProps> {
         </div>
         {this.renderConstraintViolationMessageIfAny("_other")}
         {this.state.loading
-          ? <div className="tab-section text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
+          ? <div className="tab-section text-center"><Spinner /></div>
           : null
         }
       </div>

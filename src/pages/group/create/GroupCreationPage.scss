@@ -1,0 +1,13 @@
+@import "../../styles/Common";
+
+.Group-creation-page {
+  @import "form/GroupCreationForm";
+
+  width: 25rem;
+  margin: 0 auto;
+  background-color: $BACKGROUND;
+
+  border: 0.15rem solid $WHITE_70;
+  border-radius: $BORDER_RADIUS;
+
+}
