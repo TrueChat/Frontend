@@ -8,14 +8,21 @@ import ProfileViewPage from "./view/ProfileViewPage";
 export default class UserProfilePage extends React.Component<Props> {
 
   state = {
-    profile: undefined
+    profile: undefined,
+    redirect: undefined
   };
 
   componentDidMount(): void {
-    this.props.userService.loadProfile(this.getUsername())
+    this.props.userService
+      .loadProfile(this.getUsername())
       .then(profile => {
         this.setState(state => ({
           ...state, profile: profile
+        }))
+      })
+      .catch(error => {
+        this.setState(state => ({
+          ...state, redirect: "/"
         }))
       });
   }
@@ -23,6 +30,11 @@ export default class UserProfilePage extends React.Component<Props> {
   render() {
     const { userService } = this.props;
     const profile = this.state.profile as UserProfile|undefined;
+    const redirect = this.state.redirect as string|undefined;
+
+    if (redirect) {
+      return <Redirect to={redirect}/>;
+    }
 
     if (!userService.userIsPresent()) {
       return <Redirect to="/auth"/>
@@ -56,5 +68,6 @@ type Props = {
 }
 
 type State = {
-  profile?: UserProfile
+  profile?: UserProfile,
+  redirect?: string
 }

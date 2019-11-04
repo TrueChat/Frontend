@@ -148,14 +148,7 @@ export default class RemoteUserService implements UserService {
         method: "GET",
         url: `${this.baseUrl}/profiles/${searchString}`
       }, response => {
-        resolve(
-          response.data.map((user: any) => ({
-            username: user.username,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            about: user.about
-          })) as UserProfile[]
-        );
+        resolve(response.data);
       }, response => {
         reject(response);
       })
@@ -164,7 +157,16 @@ export default class RemoteUserService implements UserService {
 
 
   loadProfile(username: string): Promise<UserProfile> {
-    throw new Error("Method not implemented.");
+    return new Promise((resolve, reject) => {
+      this.sendAuthorizedRequest({
+        method: "GET",
+        url: `${this.baseUrl}/profile/${username}`
+      }, response => {
+        resolve(response.data);
+      }, response => {
+        reject(response);
+      });
+    });
   }
 
   public sendAuthorizedRequest(

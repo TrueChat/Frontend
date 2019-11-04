@@ -24,9 +24,8 @@ export default class GroupProfilePage extends React.Component<Props, State> {
       },
       () => {
         this.setState(state => ({
-          ...state,
-          redirect: "/"
-        }))
+          ...state, redirect: "/"
+        }));
       }
     );
   }

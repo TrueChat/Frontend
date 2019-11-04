@@ -66,6 +66,7 @@ export default class GroupAddMembersTab extends React.Component<Props, State> {
     })
   };
 
+  // As it searches all users, there might me 409 conflict when adding users that are already in group
   private addToGroup = (user: GroupUser) => {
     this.setState(state => {
       user.isMember = true;
