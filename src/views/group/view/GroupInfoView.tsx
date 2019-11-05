@@ -39,7 +39,7 @@ export default class GroupInfoView extends React.Component<Props, State> {
     const groupDetails = this.state.groupDetails as GroupDetails|undefined;
 
     return (
-      <div className="Group-info-layout">
+      <div className="Group-info-view">
         <div className="header">
           <div className="header-text">
             Group Info
@@ -57,7 +57,7 @@ export default class GroupInfoView extends React.Component<Props, State> {
 
   renderGroupDetails(groupDetails: GroupDetails) {
     return (
-      <div className="Group-info-view">
+      <React.Fragment>
         <div className="data-section">
           <div className="row">
             <div className="col-3">
@@ -100,7 +100,7 @@ export default class GroupInfoView extends React.Component<Props, State> {
             ))}
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 

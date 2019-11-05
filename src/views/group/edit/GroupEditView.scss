@@ -1,13 +1,8 @@
 @import "../../../pages/styles/Common";
 
 .Group-edit-view {
-  @import "tabs/info/GroupInfoTab";
   @import "tabs/members/GroupSearchMembersTab";
-
-  max-width: 25rem;
-  border: 0.125rem solid $WHITE_70;
-  border-radius: $BORDER_RADIUS;
-  margin: 0 auto;
+  @import "tabs/info/GroupInfoTab";
 
   .header {
     $tab-control-width: 3rem;

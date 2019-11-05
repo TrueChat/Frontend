@@ -1,12 +1,12 @@
-import "./SearchPage.scss"
+import "./SearchView.scss"
 import React from "react";
 import UserService, {UserProfile} from "../../services/UserService";
 import {Spinner, UserInitialsAvatar} from "../../widgets/Widgets";
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import Input from "../../views/group/common/Input";
-import "./SearchPage.scss";
+import "./SearchView.scss";
 
-export default class SearchPage extends React.Component<Props, State> {
+export default class SearchView extends React.Component<Props, State> {
 
   state = {
     searchResults: [],
@@ -18,7 +18,7 @@ export default class SearchPage extends React.Component<Props, State> {
     const { loading, searchString } = this.state;
 
     return (
-      <div className="Search-page">
+      <div className="Search-view">
         <div className="header">
           <div className="row">
             <div className="col-10">

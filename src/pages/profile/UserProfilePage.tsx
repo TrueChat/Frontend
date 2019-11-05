@@ -3,11 +3,10 @@ import {match, Redirect} from "react-router-dom";
 import UserService, {UserProfile} from "../../services/UserService";
 import {Spinner} from "../../widgets/Widgets";
 import UserProfileView from "../../views/profile/view/UserProfileView";
-import UserProfileEditView from "../../views/profile/edit/UserProfileEditView";
 import "./UserProfilePage.scss";
-import UserProfileEditPage from "./UserProfileEditPage";
+import UserProfileEditView from "../../views/profile/edit/UserProfileEditView";
 
-export default class UserProfilePage extends React.Component<Props> {
+export default class UserProfilePage extends React.Component<Props, State> {
 
   state = {
     profile: undefined,
@@ -47,7 +46,7 @@ export default class UserProfilePage extends React.Component<Props> {
     }
   
     if (profile.username === userService.getCurrentUser()) {
-      return <UserProfileEditPage userProfile={profile} userService={userService} />
+      return <UserProfileEditView userProfile={profile} userService={userService} />
     } else {
       return <UserProfileView userProfile={profile} />
     }

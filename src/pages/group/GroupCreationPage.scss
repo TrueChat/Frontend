@@ -2,12 +2,4 @@
 
 .Group-creation-page {
   @import "../../views/group/create/GroupCreationView";
-
-  width: 25rem;
-  margin: 0 auto;
-  background-color: $BACKGROUND;
-
-  border: 0.15rem solid $WHITE_70;
-  border-radius: $BORDER_RADIUS;
-
 }

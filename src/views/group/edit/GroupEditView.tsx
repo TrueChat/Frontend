@@ -30,7 +30,7 @@ export default class GroupEditView
   render() {
     const currentTab = this.currentTab();
     return (
-      <div className="Group-view-layout">
+      <div className="Group-edit-view">
         <div className="header">
           {this.state.tabStack.length > 1
             ? this.renderShowPreviousTabControl()

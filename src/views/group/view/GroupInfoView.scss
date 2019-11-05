@@ -1,6 +1,9 @@
+@import "../../../pages/styles/Common";
 @import "../edit/GroupEditView";
+@import "../edit/tabs/info/GroupInfoTab";
 
 .Group-info-view {
+  @extend .Group-edit-view;
   @extend .Group-info-tab;
 
   .label {

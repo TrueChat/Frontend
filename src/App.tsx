@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticationPage from "./pages/auth/AuthenticationPage";
 import { BrowserRouter, Route } from "react-router-dom";
-import UserProfileEditPage from "./pages/profile/UserProfileEditPage";
+import UserProfileEditView from "./views/profile/edit/UserProfileEditView";
 import MainPage from "./pages/main/MainPage";
 // import MockUserService from "./services/mock/MockUserService";
 import GroupCreationPage from "./pages/group/GroupCreationPage";
@@ -11,6 +11,8 @@ import UserProfilePage from "./pages/profile/UserProfilePage";
 import RemoteUserService from "./services/impl/RemoteUserService";
 import RemoteAuthService from "./services/impl/RemoteAuthService";
 import RemoteGroupService from "./services/impl/RemoteGroupService";
+import MockUserService from "./services/mock/MockUserService";
+import MockGroupService from "./services/mock/MockGroupService";
 
 export default class App extends React.Component {
 
@@ -19,12 +21,12 @@ export default class App extends React.Component {
   };
 
   private readonly baseUrl = "https://true-chat.herokuapp.com";
-  private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
-  private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
+  // private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
+  // private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
 
   // For testing purposes
-  // private readonly userService = new MockUserService(300);
-  // private readonly groupService = new MockGroupService(300);
+  private readonly userService = new MockUserService(300);
+  private readonly groupService = new MockGroupService(300);
 
   render() {
     return (
@@ -50,7 +52,7 @@ export default class App extends React.Component {
         )}>
         </Route>
         <Route exact path="/profile/">
-          <UserProfileEditPage userService={this.userService} />
+          <UserProfileEditView userService={this.userService} />
         </Route>
         <Route path="/profile/:username" render={props => (
           <UserProfilePage userService={this.userService} match={props.match}/>

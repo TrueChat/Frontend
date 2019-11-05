@@ -1,160 +1,82 @@
 import React from "react";
-import FormInput from "./form-inputs/FormInput";
-import "./UserProfileEditView.scss";
-import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../services/UserService";
-import {Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
-import SubmitButton from "../../../pages/common/SubmitButton";
-require("bootstrap/dist/css/bootstrap.css");
+import UserProfileEditForm from "./UserProfileEditForm";
+import {ClipLoader} from "react-spinners";
+import { Redirect } from "react-router-dom";
+import UserService, {
+  SubmissionFailureHandler,
+  SubmissionSuccessHandler,
+  UserProfile
+} from "../../../services/UserService";
+
+type Props = {
+  userService: UserService,
+  userProfile?: UserProfile
+}
+
+type State = {
+  userProfile?: UserProfile
+}
 
 export default class UserProfileEditView extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    const userProfile = props.userProfile;
     this.state = {
-      loading: false,
-      submissionResult: undefined,
-      userProfile: {
-        first_name: userProfile.last_name || "",
-        last_name: userProfile.last_name || "",
-        username: userProfile.username || "",
-        about: userProfile.about || ""
-      }
+      userProfile: props.userProfile
+    }
+  }
+
+  componentDidMount(): void {
+    if (!this.state.userProfile) {
+      this.loadUserProfile();
     }
   }
 
   render() {
-    const { loading, submissionResult, userProfile } = this.state;
-    const SubmissionMessage = ({message} : {message: string}) => (
-      <div className="text-center m-1 c-attention">
-        {message}
-      </div>
-    );
-
+    if (!this.props.userService.userIsPresent()) {
+      return <Redirect to="/auth" />
+    }
     return (
-      <div className="User-profile-edit-view">
-        <div className="header">
-          Your Profile
+      <div className="Profile-page">
+        <div className="form-container">
+          {this.state.userProfile
+            ? <UserProfileEditForm userProfile={this.state.userProfile} onSubmit={this.handleSubmit} />
+            : <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
+          }
         </div>
-        <div className="row info-row align-center">
-          <div className="col-3">
-            <div className="user-image-container">
-              <UserInitialsAvatar profile={userProfile}/>
-            </div>
-          </div>
-          <div className="col-9">
-            <div className="row">
-              <div className="w-100">
-                <div className="row-title">First Name</div>
-                <div>
-                  <FormInput value={userProfile.first_name} onChange={this.updateFirstName} />
-                </div>
-              </div>
-              <div className="w-100">
-                <div className="row-title">Last Name</div>
-                <div>
-                  <FormInput value={userProfile.last_name} onChange={this.updateLastName} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row info-row">
-          <div className="col-12">
-            <div className="row-title">Username</div>
-            <div>
-              <FormInput value={userProfile.username} onChange={this.updateUsername} />
-            </div>
-          </div>
-        </div>
-        <div className="row info-row">
-          <div className="col-12">
-            <div className="row-title">Bio</div>
-            <div>
-              <FormInput value={userProfile.about} onChange={this.updateBio} />
-            </div>
-          </div>
-        </div>
-        <div className="row submit-container text-right">
-          <SubmitButton onClick={this.handleSubmit}/>
-        </div>
-        {loading
-          ? <div className="text-center"><Spinner /></div>
-          : null
-        }
-        {/* TODO should remove message on input focus?? */}
-        {submissionResult !== undefined
-          ? !submissionResult
-            ? <SubmissionMessage message="Error: something went wrong" />
-            : <SubmissionMessage message="Successfully updated" />
-          : null
-        }
       </div>
     );
   }
 
-  private handleSubmit = () => {
-    const onSuccess = () => {
-      this.setState(state => ({
-        ...state,
-        loading: false,
-        submissionResult: true
-      }));
+  private handleSubmit = (userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
+    const _onSuccess = () => {
+      this.setState(state => {
+        if (onSuccess) {
+          onSuccess();
+        }
+        return {
+          ...state,
+          userProfile: userProfile
+        }
+      })
     };
-    const onFail = () => {
-      this.setState(state => ({
-        ...state,
-        loading: false,
-        submissionResult: false
-      }));
-    };
-    this.setState(state => ({
-      ...state,
-      loading: true
-    }), () => {
-      this.props.onSubmit(this.state.userProfile, onSuccess, onFail);
-    });
+    this.props.userService.updateProfileForCurrentUser(userProfile, _onSuccess, onFailure);
   };
 
-  private updateUsername = (value: string) => {
-    this.updateProfileField("username", value);
-  };
-
-  private updateFirstName = (value: string) => {
-    this.updateProfileField("first_name", value);
-  };
-
-  private updateBio = (value: string) => {
-    this.updateProfileField("about", value);
-  };
-
-  private updateLastName = (value: string) => {
-    this.updateProfileField("last_name", value);
-  };
-
-  private updateProfileField(field: string, value: string) {
-    this.setState(state => ({
-      ...state,
-      userProfile: {
-        ...state.userProfile,
-        [field]: value
-      }
-    }));
+  private loadUserProfile() {
+    if (!this.props.userService.userIsPresent()) {
+      return;
+    }
+    this.props.userService.loadProfileForCurrentUser()
+      .then(userProfile => {
+        this.setState(state => ({
+          ...state,
+          userProfile
+        }))
+      })
+      .catch(error => {
+        // TODO handle loading errors
+      })
   }
-}
 
-type Props = {
-  userProfile: UserProfile,
-  onSubmit: (
-    userProfile: UserProfile,
-    onSuccess?: SubmissionSuccessHandler,
-    onFailure?: SubmissionFailureHandler
-  ) => void
 }
-type State = {
-  userProfile: UserProfile,
-  submissionResult?: boolean,
-  loading: boolean
-}
-
-// Without this comment it will not compile

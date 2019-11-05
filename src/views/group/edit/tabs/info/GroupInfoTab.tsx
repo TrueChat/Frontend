@@ -63,7 +63,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     const groupDetails = (this.state.groupDetails as GroupDetails);
 
     return (
-      <div className="Group-info-layout">
+      <div className="Group-info-tab">
         <div className="data-section">
           <div className="row">
             <div className="col-3">
