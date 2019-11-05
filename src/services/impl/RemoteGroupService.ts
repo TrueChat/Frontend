@@ -12,12 +12,20 @@ export default class RemoteGroupService implements GroupService {
     this.baseUrl = baseUrl;
   }
 
-  public createGroup(data: GroupCreationData, onSuccess?: ResponseHandler<any>, onFailure?: ResponseHandler<any>): void {
+  public createGroup(data: GroupCreationData, onSuccess?: ResponseHandler<string>, onFailure?: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "POST",
       url: `${this.baseUrl}/chats/`,
       body: data 
-    }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure));
+    }, response => {
+      if (onSuccess) {
+        onSuccess({
+          headers: response.headers,
+          data: response.data.id,
+          status: response.status
+        });
+      }
+    }, this.wrapHandler(onFailure));
   }  
   
   public loadDetails(groupId: string, onSuccess: (details: GroupDetails) => void, onFailure: () => void): void {

@@ -36,7 +36,10 @@ export default class App extends React.Component {
           <AuthenticationPage userService={this.userService} />
         </Route>
         <Route exact path="/group/">
-          <GroupCreationPage groupService={this.groupService}/>
+          <GroupCreationPage
+            userService={this.userService}
+            groupService={this.groupService}
+          />
         </Route>
         <Route path="/group/:groupId" render={props => (
           <GroupProfilePage

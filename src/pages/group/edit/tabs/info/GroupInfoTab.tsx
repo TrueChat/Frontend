@@ -220,7 +220,7 @@ const MemberDetails = (props: MemberDetailsProps) => (
     <div className="col-2">
       <div className="actions-dropdown">
         <Dropdown
-          toggle={(<i className="fas fa-bars"/>)}
+          toggle={(<i className="fas fa-ellipsis-v"/>)}
           options={["Kick", "Ban"]}
           onSelect={option => props.onActionSelected(option)}
         />
