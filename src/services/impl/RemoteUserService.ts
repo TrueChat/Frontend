@@ -35,13 +35,18 @@ export default class RemoteUserService implements UserService {
     this.authService
       .login(username, password)
       .then(response => {
-        this.saveUserToCookies({
-          authToken: response.key,
-          username: username
-        });
-        if (onSuccess) {
-          onSuccess();
-        }
+        const userData = {authToken: response.key, username: ""};
+        this.saveUserToCookies(userData);
+        this.loadProfileForCurrentUser()
+          .then(profile => {
+            this.saveUserToCookies({
+              authToken: userData.authToken,
+              username: profile.username
+            });
+            if (onSuccess) {
+              onSuccess();
+            }
+          });
       })
       .catch(error => {
         if (onFailure) {
