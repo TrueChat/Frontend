@@ -31,9 +31,10 @@ export default class GroupEditPage
     return (
       <div className="Group-page-layout">
         <div className="header">
-          <div className="previous-tab-control" onClick={_ => this.pop()}>
-            <i className="fas fa-arrow-left"/>
-          </div>
+          {this.state.tabStack.length > 1
+            ? this.renderPreviousTabControl()
+            : null
+          }
           <div className="header-text">
             {currentTab.header}
           </div>
@@ -41,6 +42,14 @@ export default class GroupEditPage
         <div className="body">
           {currentTab.body}
         </div>
+      </div>
+    );
+  }
+
+  renderPreviousTabControl() {
+    return (
+      <div className="previous-tab-control" onClick={_ => this.pop()}>
+        <i className="fas fa-arrow-left"/>
       </div>
     );
   }
