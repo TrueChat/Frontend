@@ -1,4 +1,4 @@
-import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
+import {ConstraintViolation} from "../../components/pages/auth/AuthenticationPage";
 import UserService, {UserProfile} from "../UserService";
 import {RegistrationData} from "../AuthService";
 

@@ -1,5 +1,5 @@
 import RemoteAuthService from "./RemoteAuthService";
-import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
+import {ConstraintViolation} from "../../components/pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
 import axios, {AxiosError} from "axios";
 import UserService, {

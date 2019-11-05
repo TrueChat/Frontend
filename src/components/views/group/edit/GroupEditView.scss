@@ -1,0 +1,37 @@
+@import "../../../styles/Common";
+
+.Group-edit-view {
+  @import "tabs/members/GroupSearchMembersTab";
+  @import "tabs/info/GroupInfoTab";
+
+  .header {
+    $tab-control-width: 3rem;
+    position: relative;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem $tab-control-width 0.5rem $tab-control-width;
+
+    background-color: $DARKER;
+
+    .header-text {
+      color: $ORANGE;
+      text-align: center;
+    }
+
+    .previous-tab-control {
+      position: absolute;
+      width: $tab-control-width;
+      left: $tab-control-width / 2;
+      color: $WHITE_60;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .body {
+    padding-top: 0.25rem;
+    background-color: $BACKGROUND;
+    margin-left: 0.75px;
+  }
+}
