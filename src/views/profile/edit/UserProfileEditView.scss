@@ -1,6 +1,6 @@
-@import "../../styles/Common";
+@import "../../../pages/styles/Common";
 
-.Profile-edit-form {
+.User-profile-edit-view {
   @import "form-inputs/FormInput";
   @import "../../../widgets/InitialsAvatar";
   padding-left: 1px;

@@ -1,29 +1,14 @@
 import React from "react";
 import FormInput from "./form-inputs/FormInput";
-import "./ProfileEditForm.scss";
-import SubmitButton from "../../common/SubmitButton";
+import "./UserProfileEditView.scss";
 import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../services/UserService";
 import {Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
+import SubmitButton from "../../../pages/common/SubmitButton";
 require("bootstrap/dist/css/bootstrap.css");
 
-type ProfileEditFormProps = {
-  userProfile: UserProfile,
-  onSubmit: (
-    userProfile: UserProfile,
-    onSuccess?: SubmissionSuccessHandler,
-    onFailure?: SubmissionFailureHandler
-  ) => void
-}
+export default class UserProfileEditView extends React.Component<Props, State> {
 
-type ProfileEditFormState = {
-  userProfile: UserProfile,
-  submissionResult?: boolean,
-  loading: boolean
-}
-
-export default class ProfileEditForm extends React.Component<ProfileEditFormProps, ProfileEditFormState> {
-
-  constructor(props: ProfileEditFormProps) {
+  constructor(props: Props) {
     super(props);
     const userProfile = props.userProfile;
     this.state = {
@@ -47,7 +32,7 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
     );
 
     return (
-      <div className="Profile-edit-form">
+      <div className="User-profile-edit-view">
         <div className="header">
           Your Profile
         </div>
@@ -131,7 +116,6 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
     });
   };
 
-
   private updateUsername = (value: string) => {
     this.updateProfileField("username", value);
   };
@@ -158,3 +142,19 @@ export default class ProfileEditForm extends React.Component<ProfileEditFormProp
     }));
   }
 }
+
+type Props = {
+  userProfile: UserProfile,
+  onSubmit: (
+    userProfile: UserProfile,
+    onSuccess?: SubmissionSuccessHandler,
+    onFailure?: SubmissionFailureHandler
+  ) => void
+}
+type State = {
+  userProfile: UserProfile,
+  submissionResult?: boolean,
+  loading: boolean
+}
+
+// Without this comment it will not compile

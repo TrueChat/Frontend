@@ -1,23 +1,32 @@
 import React from "react";
-import ProfileEditForm from "./ProfileEditForm";
-import "./ProfileEditPage.scss";
+import UserProfileEditView from "../../views/profile/edit/UserProfileEditView";
+import "./UserProfileEditPage.scss";
 import {ClipLoader} from "react-spinners";
 import { Redirect } from "react-router-dom";
-import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../services/UserService";
+import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../services/UserService";
 
-type ProfilePageProps = {
+type Props = {
   userService: UserService,
+  userProfile?: UserProfile
 }
 
-export default class ProfileEditPage extends React.Component<ProfilePageProps> {
+type State = {
+  userProfile?: UserProfile
+}
 
-  state : {userProfile?: UserProfile } = {
-    userProfile: undefined
-  };
+export default class UserProfileEditPage extends React.Component<Props, State> {
 
-  constructor(props: ProfilePageProps) {
+  constructor(props: Props) {
     super(props);
-    this.loadUserProfile();
+    this.state = {
+      userProfile: props.userProfile
+    }
+  }
+
+  componentDidMount(): void {
+    if (!this.state.userProfile) {
+      this.loadUserProfile();
+    }
   }
 
   render() {
@@ -28,7 +37,7 @@ export default class ProfileEditPage extends React.Component<ProfilePageProps> {
       <div className="Profile-page">
         <div className="form-container">
           {this.state.userProfile
-            ? <ProfileEditForm userProfile={this.state.userProfile} onSubmit={this.handleSubmit} />
+            ? <UserProfileEditView userProfile={this.state.userProfile} onSubmit={this.handleSubmit} />
             : <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
           }
         </div>

@@ -1,9 +1,9 @@
 import React from "react";
 import {UserInitialsAvatar} from "../../../widgets/Widgets";
 import {UserProfile} from "../../../services/UserService";
-import "./ProfileViewPage.scss";
+import "./UserProfileView.scss";
 
-export default class ProfileViewPage extends React.Component<Props> {
+export default class UserProfileView extends React.Component<Props> {
 
   render() {
     const { userProfile } = this.props;

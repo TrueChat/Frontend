@@ -1,6 +1,6 @@
-@import "../edit/ProfileEditForm";
 .Profile-view-page {
-  @extend .Profile-edit-form;
+  @import "../edit/UserProfileEditView";
+
   max-width: 25rem;
   margin: 2rem auto;
   .row-value {
