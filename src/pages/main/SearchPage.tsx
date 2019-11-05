@@ -3,7 +3,7 @@ import React from "react";
 import UserService, {UserProfile} from "../../services/UserService";
 import {Spinner, UserInitialsAvatar} from "../../widgets/Widgets";
 import {Link, NavLink} from "react-router-dom";
-import Input from "../group/common/Input";
+import Input from "../../views/group/common/Input";
 import "./SearchPage.scss";
 
 export default class SearchPage extends React.Component<Props, State> {

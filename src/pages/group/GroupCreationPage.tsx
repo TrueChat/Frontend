@@ -1,6 +1,6 @@
 import React from "react";
-import GroupService, { GroupCreationData } from "../../../services/GroupService";
-import GroupCreationForm from "./form/GroupCreationForm";
+import GroupService, { GroupCreationData } from "../../services/GroupService";
+import GroupCreationView from "../../views/group/create/GroupCreationView";
 import "./GroupCreationPage.scss";
 import {ResponseHandler} from "../../../services/types";
 
@@ -13,7 +13,7 @@ export default class GroupCreationPage extends React.Component<GroupCreationPage
   render() {
     return (
       <div className="Group-creation-page">
-        <GroupCreationForm onSubmit={this.handleSubmit} />
+        <GroupCreationView onSubmit={this.handleSubmit} />
       </div>
     );
   }

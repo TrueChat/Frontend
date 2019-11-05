@@ -1,11 +1,11 @@
 import React from "react";
-import "./GroupEditPage.scss";
+import "./GroupEditView.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
-import GroupService from "../../../services/GroupService";
+import GroupService, {GroupDetails} from "../../../services/GroupService";
 import UserService from "../../../services/UserService";
 require("bootstrap/dist/css/bootstrap.css");
 
-export default class GroupEditPage
+export default class GroupEditView
     extends React.Component<Props, State>
     implements StackController {
 
@@ -22,6 +22,7 @@ export default class GroupEditPage
           groupService={props.groupService}
           userService={props.userService}
           groupId={props.groupId}
+          groupDetails={props.groupDetails}
         />
     });
   }
@@ -29,11 +30,12 @@ export default class GroupEditPage
   render() {
     const currentTab = this.currentTab();
     return (
-      <div className="Group-page-layout">
+      <div className="Group-view-layout">
         <div className="header">
-          <div className="previous-tab-control" onClick={_ => this.pop()}>
-            <i className="fas fa-arrow-left"/>
-          </div>
+          {this.state.tabStack.length > 1
+            ? this.renderShowPreviousTabControl()
+            : null
+          }
           <div className="header-text">
             {currentTab.header}
           </div>
@@ -41,6 +43,14 @@ export default class GroupEditPage
         <div className="body">
           {currentTab.body}
         </div>
+      </div>
+    );
+  }
+
+  renderShowPreviousTabControl() {
+    return (
+      <div className="previous-tab-control" onClick={_ => this.pop()}>
+        <i className="fas fa-arrow-left"/>
       </div>
     );
   }
@@ -76,7 +86,8 @@ export interface StackController {
 type Props = {
   groupService: GroupService,
   userService: UserService,
-  groupId: string
+  groupId: string,
+  groupDetails?: GroupDetails
 }
 
 type State = {

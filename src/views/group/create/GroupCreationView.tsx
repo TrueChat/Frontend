@@ -1,12 +1,11 @@
 import {
   GroupCreationData
-} from "../../../../services/GroupService";
+} from "../../../services/GroupService";
 import React from "react";
-import SubmitButton from "../../../common/SubmitButton";
-import {GroupInitialsAvatar, Spinner} from "../../../../widgets/Widgets";
-import Input from "../../common/Input";
-import {ResponseHandler} from "../../../../services/types";
-require("bootstrap/dist/css/bootstrap.min.css");
+import SubmitButton from "../../../pages/common/SubmitButton";
+import {GroupInitialsAvatar, Spinner} from "../../../widgets/Widgets";
+import Input from "../common/Input";
+import {ResponseHandler} from "../../../services/types";
 
 type Props = {
   onSubmit: (
@@ -20,7 +19,7 @@ type State = {
   data: GroupCreationData
 }
 
-export default class GroupCreationForm extends React.Component<Props, State> {
+export default class GroupCreationView extends React.Component<Props, State> {
 
   state = {
     data: {
@@ -33,7 +32,7 @@ export default class GroupCreationForm extends React.Component<Props, State> {
   render() {
     const { data } = this.state;
     return (
-      <div className="Group-creation-form">
+      <div className="Group-creation-view">
         <div className="header">
           Create Group
         </div>

@@ -1,18 +1,23 @@
 import React from "react";
-import "./GroupInfoPage.scss";
+import "./GroupInfoView.scss";
 import GroupService, {GroupDetails, GroupMember} from "../../../services/GroupService";
 import UserService from "../../../services/UserService";
 import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
 require("bootstrap/dist/css/bootstrap.css");
 
-export default class GroupInfoPage extends React.Component<Props, State> {
+export default class GroupInfoView extends React.Component<Props, State> {
 
-  state = {
-    groupDetails: undefined
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      groupDetails: props.groupDetails
+    }
+  }
 
   componentDidMount(): void {
-    this.loadDetails();
+    if (!this.state.groupDetails) {
+      this.loadDetails();
+    }
   }
 
   private loadDetails = () => {
@@ -34,7 +39,7 @@ export default class GroupInfoPage extends React.Component<Props, State> {
     const groupDetails = this.state.groupDetails as GroupDetails|undefined;
 
     return (
-      <div className="Group-page-layout">
+      <div className="Group-info-layout">
         <div className="header">
           <div className="header-text">
             Group Info
@@ -52,7 +57,7 @@ export default class GroupInfoPage extends React.Component<Props, State> {
 
   renderGroupDetails(groupDetails: GroupDetails) {
     return (
-      <div className="Group-info-page">
+      <div className="Group-info-view">
         <div className="data-section">
           <div className="row">
             <div className="col-3">
@@ -122,7 +127,8 @@ const MemberDetails = (props: MemberDetailsProps) => (
 type Props = {
   groupService: GroupService,
   userService: UserService
-  groupId: string
+  groupId: string,
+  groupDetails?: GroupDetails
 }
 
 type State = {

@@ -1,13 +1,13 @@
 import React from "react";
 import "./GroupInfoTab.scss";
-import {StackController} from "../../GroupEditPage";
-import {Dropdown, GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
-import Input from "../../../common/Input";
+import {StackController} from "../../GroupEditView";
+import {Dropdown, GroupInitialsAvatar, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../services/GroupService";
-import GroupAddMembersTab from "../members/GroupAddMembersTab";
+import GroupSearchMembersTab from "../members/GroupSearchMembersTab";
 import UserService from "../../../../../services/UserService";
-import SubmitButton from "../../../../common/SubmitButton";
 import {Link} from "react-router-dom";
+import Input from "../../../common/Input";
+import SubmitButton from "../../../../../pages/common/SubmitButton";
 require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoTab extends React.Component<Props, State> {
@@ -15,14 +15,16 @@ export default class GroupInfoTab extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      groupDetails: undefined,
+      groupDetails: props.groupDetails,
       loading: true
     };
 
   };
 
   componentDidMount(): void {
-    this.loadDetails();
+    if (!this.state.groupDetails) {
+      this.loadDetails();
+    }
   }
 
   private loadDetails = () => {
@@ -61,7 +63,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     const groupDetails = (this.state.groupDetails as GroupDetails);
 
     return (
-      <div className="Group-info-tab">
+      <div className="Group-info-layout">
         <div className="data-section">
           <div className="row">
             <div className="col-3">
@@ -159,7 +161,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
   private showMembersSearchTab = () => {
     this.props.stackController.push({
       body: (
-        <GroupAddMembersTab
+        <GroupSearchMembersTab
           groupService={this.props.groupService}
           userService={this.props.userService}
           groupId={this.props.groupId}
@@ -233,7 +235,8 @@ type Props = {
   stackController: StackController,
   groupService: GroupService,
   userService: UserService
-  groupId: string
+  groupId: string,
+  groupDetails?: GroupDetails
 }
 
 type State = {

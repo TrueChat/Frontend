@@ -1,8 +1,8 @@
-@import "../../../styles/Common";
+@import "../../../pages/styles/Common";
 
-.Group-creation-form {
-  @import "../../common/Input";
-  @import "../../../../widgets/InitialsAvatar";
+.Group-creation-view {
+  @import "../common/Input";
+  @import "../../../widgets/InitialsAvatar";
 
   border-radius: $BORDER_RADIUS;
   border-color: $WHITE_70;
@@ -32,10 +32,6 @@
     .input-label {
       color: $WHITE_60;
     }
-  }
-
-  .footer {
-
   }
 
   .Initials-avatar {

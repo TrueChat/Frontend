@@ -1,8 +1,8 @@
-@import "../../styles/Common";
+@import "../../../pages/styles/Common";
 
-.Group-page-layout {
+.Group-edit-view {
   @import "tabs/info/GroupInfoTab";
-  @import "tabs/members/GroupAddMembersTab";
+  @import "tabs/members/GroupSearchMembersTab";
 
   max-width: 25rem;
   border: 0.125rem solid $WHITE_70;

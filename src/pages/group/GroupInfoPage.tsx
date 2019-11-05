@@ -3,10 +3,10 @@ import {match, Redirect} from "react-router-dom"
 import GroupService, {GroupDetails} from "../../services/GroupService";
 import UserService from "../../services/UserService";
 import {Spinner} from "../../widgets/Widgets";
-import GroupEditPage from "./edit/GroupEditPage";
-import GroupInfoPage from "./view/GroupInfoPage";
+import GroupEditView from "../../views/group/edit/GroupEditView";
+import GroupInfoView from "../../views/group/view/GroupInfoView";
 
-export default class GroupProfilePage extends React.Component<Props, State> {
+export default class GroupInfoPage extends React.Component<Props, State> {
 
   state = {
     groupDetails: undefined,
@@ -47,7 +47,7 @@ export default class GroupProfilePage extends React.Component<Props, State> {
 
     if (groupDetails.creator.username === userService.getCurrentUser()) {
       return (
-        <GroupEditPage
+        <GroupEditView
           groupService={groupService}
           userService={userService}
           groupId={groupDetails.groupId}
@@ -55,10 +55,11 @@ export default class GroupProfilePage extends React.Component<Props, State> {
       );
     } else {
       return (
-        <GroupInfoPage
+        <GroupInfoView
           groupService={groupService}
           userService={userService}
           groupId={groupDetails.groupId}
+          groupDetails={groupDetails}
         />
       );
     }

@@ -1,9 +1,9 @@
 @import "../styles/Common";
 
 .Search-page {
-  @import "../group/common/Input";
+  @import "../../views/group/common/Input";
   @import "../../widgets/InitialsAvatar";
-  @import "../group/edit/styles/InitialsAvatarOverride";
+  @import "../../views/group/edit/styles/InitialsAvatarOverride";
 
   max-width: 25rem;
   margin: 2rem auto;

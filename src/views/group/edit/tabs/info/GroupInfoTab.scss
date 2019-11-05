@@ -3,10 +3,6 @@
   @import "../../../../../widgets/InitialsAvatar";
 
   .group-members {
-    //.members {
-    //  max-height: 15rem;
-    //  overflow-y: scroll;
-    //}
 
     .actions-row {
       background-color: rgba(0, 0, 0, 0.3);
@@ -90,5 +86,4 @@
   .input-label {
     color: $WHITE_60;
   }
-
 }

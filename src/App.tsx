@@ -4,9 +4,9 @@ import { BrowserRouter, Route } from "react-router-dom";
 import ProfileEditPage from "./pages/profile/edit/ProfileEditPage";
 import MainPage from "./pages/main/MainPage";
 // import MockUserService from "./services/mock/MockUserService";
-import GroupCreationPage from "./pages/group/create/GroupCreationPage";
+import GroupCreationPage from "./pages/group/GroupCreationPage";
 // import MockGroupService from "./services/mock/MockGroupService";
-import GroupProfilePage from "./pages/group/GroupProfilePage";
+import GroupInfoPage from "./pages/group/GroupInfoPage";
 import UserProfilePage from "./pages/profile/UserProfilePage";
 import RemoteUserService from "./services/impl/RemoteUserService";
 import RemoteAuthService from "./services/impl/RemoteAuthService";
@@ -39,7 +39,7 @@ export default class App extends React.Component {
           <GroupCreationPage groupService={this.groupService}/>
         </Route>
         <Route path="/group/:groupId" render={props => (
-          <GroupProfilePage
+          <GroupInfoPage
             userService={this.userService}
             groupService={this.groupService}
             match={props.match}
