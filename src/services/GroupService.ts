@@ -30,7 +30,7 @@ export default interface GroupService {
 
   createGroup(
     data: GroupCreationData,
-    onSuccess?: ResponseHandler<any>,
+    onSuccess?: ResponseHandler<string>,
     onFailure?: ResponseHandler<any>
   ) : void;
 
