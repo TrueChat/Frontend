@@ -75,7 +75,7 @@ export default class MockUserService implements UserService{
   }
 
   getCurrentUser(): string {
-    return "mock_userss";
+    return "mock_users";
   }
 
   loadProfile(username: string) : Promise<UserProfile> {

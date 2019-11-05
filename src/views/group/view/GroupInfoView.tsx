@@ -3,6 +3,7 @@ import "./GroupInfoView.scss";
 import GroupService, {GroupDetails, GroupMember} from "../../../services/GroupService";
 import UserService from "../../../services/UserService";
 import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
+import {Link} from "react-router-dom";
 require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoView extends React.Component<Props, State> {
@@ -118,7 +119,9 @@ const MemberDetails = (props: MemberDetailsProps) => (
         {props.member.firstName} {props.member.lastName}
       </div>
       <div className="member-username">
-        @{props.member.username}
+        <Link to={`/profile/${props.member.username}`} className="link">
+          @{props.member.username}
+        </Link>
       </div>
     </div>
   </div>
