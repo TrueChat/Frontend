@@ -1,7 +1,6 @@
 import React from "react";
 import UserProfileEditForm from "./UserProfileEditForm";
 import {ClipLoader} from "react-spinners";
-import { Redirect } from "react-router-dom";
 import UserService, {
   SubmissionFailureHandler,
   SubmissionSuccessHandler,
@@ -33,18 +32,10 @@ export default class UserProfileEditView extends React.Component<Props, State> {
   }
 
   render() {
-    if (!this.props.userService.userIsPresent()) {
-      return <Redirect to="/auth" />
-    }
     return (
-      <div className="Profile-page">
-        <div className="form-container">
-          {this.state.userProfile
-            ? <UserProfileEditForm userProfile={this.state.userProfile} onSubmit={this.handleSubmit} />
-            : <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
-          }
-        </div>
-      </div>
+      this.state.userProfile
+        ? <UserProfileEditForm userProfile={this.state.userProfile} onSubmit={this.handleSubmit} />
+        : <div className="text-center"><ClipLoader color="rgb(153, 153, 153)"/></div>
     );
   }
 

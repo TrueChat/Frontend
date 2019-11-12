@@ -75,12 +75,12 @@ export default class MockUserService implements UserService{
   }
 
   getCurrentUser(): string {
-    return "mock_users";
+    return "mock_user";
   }
 
   loadProfile(username: string) : Promise<UserProfile> {
     return new Promise<UserProfile>((resolve, reject) => {
-      resolve({ username: "mock_usersdsadsa", first_name: "Name", last_name: "Surname", about: "mock_about"});
+      resolve({ username: "mock_user", first_name: "Name", last_name: "Surname", about: "mock_about"});
     })
   }
 

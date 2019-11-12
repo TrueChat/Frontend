@@ -1,8 +1,8 @@
-.Profile-view-page {
-  @import "../edit/UserProfileEditForm";
+@import "../edit/UserProfileEditForm";
 
-  max-width: 25rem;
-  margin: 2rem auto;
+.User-profile-view {
+  @extend .User-profile-edit-view;
+
   .row-value {
     font-weight: bold;
     color: $WHITE_90;

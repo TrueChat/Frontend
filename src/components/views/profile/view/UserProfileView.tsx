@@ -8,7 +8,7 @@ export default class UserProfileView extends React.Component<Props> {
   render() {
     const { userProfile } = this.props;
     return (
-      <div className="Profile-view-page">
+      <div className="User-profile-view">
         <div className="header">
           Your Profile
         </div>

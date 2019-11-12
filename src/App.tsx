@@ -3,14 +3,12 @@ import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
 import { BrowserRouter, Route } from "react-router-dom";
 import UserProfileEditView from "./components/views/profile/edit/UserProfileEditView";
 import MainPage from "./components/pages/main/MainPage";
-// import MockUserService from "./services/mock/MockUserService";
 import GroupCreationPage from "./components/pages/group/GroupCreationPage";
-// import MockGroupService from "./services/mock/MockGroupService";
 import GroupInfoPage from "./components/pages/group/GroupInfoPage";
 import UserProfilePage from "./components/pages/profile/UserProfilePage";
-import RemoteUserService from "./services/impl/RemoteUserService";
-import RemoteAuthService from "./services/impl/RemoteAuthService";
-import RemoteGroupService from "./services/impl/RemoteGroupService";
+// import RemoteUserService from "./services/impl/RemoteUserService";
+// import RemoteAuthService from "./services/impl/RemoteAuthService";
+// import RemoteGroupService from "./services/impl/RemoteGroupService";
 import MockUserService from "./services/mock/MockUserService";
 import MockGroupService from "./services/mock/MockGroupService";
 
@@ -20,7 +18,7 @@ export default class App extends React.Component {
     value: ""
   };
 
-  private readonly baseUrl = "https://true-chat.herokuapp.com";
+  // private readonly baseUrl = "https://true-chat.herokuapp.com";
   // private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
   // private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
 
