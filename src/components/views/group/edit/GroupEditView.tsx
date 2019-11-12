@@ -1,8 +1,8 @@
 import React from "react";
 import "./GroupEditView.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
-import GroupService, {GroupDetails} from "../../../services/GroupService";
-import UserService from "../../../services/UserService";
+import GroupService, {GroupDetails} from "../../../../services/GroupService";
+import UserService from "../../../../services/UserService";
 require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupEditView

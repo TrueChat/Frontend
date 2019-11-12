@@ -1,7 +1,7 @@
 import React from "react";
 import "./GroupSearchMembersTab.scss";
-import UserService, {UserProfile} from "../../../../../services/UserService";
-import GroupService, {GroupDetails} from "../../../../../services/GroupService";
+import UserService, {UserProfile} from "../../../../../../services/UserService";
+import GroupService, {GroupDetails} from "../../../../../../services/GroupService";
 import {Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
 import Input from "../../../common/Input";
 require("bootstrap/dist/css/bootstrap.css");

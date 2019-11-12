@@ -1,7 +1,7 @@
 import React from "react";
 import "./GroupInfoView.scss";
-import GroupService, {GroupDetails, GroupMember} from "../../../services/GroupService";
-import UserService from "../../../services/UserService";
+import GroupService, {GroupDetails, GroupMember} from "../../../../services/GroupService";
+import UserService from "../../../../services/UserService";
 import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
 import {Link} from "react-router-dom";
 require("bootstrap/dist/css/bootstrap.css");

@@ -1,6 +1,6 @@
 import "./SearchView.scss"
 import React from "react";
-import UserService, {UserProfile} from "../../services/UserService";
+import UserService, {UserProfile} from "../../../services/UserService";
 import {Spinner, UserInitialsAvatar} from "../../widgets/Widgets";
 import {NavLink} from "react-router-dom";
 import Input from "../group/common/Input";

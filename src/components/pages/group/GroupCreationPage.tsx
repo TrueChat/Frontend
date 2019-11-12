@@ -3,8 +3,8 @@ import GroupService, { GroupCreationData } from "../../../services/GroupService"
 import GroupCreationView from "../../views/group/create/GroupCreationView";
 import "./GroupCreationPage.scss";
 import { Redirect } from "react-router-dom";
-import UserService from "../../services/UserService";
-import {ResponseHandler} from "../../services/types";
+import UserService from "../../../services/UserService";
+import {ResponseHandler} from "../../../services/types";
 
 type Props = {
   groupService: GroupService,

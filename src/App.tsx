@@ -32,10 +32,10 @@ export default class App extends React.Component {
     return (
       <BrowserRouter>
         <Route exact path="/">
-          <MainPage userService={this.userService} />
+          <MainPage userService={this.userService}/>
         </Route>
         <Route exact path="/auth">
-          <AuthenticationPage userService={this.userService} />
+          <AuthenticationPage userService={this.userService}/>
         </Route>
         <Route exact path="/group/">
           <GroupCreationPage
@@ -52,7 +52,7 @@ export default class App extends React.Component {
         )}>
         </Route>
         <Route exact path="/profile/">
-          <UserProfileEditView userService={this.userService} />
+          <UserProfileEditView userService={this.userService}/>
         </Route>
         <Route path="/profile/:username" render={props => (
           <UserProfilePage userService={this.userService} match={props.match}/>
