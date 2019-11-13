@@ -1,6 +1,6 @@
 import GroupService, { GroupMember } from "../GroupService";
 import { GroupCreationData, GroupDetails } from "../GroupService"
-import { ResponseHandler, Response } from "../types"
+import {ResponseHandler, Response, ConstraintViolation} from "../types"
 import RemoteUserService from "./RemoteUserService";
 
 export default class RemoteGroupService implements GroupService {
@@ -12,7 +12,7 @@ export default class RemoteGroupService implements GroupService {
     this.baseUrl = baseUrl;
   }
 
-  public createGroup(data: GroupCreationData, onSuccess?: ResponseHandler<string>, onFailure?: ResponseHandler<any>): void {
+  public createGroup(data: GroupCreationData, onSuccess?: ResponseHandler<string>, onFailure?: ResponseHandler<ConstraintViolation[]>): void {
     this.userService.sendAuthorizedRequest({
       method: "POST",
       url: `${this.baseUrl}/chats/`,
@@ -62,7 +62,7 @@ export default class RemoteGroupService implements GroupService {
     }
   }
 
-  update(groupDetails: GroupDetails, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<any>): void {
+  update(groupDetails: GroupDetails, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<ConstraintViolation[]>): void {
     this.userService.sendAuthorizedRequest({
       method: "PUT",
       url: `${this.baseUrl}/chats/${groupDetails.groupId}/`,

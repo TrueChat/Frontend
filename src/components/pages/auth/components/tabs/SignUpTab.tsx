@@ -7,6 +7,7 @@ import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../..
 import {Spinner} from "../../../../widgets/Widgets";
 import "bootstrap/dist/css/bootstrap.css";
 import {ConstraintViolation} from "../../../../../services/types";
+import {findConstraintViolation, hasViolation} from "../../../../../services/utils";
 
 export type SignUpData = {
   email: string,
@@ -142,18 +143,9 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
   };
 
   private renderViolationMessageIfPresent(property: string) {
-    const violation = this.findViolation(property, this.state.violations);
-    if (violation !== null) {
+    let violation = findConstraintViolation(property, this.state.violations);
+    if (violation) {
       return <ErrorMessage message={violation.message}/>
-    }
-  }
-
-  private findViolation(property: string, violations: ConstraintViolation[]) : null | ConstraintViolation {
-    let i = violations.findIndex(violation => violation.property === property);
-    if (i === -1) {
-      return null;
-    } else {
-      return violations[i];
     }
   }
 

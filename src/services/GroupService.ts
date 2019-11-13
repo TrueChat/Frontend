@@ -31,7 +31,7 @@ export default interface GroupService {
   createGroup(
     data: GroupCreationData,
     onSuccess?: ResponseHandler<string>,
-    onFailure?: ResponseHandler<any>
+    onFailure?: ResponseHandler<ConstraintViolation[]>
   ) : void;
 
   loadDetails(
