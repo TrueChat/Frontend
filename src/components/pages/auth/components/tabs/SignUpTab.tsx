@@ -6,6 +6,7 @@ import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
 import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../../services/UserService";
 import {Spinner} from "../../../../widgets/Widgets";
+import "bootstrap/dist/css/bootstrap.css";
 
 export type SignUpData = {
   email: string,
@@ -46,7 +47,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
       <div>
         <div className="tab-section">
           <AuthFormInput
-            label={"Login"}
+            label="Login"
             value={formData.login}
             changeHandler={value => this.setField("login", value)}
           />
@@ -54,7 +55,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
         </div>
         <div className="tab-section">
           <AuthFormInput
-            label={"Email"}
+            label="Email"
             value={formData.email}
             type="email"
             changeHandler={value => this.setField("email", value)}
@@ -63,7 +64,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
         </div>
         <div className="tab-section">
           <AuthFormInput
-            label={"Password"}
+            label="Password"
             value={formData.password}
             type="password"
             changeHandler={value => this.setField("password", value)}
@@ -72,7 +73,7 @@ export default class SignUpTab extends React.Component<SignUpTabProps> {
         </div>
         <div className="tab-section">
           <AuthFormInput
-            label={"Confirm password"}
+            label="Confirm password"
             value={formData.confirmPassword}
             type="password"
             changeHandler={value => this.setField("confirmPassword", value)}

@@ -1,4 +1,5 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.css"
 import "./GroupInfoTab.scss";
 import {StackController} from "../../GroupEditView";
 import {Dropdown, GroupInitialsAvatar, Spinner, UserInitialsAvatar} from "../../../../../widgets/Widgets";
@@ -8,7 +9,6 @@ import UserService from "../../../../../../services/UserService";
 import {Link} from "react-router-dom";
 import Input from "../../../common/Input";
 import SubmitButton from "../../../../../widgets/SubmitButton";
-require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 

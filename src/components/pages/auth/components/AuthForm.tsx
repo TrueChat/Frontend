@@ -5,8 +5,7 @@ import {SignUpData} from "./tabs/SignUpTab";
 import SignInTab from "./tabs/SignInTab";
 import SignUpTab from "./tabs/SignUpTab";
 import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../services/UserService";
-
-require("bootstrap/dist/css/bootstrap.css");
+import "bootstrap/dist/css/bootstrap.css";
 
 enum Tab {
   SignIn, SignUp

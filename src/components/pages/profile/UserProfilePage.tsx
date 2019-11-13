@@ -5,6 +5,7 @@ import {Spinner} from "../../widgets/Widgets";
 import UserProfileView from "../../views/profile/view/UserProfileView";
 import "./UserProfilePage.scss";
 import UserProfileEditView from "../../views/profile/edit/UserProfileEditView";
+import "bootstrap/dist/css/bootstrap.css";
 
 export default class UserProfilePage extends React.Component<Props, State> {
 

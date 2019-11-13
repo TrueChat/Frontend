@@ -6,6 +6,7 @@ import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
 import {SubmissionFailureHandler} from "../../../../../services/UserService";
 import {Spinner} from "../../../../widgets/Widgets";
+import "bootstrap/dist/css/bootstrap.css";
 
 export type SignInData = {
   login: string,

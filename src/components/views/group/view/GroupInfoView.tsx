@@ -4,7 +4,6 @@ import GroupService, {GroupDetails, GroupMember} from "../../../../services/Grou
 import UserService from "../../../../services/UserService";
 import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
 import {Link} from "react-router-dom";
-require("bootstrap/dist/css/bootstrap.css");
 
 export default class GroupInfoView extends React.Component<Props, State> {
 

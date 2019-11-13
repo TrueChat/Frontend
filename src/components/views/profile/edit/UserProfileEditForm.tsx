@@ -4,7 +4,6 @@ import "./UserProfileEditForm.scss";
 import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../../services/UserService";
 import {Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
 import SubmitButton from "../../../widgets/SubmitButton";
-require("bootstrap/dist/css/bootstrap.css");
 
 export default class UserProfileEditForm extends React.Component<Props, State> {
 

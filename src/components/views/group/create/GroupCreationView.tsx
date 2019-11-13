@@ -6,6 +6,7 @@ import SubmitButton from "../../../widgets/SubmitButton";
 import {GroupInitialsAvatar, Spinner} from "../../../widgets/Widgets";
 import Input from "../common/Input";
 import {ResponseHandler} from "../../../../services/types";
+import "bootstrap/dist/css/bootstrap.css";
 
 type Props = {
   onSubmit: (
