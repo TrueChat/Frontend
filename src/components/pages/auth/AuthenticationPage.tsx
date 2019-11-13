@@ -11,13 +11,6 @@ type AuthenticationPageProps = {
   userService: UserService
 }
 
-export type ConstraintViolation = {
-  property: string,
-  violates: boolean,
-  message: string
-}
-
-
 export default class AuthenticationPage extends React.Component<AuthenticationPageProps> {
 
   state : {redirectTo?: string}  = {

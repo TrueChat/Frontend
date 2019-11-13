@@ -9,6 +9,11 @@ import UserService from "../../../../../../services/UserService";
 import {Link} from "react-router-dom";
 import Input from "../../../common/Input";
 import SubmitButton from "../../../../../widgets/SubmitButton";
+import {Response} from "../../../../../../services/types";
+
+import {ConstraintViolation} from "../../../../../../services/types";
+import {findConstraintViolation, hasViolation} from "../../../../../../services/utils";
+import ErrorMessage from "../../../../../pages/auth/components/common/ErrorMessage";
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 
@@ -16,7 +21,8 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     super(props);
     this.state = {
       groupDetails: props.groupDetails,
-      loading: true
+      loading: true,
+      violations: []
     };
 
   };
@@ -78,6 +84,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               <div>
                 <Input value={groupDetails.name} onChange={this.updateGroupName}/>
               </div>
+              {this.renderViolationIfPresent("name")}
             </div>
           </div>
           <div className="row">
@@ -89,6 +96,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
             <div className="col-12">
               <Input value={groupDetails.description} onChange={this.updateGroupDescription}/>
             </div>
+            {this.renderViolationIfPresent("description")}
           </div>
         </div>
         <div className="group-members">
@@ -119,18 +127,32 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     );
   }
 
+  renderViolationIfPresent(property: string) {
+    let violation = findConstraintViolation(property, this.state.violations);
+    if (violation) {
+      return <ErrorMessage message={violation.message}/>
+    }
+  }
+
   private updateDetails = (details: GroupDetails) => {
     this.setState(state => ({
       ...state, loading: true
     }), () => {
       this.props.groupService.update(
-        details, () => {
-          this.setState(state => ({
-            ...state, loading: false
-          }));
-        }, () => { }
-      );
-    })
+        details, this.handleUpdateSuccess, this.handleUpdateFailure);
+    });
+  };
+
+  private handleUpdateSuccess = () => {
+    this.setState(state => ({
+      ...state, loading: false, violations: []
+    }))
+  };
+
+  private handleUpdateFailure = (response: Response<ConstraintViolation[]>) => {
+    this.setState(state => ({
+      ...state, loading: false, violations: response.data
+    }))
   };
 
   private doActionOnMember = (member: GroupMember, action: string) => {
@@ -241,5 +263,6 @@ type Props = {
 
 type State = {
   groupDetails?: GroupDetails,
-  loading: boolean
+  loading: boolean,
+  violations: ConstraintViolation[]
 }
