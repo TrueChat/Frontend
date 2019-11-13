@@ -16,4 +16,10 @@ export type Response<T = any> = {
   headers: Headerss
 }
 
-export type ResponseHandler<T = any> = (response: Response<T>) => void
+export type ResponseHandler<T = any> = (response: Response<T>) => void;
+
+export type ConstraintViolation = {
+  property: string,
+  violates: boolean,
+  message: string
+};

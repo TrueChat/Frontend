@@ -1,6 +1,5 @@
-import {ConstraintViolation} from "../components/pages/auth/AuthenticationPage";
 import {RegistrationData} from "./AuthService";
-import {ResponseHandler} from "./types";
+import { ConstraintViolation } from "./types";
 
 export type UserProfile = {
   first_name: string,

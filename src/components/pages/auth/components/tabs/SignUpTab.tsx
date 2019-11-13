@@ -2,11 +2,11 @@ import React from "react";
 import AuthFormInput from "../form-inputs/AuthFormInput";
 import SubmitButton from "../../../../widgets/SubmitButton";
 import AuthFormCheckbox from "../form-inputs/AuthFormCheckbox";
-import {ConstraintViolation} from "../../AuthenticationPage";
 import ErrorMessage from "../common/ErrorMessage";
 import {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../../../services/UserService";
 import {Spinner} from "../../../../widgets/Widgets";
 import "bootstrap/dist/css/bootstrap.css";
+import {ConstraintViolation} from "../../../../../services/types";
 
 export type SignUpData = {
   email: string,

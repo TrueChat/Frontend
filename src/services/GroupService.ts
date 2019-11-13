@@ -1,4 +1,4 @@
-import {ResponseHandler} from "./types";
+import {ConstraintViolation, ResponseHandler} from "./types";
 
 export type GroupCreationData = {
   name: string,
@@ -43,8 +43,9 @@ export default interface GroupService {
   update(
     groupDetails: GroupDetails,
     onSuccess: ResponseHandler<any>,
-    onFailure: ResponseHandler<any>
+    onFailure: ResponseHandler<ConstraintViolation[]>
   ) : void;
+
 
   addUser(
     groupId: string,

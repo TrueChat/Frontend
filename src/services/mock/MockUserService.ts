@@ -1,6 +1,6 @@
-import {ConstraintViolation} from "../../components/pages/auth/AuthenticationPage";
 import UserService, {UserProfile} from "../UserService";
 import {RegistrationData} from "../AuthService";
+import {ConstraintViolation} from "../types";
 
 export default class MockUserService implements UserService{
 
@@ -75,7 +75,7 @@ export default class MockUserService implements UserService{
   }
 
   getCurrentUser(): string {
-    return "mock_users";
+    return "mock_user";
   }
 
   loadProfile(username: string) : Promise<UserProfile> {

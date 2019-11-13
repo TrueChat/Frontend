@@ -133,6 +133,14 @@ export default class GroupInfoTab extends React.Component<Props, State> {
     })
   };
 
+  private handleUpdateSuccess = () => {
+
+  };
+
+  private handleSubmitFailure = () => {
+
+  };
+
   private doActionOnMember = (member: GroupMember, action: string) => {
     switch (action) {
       case "Kick":
