@@ -5,8 +5,11 @@ import React from "react";
 import SubmitButton from "../../../widgets/SubmitButton";
 import {GroupInitialsAvatar, Spinner} from "../../../widgets/Widgets";
 import Input from "../common/Input";
-import {ResponseHandler} from "../../../../services/types";
+import {ConstraintViolation, ResponseHandler} from "../../../../services/types";
+import {Response} from "../../../../services/types";
 import "bootstrap/dist/css/bootstrap.css";
+import {findConstraintViolation} from "../../../../services/utils";
+import ErrorMessage from "../../../pages/auth/components/common/ErrorMessage";
 
 type Props = {
   onSubmit: (
@@ -17,7 +20,8 @@ type Props = {
 }
 
 type State = {
-  data: GroupCreationData
+  data: GroupCreationData,
+  violations: ConstraintViolation[]
 }
 
 export default class GroupCreationView extends React.Component<Props, State> {
@@ -27,7 +31,8 @@ export default class GroupCreationView extends React.Component<Props, State> {
       name: "",
       description: ""
     },
-    loading: false
+    loading: false,
+    violations: []
   };
 
   render() {
@@ -49,6 +54,7 @@ export default class GroupCreationView extends React.Component<Props, State> {
               <div>
                 <Input value={data.name} onChange={this.updateName}/>
               </div>
+              {this.renderViolationIfPresent("name")}
             </div>
           </div>
           <div className="row">
@@ -58,6 +64,7 @@ export default class GroupCreationView extends React.Component<Props, State> {
             <div className="col-12">
               <Input value={data.description} onChange={this.updateDescription}/>
             </div>
+            {this.renderViolationIfPresent("description")}
           </div>
         </div>
         <div className="footer">
@@ -90,19 +97,28 @@ export default class GroupCreationView extends React.Component<Props, State> {
     });
   };
 
-  handleSubmitFail = () => {
+  handleSubmitFail = (response: Response<ConstraintViolation[]>) => {
     this.setState(state => ({
       ...state,
-      loading: false
+      loading: false,
+      violations: response.data
     }));
   };
 
   handleSubmitSuccess = () => {
     this.setState(state => ({
       ...state,
-      loading: false
+      loading: false,
+      violations: []
     }));
   };
+
+  renderViolationIfPresent(property: string) {
+    let violation = findConstraintViolation(property, this.state.violations);
+    if (violation) {
+      return <ErrorMessage message={violation.message}/>
+    }
+  }
 
   updateName = (name: string) => {
     this.setState(state => ({
