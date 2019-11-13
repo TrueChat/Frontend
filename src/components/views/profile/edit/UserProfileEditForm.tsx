@@ -14,7 +14,7 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
       loading: false,
       submissionResult: undefined,
       userProfile: {
-        first_name: userProfile.last_name || "",
+        first_name: userProfile.first_name || "",
         last_name: userProfile.last_name || "",
         username: userProfile.username || "",
         about: userProfile.about || ""
