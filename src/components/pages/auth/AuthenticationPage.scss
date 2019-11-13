@@ -4,6 +4,10 @@
   $border-width: 0.1rem;
   $header-height: 3.5rem;
 
+  margin: 5rem auto;
+  max-width: 22.5rem;
+  border: 1px solid $WHITE_70;
+  border-radius: $BORDER_RADIUS;
 
   >.header {
     height: $header-height;

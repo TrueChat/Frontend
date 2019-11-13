@@ -5,6 +5,7 @@ import UserService from "../../../services/UserService";
 import {Spinner} from "../../widgets/Widgets";
 import GroupEditView from "../../views/group/edit/GroupEditView";
 import GroupInfoView from "../../views/group/view/GroupInfoView";
+import "./GroupInfoPage.scss";
 
 export default class GroupInfoPage extends React.Component<Props, State> {
 
@@ -45,8 +46,11 @@ export default class GroupInfoPage extends React.Component<Props, State> {
       return this.showSpinner();
     }
 
+    let viewToRender = null;
+
+
     if (groupDetails.creator.username === userService.getCurrentUser()) {
-      return (
+      viewToRender = (
         <GroupEditView
           groupService={groupService}
           userService={userService}
@@ -54,7 +58,7 @@ export default class GroupInfoPage extends React.Component<Props, State> {
         />
       );
     } else {
-      return (
+      viewToRender =  (
         <GroupInfoView
           groupService={groupService}
           userService={userService}
@@ -63,6 +67,12 @@ export default class GroupInfoPage extends React.Component<Props, State> {
         />
       );
     }
+
+    return (
+      <div className="Group-info-page">
+        {viewToRender}
+      </div>
+    )
   }
 
   showSpinner = () => {

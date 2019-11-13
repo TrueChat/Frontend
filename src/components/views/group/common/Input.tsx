@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./Input.scss";
+
 type Props = {
   value: string,
   onChange: (value: string) => void,

@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import UserService from "../../../services/UserService";
 import SearchView from "../../views/search/SearchView";
+import "./MainPage.scss";
 
 type Props = {
   userService: UserService
@@ -15,7 +16,11 @@ export default class MainPage extends React.Component<Props> {
     if (!this.props.userService.userIsPresent()) {
       return <Redirect to="/auth" />
     } else {
-      return <SearchView userService={this.props.userService}/>
+      return (
+        <div className="Main-page">
+          <SearchView userService={this.props.userService}/>
+        </div>
+      )
     }
   }
 

@@ -7,6 +7,7 @@ import {GroupInitialsAvatar, Spinner} from "../../../widgets/Widgets";
 import Input from "../common/Input";
 import {ConstraintViolation, ResponseHandler} from "../../../../services/types";
 import {Response} from "../../../../services/types";
+import "./GroupCreationView.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import {findConstraintViolation} from "../../../../services/utils";
 import ErrorMessage from "../../../pages/auth/components/common/ErrorMessage";

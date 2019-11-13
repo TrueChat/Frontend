@@ -1,7 +1,6 @@
 import React from 'react';
 import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
 import { BrowserRouter, Route } from "react-router-dom";
-import UserProfileEditView from "./components/views/profile/edit/UserProfileEditView";
 import MainPage from "./components/pages/main/MainPage";
 import GroupCreationPage from "./components/pages/group/GroupCreationPage";
 import GroupInfoPage from "./components/pages/group/GroupInfoPage";
@@ -53,7 +52,7 @@ export default class App extends React.Component {
         )}>
         </Route>
         <Route exact path="/profile/">
-          <UserProfileEditView userService={this.userService}/>
+          <UserProfilePage userService={this.userService}/>
         </Route>
         <Route path="/profile/:username" render={props => (
           <UserProfilePage userService={this.userService} match={props.match}/>

@@ -45,12 +45,16 @@ export default class UserProfilePage extends React.Component<Props, State> {
     if (!profile) {
       return this.showSpinner();
     }
-  
-    if (profile.username === userService.getCurrentUser()) {
-      return <UserProfileEditView userProfile={profile} userService={userService} />
-    } else {
-      return <UserProfileView userProfile={profile} />
-    }
+
+    let viewToRender = (profile.username === userService.getCurrentUser())
+      ? <UserProfileEditView userProfile={profile} userService={userService} />
+      : <UserProfileView userProfile={profile} />;
+
+    return (
+      <div className="User-profile-page">
+        {viewToRender}
+      </div>
+    );
   }
 
   showSpinner = () => {
