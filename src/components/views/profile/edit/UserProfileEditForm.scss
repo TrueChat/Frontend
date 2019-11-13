@@ -1,0 +1,53 @@
+@import "../../../styles/Common";
+
+.User-profile-edit-view {
+  @import "form-inputs/FormInput";
+  @import "../../../widgets/InitialsAvatar";
+  padding-left: 1px;
+
+  .Form-input {
+    .input {
+      color: $WHITE_90;
+    }
+  }
+
+  .info-row {
+    padding: 0.25rem;
+    background-color: $DARK;
+    margin-top: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+
+    .row-title {
+      font-weight: bold;
+      color: $WHITE_70;
+    }
+  }
+
+  .align-center {
+    align-items: center;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .submit-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-right: 0.25rem;
+    display: block;
+  }
+
+  .header {
+    font-size: 1.5rem;
+    padding: 0.5rem 0 0.5rem 0;
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    background-color: $DARKER;
+    color: $ORANGE;
+  }
+
+}

@@ -1,0 +1,79 @@
+import React from "react";
+import {match, Redirect} from "react-router-dom";
+import UserService, {UserProfile} from "../../../services/UserService";
+import {Spinner} from "../../widgets/Widgets";
+import UserProfileView from "../../views/profile/view/UserProfileView";
+import "./UserProfilePage.scss";
+import UserProfileEditView from "../../views/profile/edit/UserProfileEditView";
+import "bootstrap/dist/css/bootstrap.css";
+
+export default class UserProfilePage extends React.Component<Props, State> {
+
+  state = {
+    profile: undefined,
+    redirect: undefined
+  };
+
+  componentDidMount(): void {
+    this.props.userService
+      .loadProfile(this.getUsername())
+      .then(profile => {
+        this.setState(state => ({
+          ...state, profile: profile
+        }))
+      })
+      .catch(error => {
+        this.setState(state => ({
+          ...state, redirect: "/"
+        }))
+      });
+  }
+
+  render() {
+    const { userService } = this.props;
+    const profile = this.state.profile as UserProfile|undefined;
+    const redirect = this.state.redirect as string|undefined;
+
+    if (redirect) {
+      return <Redirect to={redirect}/>;
+    }
+
+    if (!userService.userIsPresent()) {
+      return <Redirect to="/auth"/>
+    }
+
+    if (!profile) {
+      return this.showSpinner();
+    }
+
+    let viewToRender = (profile.username === userService.getCurrentUser())
+      ? <UserProfileEditView userProfile={profile} userService={userService} />
+      : <UserProfileView userProfile={profile} />;
+
+    return (
+      <div className="User-profile-page">
+        {viewToRender}
+      </div>
+    );
+  }
+
+  showSpinner = () => {
+    return <div className="text-center"><Spinner/></div>
+  };
+
+  getUsername = () => {
+    const { match } = this.props;
+
+    return match ? (match.params as any).username : "";
+  };
+}
+
+type Props = {
+  match?: match,
+  userService: UserService,
+}
+
+type State = {
+  profile?: UserProfile,
+  redirect?: string
+}

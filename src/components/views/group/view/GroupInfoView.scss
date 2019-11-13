@@ -1,0 +1,17 @@
+@import "../../../styles/Common";
+@import "../edit/GroupEditView";
+@import "../edit/tabs/info/GroupInfoTab";
+
+.Group-info-view {
+  @extend .Group-edit-view;
+  @extend .Group-info-tab;
+
+  .label {
+    color: $WHITE_70;
+  }
+
+  .label-value {
+    color: $WHITE_90;
+    font-weight: bold;
+  }
+}

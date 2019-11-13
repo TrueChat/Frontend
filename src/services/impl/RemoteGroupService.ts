@@ -1,6 +1,6 @@
 import GroupService, { GroupMember } from "../GroupService";
 import { GroupCreationData, GroupDetails } from "../GroupService"
-import { ResponseHandler, Response } from "../types"
+import {ResponseHandler, Response, ConstraintViolation} from "../types"
 import RemoteUserService from "./RemoteUserService";
 
 export default class RemoteGroupService implements GroupService {
@@ -12,20 +12,28 @@ export default class RemoteGroupService implements GroupService {
     this.baseUrl = baseUrl;
   }
 
-  public createGroup(data: GroupCreationData, onSuccess?: ResponseHandler<string>, onFailure?: ResponseHandler<any>): void {
+  public createGroup(data: GroupCreationData, onSuccess?: ResponseHandler<string>, onFailure?: ResponseHandler<ConstraintViolation[]>): void {
     this.userService.sendAuthorizedRequest({
-      method: "POST",
-      url: `${this.baseUrl}/chats/`,
-      body: data 
-    }, response => {
-      if (onSuccess) {
-        onSuccess({
-          headers: response.headers,
-          data: response.data.id,
-          status: response.status
-        });
+        method: "POST",
+        url: `${this.baseUrl}/chats/`,
+        body: data
+      },
+      response => {
+        if (onSuccess) {
+          onSuccess({
+            headers: response.headers,
+            data: response.data.id,
+            status: response.status
+          });
+        }
+      },
+      response => {
+        if (onFailure) {
+          response.data = this.convertServerViolationsToConstraintViolations(response);
+          onFailure(response);
+        }
       }
-    }, this.wrapHandler(onFailure));
+    );
   }  
   
   public loadDetails(groupId: string, onSuccess: (details: GroupDetails) => void, onFailure: () => void): void {
@@ -62,14 +70,34 @@ export default class RemoteGroupService implements GroupService {
     }
   }
 
-  update(groupDetails: GroupDetails, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<any>): void {
+  update(groupDetails: GroupDetails, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<ConstraintViolation[]>): void {
     this.userService.sendAuthorizedRequest({
-      method: "PUT",
-      url: `${this.baseUrl}/chats/${groupDetails.groupId}/`,
-      body: groupDetails
-    }, this.wrapHandler(onSuccess), this.wrapHandler(onFailure));
+        method: "PUT",
+        url: `${this.baseUrl}/chats/${groupDetails.groupId}/`,
+        body: groupDetails
+      },
+      this.wrapHandler(onSuccess),
+      (response) => {
+        if (onFailure) {
+          response.data = this.convertServerViolationsToConstraintViolations(response);
+          onFailure(response);
+        }
+      }
+    );
   }
-  
+
+  private convertServerViolationsToConstraintViolations(response: Response<any>) {
+    let violations: ConstraintViolation[] = [];
+    for (let key of Object.keys(response.data)) {
+      violations.push({
+        violates: true,
+        property: key,
+        message: response.data[key][0]
+      });
+    }
+    return violations;
+  }
+
   addUser(groupId: string, username: string, onSuccess?: ResponseHandler<any>, onFailure?: ResponseHandler<any>): void {
     this.userService.sendAuthorizedRequest({
       method: "POST",

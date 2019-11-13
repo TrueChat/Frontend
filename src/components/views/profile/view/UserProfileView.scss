@@ -1,0 +1,10 @@
+@import "../edit/UserProfileEditForm";
+
+.User-profile-view {
+  @extend .User-profile-edit-view;
+
+  .row-value {
+    font-weight: bold;
+    color: $WHITE_90;
+  }
+}

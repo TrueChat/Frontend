@@ -1,0 +1,47 @@
+@import "../../../../../styles/Common";
+
+.Group-add-members-tab {
+  @import "../../../common/Input";
+  @import "../../../../../widgets/InitialsAvatar";
+  @import "../../styles/InitialsAvatarOverride";
+
+  .row {
+    margin: 0.5rem 0 0.5rem 0;
+    padding: 0.5rem 0 0.5rem 0;
+
+    background-color: $DARK;
+  }
+
+  .search-icon {
+    color: $WHITE_70;
+    font-size: 1.5rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .user-section {
+    align-items: center;
+
+    .action-icon {
+      color: $WHITE_70;
+      font-size: 1.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .user-full-name {
+      color: $WHITE_90;
+      font-weight: bold;
+    }
+
+    .user-username {
+      color: $WHITE_60;
+      font-weight: bold;
+    }
+
+  }
+}

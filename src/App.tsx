@@ -1,13 +1,15 @@
 import React from 'react';
-import AuthenticationPage from "./pages/auth/AuthenticationPage";
+import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
 import { BrowserRouter, Route } from "react-router-dom";
-import ProfileEditPage from "./pages/profile/edit/ProfileEditPage";
-import MainPage from "./pages/main/MainPage";
-// import MockUserService from "./services/mock/MockUserService";
-import GroupCreationPage from "./pages/group/create/GroupCreationPage";
-// import MockGroupService from "./services/mock/MockGroupService";
-import GroupProfilePage from "./pages/group/GroupProfilePage";
-import UserProfilePage from "./pages/profile/UserProfilePage";
+import MainPage from "./components/pages/main/MainPage";
+import GroupCreationPage from "./components/pages/group/GroupCreationPage";
+import GroupInfoPage from "./components/pages/group/GroupInfoPage";
+import UserProfilePage from "./components/pages/profile/UserProfilePage";
+// import RemoteUserService from "./services/impl/RemoteUserService";
+// import RemoteAuthService from "./services/impl/RemoteAuthService";
+// import RemoteGroupService from "./services/impl/RemoteGroupService";
+import MockUserService from "./services/mock/MockUserService";
+import MockGroupService from "./services/mock/MockGroupService";
 import RemoteUserService from "./services/impl/RemoteUserService";
 import RemoteAuthService from "./services/impl/RemoteAuthService";
 import RemoteGroupService from "./services/impl/RemoteGroupService";
@@ -30,10 +32,10 @@ export default class App extends React.Component {
     return (
       <BrowserRouter>
         <Route exact path="/">
-          <MainPage userService={this.userService} />
+          <MainPage userService={this.userService}/>
         </Route>
         <Route exact path="/auth">
-          <AuthenticationPage userService={this.userService} />
+          <AuthenticationPage userService={this.userService}/>
         </Route>
         <Route exact path="/group/">
           <GroupCreationPage
@@ -42,7 +44,7 @@ export default class App extends React.Component {
           />
         </Route>
         <Route path="/group/:groupId" render={props => (
-          <GroupProfilePage
+          <GroupInfoPage
             userService={this.userService}
             groupService={this.groupService}
             match={props.match}
@@ -50,7 +52,7 @@ export default class App extends React.Component {
         )}>
         </Route>
         <Route exact path="/profile/">
-          <ProfileEditPage userService={this.userService} />
+          <UserProfilePage userService={this.userService}/>
         </Route>
         <Route path="/profile/:username" render={props => (
           <UserProfilePage userService={this.userService} match={props.match}/>

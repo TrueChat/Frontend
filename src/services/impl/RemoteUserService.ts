@@ -1,5 +1,4 @@
 import RemoteAuthService from "./RemoteAuthService";
-import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
 import Cookies from "js-cookie";
 import axios, {AxiosError} from "axios";
 import UserService, {
@@ -8,7 +7,7 @@ import UserService, {
   UserProfile
 } from "../UserService";
 import {RegistrationData} from "../AuthService";
-import {Headers, Response, Request} from "../types";
+import {Headers, Response, Request, ConstraintViolation} from "../types";
 
 type UserData = {
   authToken: string,

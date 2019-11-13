@@ -1,6 +1,6 @@
-import {ConstraintViolation} from "../../pages/auth/AuthenticationPage";
 import UserService, {UserProfile} from "../UserService";
 import {RegistrationData} from "../AuthService";
+import {ConstraintViolation} from "../types";
 
 export default class MockUserService implements UserService{
 
@@ -80,7 +80,7 @@ export default class MockUserService implements UserService{
 
   loadProfile(username: string) : Promise<UserProfile> {
     return new Promise<UserProfile>((resolve, reject) => {
-      resolve({ username: "mock_usersdsadsa", first_name: "Name", last_name: "Surname", about: "mock_about"});
+      resolve({ username: "mock_user", first_name: "Name", last_name: "Surname", about: "mock_about"});
     })
   }
 

@@ -1,0 +1,36 @@
+@import "../../../styles/Common";
+
+.Group-creation-view {
+  @import "../../../widgets/InitialsAvatar";
+
+  .row {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0.25rem 0 0.25rem 0;
+  }
+
+  .header {
+    background-color: $DARKER;
+    font-size: 1.5rem;
+    color: $ORANGE;
+    text-align: center;
+    font-weight: bold;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .body {
+    .row {
+      background-color: $DARK;
+    }
+
+    .input-label {
+      color: $WHITE_60;
+    }
+  }
+
+  .Initials-avatar {
+    $width: 4.5rem;
+    background-color: $DARK;
+  }
+}
