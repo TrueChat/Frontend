@@ -4,7 +4,9 @@ export function isParent(maybeParent: Element, maybeChild: Element) : boolean {
     if (child === maybeChild) {
       return true;
     } else {
-      return isParent(child, maybeChild);
+      if (isParent(child, maybeChild)) {
+        return true;
+      }
     }
   }
   return false;

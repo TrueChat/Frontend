@@ -1,27 +1,97 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import { Redirect } from "react-router-dom";
 import UserService from "../../../services/UserService";
-import SearchView from "../../views/search/SearchView";
 import "./MainPage.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ModalView from "../../views/modal-view/ModalView";
+import UserProfileView from "../../views/profile/view/UserProfileView";
+import UserProfileEditView from "../../views/profile/edit/UserProfileEditView";
+import GroupService, {GroupDetails} from "../../../services/GroupService";
+import GroupView from "../../views/group/GroupView";
 
 type Props = {
-  userService: UserService
+  userService: UserService,
+  groupService: GroupService
 }
 
-export default class MainPage extends React.Component<Props> {
+type State = {
+  modal: ReactElement|null
+}
+
+export default class MainPage extends React.Component<Props, State> {
+
+  state = {
+    modal: null
+  };
 
   render() {
-    // TODO temporary solution (or it should work this way) for asynchronous page reloading
-    // which causes undefined behaviour such as we cannot predict 100% which page is loaded
     if (!this.props.userService.userIsPresent()) {
       return <Redirect to="/auth" />
-    } else {
-      return (
-        <div className="Main-page">
-          <SearchView userService={this.props.userService}/>
-        </div>
-      )
     }
+
+    return (
+     <React.Fragment>
+       {this.state.modal}
+       <div className="container">
+         <div className="text-light">
+           <ul>
+             <li onClick={this.showCurrentUserProfileModal}>Profile</li>
+           </ul>
+         </div>
+       </div>
+     </React.Fragment>
+    )
   }
 
+  showUserProfileModal = (username: string) => {
+    this.props.userService
+      .loadProfile(username)
+      .then(profile => {
+        this.showModal(
+          <ModalView handleClose={this.closeModal}>
+            <UserProfileView userProfile={profile}/>
+          </ModalView>
+        );
+      });
+  };
+
+  showCurrentUserProfileModal = () => {
+    this.props.userService
+      .loadProfileForCurrentUser()
+      .then(profile => {
+        this.showModal(
+          <ModalView handleClose={this.closeModal}>
+            <UserProfileEditView userService={this.props.userService} userProfile={profile}/>
+          </ModalView>
+        );
+      });
+  };
+
+  showGroupModal = (groupId: string) => {
+    const showGroupInfo = (details: GroupDetails) => {
+      this.showModal(
+        <ModalView handleClose={this.closeModal}>
+          <GroupView
+            groupService={this.props.groupService}
+            userService={this.props.userService}
+            groupDetails={details}
+          />
+        </ModalView>
+      );
+    };
+
+    this.props.groupService.loadDetails(groupId, showGroupInfo, () => { });
+  };
+
+  showModal = (modal: ReactElement) => {
+    this.setState(state => ({
+      ...state, modal: modal
+    }));
+  };
+
+  closeModal = () => {
+    this.setState(state => ({
+      ...state, modal: null
+    }));
+  }
 }

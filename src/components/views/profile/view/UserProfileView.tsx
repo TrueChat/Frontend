@@ -2,6 +2,7 @@ import React from "react";
 import {UserInitialsAvatar} from "../../../widgets/Widgets";
 import {UserProfile} from "../../../../services/UserService";
 import "./UserProfileView.scss";
+import "bootstrap/dist/css/bootstrap.min.css"
 
 export default class UserProfileView extends React.Component<Props> {
 
@@ -50,8 +51,6 @@ export default class UserProfileView extends React.Component<Props> {
               {userProfile.about}
             </div>
           </div>
-        </div>
-        <div className="row submit-container text-right">
         </div>
       </div>
     );
