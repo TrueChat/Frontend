@@ -4,9 +4,9 @@ import "./ModalVeiw.scss";
 export default class ModalView extends React.Component<Props> {
 
   render() {
-    const { children, handleClose } = this.props;
+    const { children } = this.props;
     return (
-      <div className="Modal-view" onClick={handleClose}>
+      <div className="Modal-view" onClick={() => this.props.history.goBack()}>
         <div className="Modal-contents" onClick={e => e.stopPropagation()}>
           <div className="Modal-body">
             {children}
@@ -19,7 +19,6 @@ export default class ModalView extends React.Component<Props> {
 }
 
 type Props = {
-  title?: string,
+  history: any,
   children: string|React.ReactElement
-  handleClose: () => void;
 }

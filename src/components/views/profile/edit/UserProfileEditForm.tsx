@@ -35,59 +35,61 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
         <div className="header">
           Your Profile
         </div>
-        <div className="row info-row align-center">
-          <div className="col-3">
-            <div className="user-image-container">
-              <UserInitialsAvatar profile={userProfile}/>
-            </div>
-          </div>
-          <div className="col-9">
-            <div className="row">
-              <div className="w-100">
-                <div className="row-title">First Name</div>
-                <div>
-                  <FormInput value={userProfile.first_name} onChange={this.updateFirstName} />
-                </div>
-              </div>
-              <div className="w-100">
-                <div className="row-title">Last Name</div>
-                <div>
-                  <FormInput value={userProfile.last_name} onChange={this.updateLastName} />
-                </div>
+        <div className="body">
+          <div className="row info-row align-center">
+            <div className="col-3">
+              <div className="user-image-container">
+                <UserInitialsAvatar profile={userProfile}/>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="row info-row">
-          <div className="col-12">
-            <div className="row-title">Username</div>
-            <div>
-              <FormInput value={userProfile.username} onChange={this.updateUsername} />
+            <div className="col-9">
+              <div className="row">
+                <div className="w-100">
+                  <div className="row-title">First Name</div>
+                  <div>
+                    <FormInput value={userProfile.first_name} onChange={this.updateFirstName} />
+                  </div>
+                </div>
+                <div className="w-100">
+                  <div className="row-title">Last Name</div>
+                  <div>
+                    <FormInput value={userProfile.last_name} onChange={this.updateLastName} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="row info-row">
-          <div className="col-12">
-            <div className="row-title">Bio</div>
-            <div>
-              <FormInput value={userProfile.about} onChange={this.updateBio} />
+          <div className="row info-row">
+            <div className="col-12">
+              <div className="row-title">Username</div>
+              <div>
+                <FormInput value={userProfile.username} onChange={this.updateUsername} />
+              </div>
             </div>
           </div>
+          <div className="row info-row">
+            <div className="col-12">
+              <div className="row-title">Bio</div>
+              <div>
+                <FormInput value={userProfile.about} onChange={this.updateBio} />
+              </div>
+            </div>
+          </div>
+          <div className="row submit-container text-right">
+            <SubmitButton onClick={this.handleSubmit}/>
+          </div>
+          {loading
+            ? <div className="text-center"><Spinner /></div>
+            : null
+          }
+          {/* TODO should remove message on input focus?? */}
+          {submissionResult !== undefined
+            ? !submissionResult
+              ? <SubmissionMessage message="Error: something went wrong" />
+              : <SubmissionMessage message="Successfully updated" />
+            : null
+          }
         </div>
-        <div className="row submit-container text-right">
-          <SubmitButton onClick={this.handleSubmit}/>
-        </div>
-        {loading
-          ? <div className="text-center"><Spinner /></div>
-          : null
-        }
-        {/* TODO should remove message on input focus?? */}
-        {submissionResult !== undefined
-          ? !submissionResult
-            ? <SubmissionMessage message="Error: something went wrong" />
-            : <SubmissionMessage message="Successfully updated" />
-          : null
-        }
       </div>
     );
   }

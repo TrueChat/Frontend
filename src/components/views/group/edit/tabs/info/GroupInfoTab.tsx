@@ -105,7 +105,7 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               {groupDetails.members.length} members
             </div>
             <div className="col-8 text-right">
-              <span onClick={this.showMembersSearchTab}>Add</span>
+              <span onClick={this.showMembersSearchTab} className="cursor-pointer">Add</span>
             </div>
           </div>
           <div className="members">
@@ -236,7 +236,12 @@ const MemberDetails = (props: MemberDetailsProps) => (
         {props.member.firstName} {props.member.lastName}
       </div>
       <div className="member-username">
-        <Link to={`/profile/${props.member.username}`} className="link">
+        <Link to={{
+          pathname:`/modal/userProfile/${props.member.username}`,
+          state: {
+            modal: { name: "userProfile" }
+          }
+        }} className="link">
           @{props.member.username}
         </Link>
       </div>
