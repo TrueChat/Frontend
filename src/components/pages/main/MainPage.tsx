@@ -15,16 +15,15 @@ type Props = {
   groupService: GroupService,
   location: any
 }
-type State = {
-  previousLocation: any
-}
 
-export default class MainPage extends React.Component<Props, State> {
+export default class MainPage extends React.Component<Props> {
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      previousLocation: this.props.location
+  prevLocation = this.props.location;
+
+  componentWillUpdate() {
+    const { location } = this.props;
+    if (!(location.state && location.state.modal)) {
+      this.prevLocation = this.props.location;
     }
   }
 
@@ -37,12 +36,12 @@ export default class MainPage extends React.Component<Props, State> {
     const isModal = (
       location.state &&
       location.state.modal &&
-      this.state.previousLocation !== location
+      this.prevLocation !== location
     );
 
     return (
       <React.Fragment>
-        <Switch location={isModal ? this.state.previousLocation : location}>
+        <Switch location={isModal ? this.prevLocation : location}>
           <Route exact path="/">
             <ul>
               <li>
