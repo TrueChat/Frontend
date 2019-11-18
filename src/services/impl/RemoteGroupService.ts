@@ -130,4 +130,8 @@ export default class RemoteGroupService implements GroupService {
     return (response: Response<any>) => handler && handler(response);
   }
 
+  findAll(onSuccess?: (response: Response<GroupDetails[]>) => void, onFailure?: (response: Response<any>) => void): void {
+    throw new Error("this method is not implemented");
+  }
+
 }

@@ -1,4 +1,34 @@
 @import "../../styles/Common";
 
+#root {
+  height: 100%;
+}
+
 .Main-page {
+  display: flex;
+  max-width: 75rem;
+  margin: 0 auto;
+  border-left: 0.15rem solid $WHITE_70;
+  border-right: 0.15rem solid $WHITE_70;
+  height: 100%;
+
+  .left-bar {
+    border-right: 0.15rem solid $WHITE_70;
+    width: 30%;
+
+    .header {
+      height: 3.5rem;
+      font-size: 1.5rem;
+      padding: 0.5rem 0 0.5rem 0;
+      text-align: center;
+      position: relative;
+      font-weight: bold;
+      background-color: $DARKER;
+      color: $ORANGE;
+    }
+  }
+
+  .right-bar {
+    width: 70%;
+  }
 }

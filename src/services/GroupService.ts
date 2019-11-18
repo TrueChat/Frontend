@@ -28,6 +28,11 @@ export type GroupDetails = {
 
 export default interface GroupService {
 
+  findAll(
+    onSuccess?: ResponseHandler<GroupDetails[]>,
+    onFailure?: ResponseHandler<any>
+  ) : void;
+
   createGroup(
     data: GroupCreationData,
     onSuccess?: ResponseHandler<string>,

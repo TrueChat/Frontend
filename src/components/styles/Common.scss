@@ -17,11 +17,11 @@ $PAGE_BG_COLOR: rgba(35, 35, 45, 1);
 
 body {
   background: linear-gradient(116.025389464351deg, rgba(25, 25, 40, 1) 0%, rgba(50, 50, 60, 1) 100%);
-  height: 100%;
+  height: 100vh;
 }
 
 html {
-  height: 100%;
+  height: 100vh;
 }
 
 .c-attention {
@@ -37,8 +37,27 @@ html {
     color: inherit;
     text-decoration: none;
   }
+  color: inherit;
 }
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.scrollable {
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $BACKGROUND;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }

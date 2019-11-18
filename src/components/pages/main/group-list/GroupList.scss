@@ -1,0 +1,29 @@
+@import "../../../styles/Common";
+
+.Group-list {
+  @import "../../../widgets/InitialsAvatar";
+  @import "../../../views/group/edit/styles/InitialsAvatarOverride";
+  @extend .scrollable;
+  max-height: 90vh;
+  overflow-y: scroll;
+
+  .row {
+    margin: 0.25rem 0;
+  }
+
+  .group-details {
+    background-color: $DARK;
+
+    .row {
+      align-items: center;
+    }
+
+    .group-name {
+      color: $WHITE_90;
+    }
+
+    .group-first-message {
+      color: $WHITE_60;
+    }
+  }
+}
