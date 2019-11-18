@@ -25,7 +25,7 @@ export default class Header extends React.Component<any, State> {
         True Chat
         <div className={`${isDropdownOpened ? "" : "d-none"} header-dropdown`}>
           <div className="header-dropdown-item">
-            <ModalLink modalName="userProfile" relativePath="123" className="a-none w-100 text-left">
+            <ModalLink modalName="currentUserProfile" className="a-none w-100 text-left">
               <div className="row">
                 <div className="col-1">
                   <i className="fas fa-user"/>
@@ -37,7 +37,7 @@ export default class Header extends React.Component<any, State> {
             </ModalLink>
           </div>
           <div className="header-dropdown-item">
-            <ModalLink modalName="groupNew" relativePath="" className="a-none w-100 text-left">
+            <ModalLink modalName="groupCreation" className="a-none w-100 text-left">
               <div className="row">
                 <div className="col-1">
                   <i className="fas fa-user-friends"/>
@@ -49,7 +49,7 @@ export default class Header extends React.Component<any, State> {
             </ModalLink>
           </div>
           <div className="header-dropdown-item">
-            <ModalLink modalName="search" relativePath="123" className="a-none w-100 text-left">
+            <ModalLink modalName="search" relativePath="" className="a-none w-100 text-left">
               <div className="row">
                 <div className="col-1">
                   <i className="fas fa-search"/>

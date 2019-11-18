@@ -5,7 +5,7 @@ const ModalLink = (props: ModalLinkProps) => (
   <Link
     className={props.className}
     to={{
-      pathname: "/modal/" + props.modalName + "/" + props.relativePath,
+      pathname: "/modal/" + props.modalName + "/" + (props.relativePath ? props.relativePath : ""),
       state: {
         modal: { name: props.modalName }
       }}}
@@ -16,7 +16,7 @@ const ModalLink = (props: ModalLinkProps) => (
 
 export type ModalLinkProps = {
   modalName: string,
-  relativePath: string,
+  relativePath?: string,
   className?: string,
   children?: any
 };

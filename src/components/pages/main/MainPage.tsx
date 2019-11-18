@@ -12,6 +12,7 @@ import GroupProfileModalView from "./modals/GroupProfileModal";
 import AbsoluteHeader from "../layout/AbsoluteHeader";
 import GroupList from "./left-bar/group-list/GroupList";
 import Header from "./left-bar/header/Header";
+import GroupCreationView from "../../views/group/create/GroupCreationView";
 
 type Props = {
   userService: UserService,
@@ -78,12 +79,9 @@ export default class MainPage extends React.Component<Props> {
   modalRoutes() {
     return (
       <React.Fragment>
-        <Route exact path="/modal/userProfile/:username" component={(props: RouteComponentProps) => (
-          <this.UserProfileModal props={props}/>
-        )}/>
-        <Route exact path="/modal/groupProfile/:groupId" component={(props: RouteComponentProps) => (
-          <this.GroupProfileModal props={props}/>
-        )}/>
+        <Route exact path="/modal/currentUserProfile/" component={this.CurrentUserProfileModal}/>
+        <Route exact path="/modal/userProfile/:username" component={this.UserProfileModal}/>
+        <Route exact path="/modal/groupProfile/:groupId" component={this.GroupProfileModal}/>
       </React.Fragment>
     );
   }
@@ -97,27 +95,30 @@ export default class MainPage extends React.Component<Props> {
       this.prevLocation !== location
     );
 
+    const isActiveModal = (modalName: string) => {
+      return isModal && location.state.modal.name === modalName;
+    };
+
     return (
+
       <React.Fragment>
-        {isModal && location.state.modal.name === "userProfile"
-          ?
-            <Route exact path="/modal/userProfile/:username" component={(props: RouteComponentProps) => {
-              return <this.UserProfileModal props={props}/>
-            }}/>
+        {isActiveModal("userProfile")
+          ? <Route exact path="/modal/userProfile/:username" component={this.UserProfileModal}/>
           : null
         }
-        {isModal && location.state.modal.name === "groupProfile"
-          ?
-            <Route exact path="/modal/groupProfile/:groupId" component={(props: RouteComponentProps) => {
-              return <this.GroupProfileModal props={props}/>
-            }}/>
+        {isActiveModal("currentUserProfile")
+          ? <Route exact path="/modal/currentUserProfile" component={this.CurrentUserProfileModal}/>
+          : null
+        }
+        {isActiveModal("groupProfile")
+          ? <Route exact path="/modal/groupProfile/:groupId" component={this.GroupProfileModal}/>
           : null
         }
       </React.Fragment>
     )
   }
 
-  GroupProfileModal = ({props} : {props: RouteComponentProps}) => {
+  GroupProfileModal = (props: RouteComponentProps) => {
     return (
       <ModalView history={props.history}>
         <GroupProfileModalView
@@ -129,7 +130,18 @@ export default class MainPage extends React.Component<Props> {
     )
   };
 
-  UserProfileModal = ({props} : {props: RouteComponentProps}) => {
+  CurrentUserProfileModal = (props: RouteComponentProps) => {
+    return (
+      <ModalView history={props.history}>
+        <UserProfileModalView
+          username={this.props.userService.getCurrentUser()}
+          userService={this.props.userService}
+        />
+      </ModalView>
+    );
+  };
+
+  UserProfileModal = (props: RouteComponentProps) => {
     return (
       <ModalView history={props.history}>
         <UserProfileModalView
