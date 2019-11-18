@@ -1,0 +1,12 @@
+@import "../../styles/Common";
+
+.Absolute-header {
+  height: 3.5rem;
+  z-index: -1;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: darken($PAGE_BG_COLOR, 2.5%);
+  text-align: center;
+}

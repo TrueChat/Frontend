@@ -1,6 +1,5 @@
 import React from 'react';
-import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import MockGroupService from "./services/mock/MockGroupService";
 import MockUserService from "./services/mock/MockUserService";
 import MainPage from "./components/pages/main/MainPage";
@@ -26,18 +25,14 @@ export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Route exact path="/" children={props => (
-          <MainPage
-            location={props.location}
-            groupService={this.groupService}
-            userService={this.userService}
-          />
-        )}/>
-        <Route exact path="/auth">
-          <AuthenticationPage userService={this.userService}/>
-        </Route>
+          <Route exact path="/" children={props => (
+            <MainPage
+              location={props.location}
+              groupService={this.groupService}
+              userService={this.userService}
+            />
+          )}/>
       </BrowserRouter>
     )
   }
-
 }
