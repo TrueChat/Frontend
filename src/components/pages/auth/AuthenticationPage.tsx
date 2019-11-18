@@ -19,6 +19,9 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
   };
 
   render() {
+    if (this.props.userService.userIsPresent()) {
+      return <Redirect to="/"/>
+    }
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectTo}/>
     }

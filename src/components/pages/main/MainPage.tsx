@@ -45,31 +45,22 @@ export default class MainPage extends React.Component<Props> {
       <div className="Main-page">
         <AbsoluteHeader/>
         <Switch location={isModal ? this.prevLocation : location}>
-          <Route exact path="/">
-            <ul>
-              <li>
-                {this.modalLink("userProfile", "/modal/userProfile/123", "User Profile")}
-              </li>
-              <li>
-                {this.modalLink("groupProfile", "/modal/groupProfile/123", "Group Profile")}
-              </li>
-            </ul>
-          </Route>
-          {this.modalRoutes()}
-          <Route exact path="/auth">
-            <AuthenticationPage userService={this.props.userService}/>
+          <Route path="/">
+            {this.modalRoutes()}
+
+            {this.modalLink("userProfile", "123", "User Profile")}
+            {this.modalLink("groupProfile", "123", "Group Profile")}
           </Route>
         </Switch>
-
-        {this.modalComponents()}
+        {this.modalComponent()}
       </div>
     );
   }
 
-  modalLink(modalName: string, path: string, title: string) {
+  modalLink(modalName: string, relativePath: string, title: string) {
     return (
       <Link to={{
-        pathname: path,
+        pathname: "/modal/" + modalName + "/" + relativePath,
         state: {
           modal: { name: modalName}
         }
@@ -82,17 +73,17 @@ export default class MainPage extends React.Component<Props> {
   modalRoutes() {
     return (
       <React.Fragment>
-        <Route exact path="/modal/userProfile/:username" component={(props: RouteComponentProps) => (
+        <Route path="/modal/userProfile/:username" component={(props: RouteComponentProps) => (
           <this.UserProfileModal props={props}/>
         )}/>
-        <Route exact path="/modal/groupProfile/:groupId" component={(props: RouteComponentProps) => (
+        <Route path="/modal/groupProfile/:groupId" component={(props: RouteComponentProps) => (
           <this.GroupProfileModal props={props}/>
         )}/>
       </React.Fragment>
     );
   }
 
-  modalComponents() {
+  modalComponent() {
     const { location } = this.props;
 
     const isModal = (
@@ -100,18 +91,21 @@ export default class MainPage extends React.Component<Props> {
       location.state.modal &&
       this.prevLocation !== location
     );
+
     return (
       <React.Fragment>
         {isModal && location.state.modal.name === "userProfile"
-          ? <Route exact path="/modal/userProfile/:username" component={(props: RouteComponentProps) => (
-            <this.UserProfileModal props={props}/>
-          )}/>
+          ?
+            <Route path="/modal/userProfile/:username" component={(props: RouteComponentProps) => {
+              return <this.UserProfileModal props={props}/>
+            }}/>
           : null
         }
         {isModal && location.state.modal.name === "groupProfile"
-          ? <Route exact path="/modal/groupProfile/:groupId" component={(props: RouteComponentProps) => (
-            <this.GroupProfileModal props={props}/>
-          )}/>
+          ?
+            <Route path="/modal/groupProfile/:groupId" component={(props: RouteComponentProps) => {
+              return <this.GroupProfileModal props={props}/>
+            }}/>
           : null
         }
       </React.Fragment>
