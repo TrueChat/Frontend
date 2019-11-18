@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import UserService from "../../../services/UserService";
 import "./MainPage.scss";
 
@@ -10,8 +10,8 @@ import ModalView from "../../views/modal-view/ModalView";
 import UserProfileModalView from "./modals/UserProfileModal";
 import GroupProfileModalView from "./modals/GroupProfileModal";
 import AbsoluteHeader from "../layout/AbsoluteHeader";
-import AuthenticationPage from "../auth/AuthenticationPage";
-import GroupList from "./group-list/GroupList";
+import GroupList from "./left-bar/group-list/GroupList";
+import Header from "./left-bar/header/Header";
 
 type Props = {
   userService: UserService,
@@ -51,9 +51,7 @@ export default class MainPage extends React.Component<Props> {
 
             <div className="Main-page">
               <div className="left-bar">
-                <div className="header">
-                  True Chat
-                </div>
+                <Header />
                 <div>
                   <GroupList groupService={this.props.groupService} />
                 </div>

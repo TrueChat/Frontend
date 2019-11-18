@@ -1,6 +1,6 @@
 import React from "react";
-import GroupService, {GroupDetails} from "../../../../services/GroupService";
-import {GroupInitialsAvatar, Spinner} from "../../../widgets/Widgets";
+import GroupService, {GroupDetails} from "../../../../../services/GroupService";
+import {GroupInitialsAvatar, Spinner} from "../../../../widgets/Widgets";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./GroupList.scss"
 import {Link} from "react-router-dom";

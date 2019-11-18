@@ -1,8 +1,8 @@
-@import "../../../styles/Common";
+@import "../../../../styles/Common";
 
 .Group-list {
-  @import "../../../widgets/InitialsAvatar";
-  @import "../../../views/group/edit/styles/InitialsAvatarOverride";
+  @import "../../../../widgets/InitialsAvatar";
+  @import "../../../../views/group/edit/styles/InitialsAvatarOverride";
   @extend .scrollable;
   max-height: 90vh;
   overflow-y: scroll;
