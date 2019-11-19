@@ -9,10 +9,10 @@ import {Switch, Route, RouteComponentProps} from "react-router-dom";
 import ModalView from "../../views/modal-view/ModalView";
 import UserProfileModalView from "./modals/UserProfileModal";
 import GroupProfileModalView from "./modals/GroupProfileModal";
+import GroupCreationModalView from "./modals/GroupCreationModal";
 import AbsoluteHeader from "../layout/AbsoluteHeader";
 import GroupList from "./left-bar/group-list/GroupList";
 import Header from "./left-bar/header/Header";
-import GroupCreationView from "../../views/group/create/GroupCreationView";
 
 type Props = {
   userService: UserService,
@@ -114,9 +114,21 @@ export default class MainPage extends React.Component<Props> {
           ? <Route exact path="/modal/groupProfile/:groupId" component={this.GroupProfileModal}/>
           : null
         }
+        {isActiveModal("groupCreation")
+          ? <Route exact path="/modal/groupCreation" component={this.GroupCreationModal}/>
+          : null
+        }
       </React.Fragment>
     )
   }
+
+  GroupCreationModal = (props: RouteComponentProps) => {
+    return (
+      <ModalView history={props.history}>
+        <GroupCreationModalView groupService={this.props.groupService}/>
+      </ModalView>
+    )
+  };
 
   GroupProfileModal = (props: RouteComponentProps) => {
     return (
