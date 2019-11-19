@@ -1,8 +1,25 @@
 @import "../../styles/Common";
 
+#root {
+  height: 100%;
+}
+
 .Main-page {
-  margin: 1rem auto;
-  max-width: 23rem;
-  border: 0.1rem solid $WHITE_70;
-  border-radius: $BORDER_RADIUS;
+  display: flex;
+  max-width: 75rem;
+  margin: 0 auto;
+  border-left: 0.15rem solid $WHITE_70;
+  border-right: 0.15rem solid $WHITE_70;
+  height: 100%;
+
+  .left-bar {
+    border-right: 0.15rem solid $WHITE_70;
+    width: 30%;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .right-bar {
+    width: 70%;
+  }
 }

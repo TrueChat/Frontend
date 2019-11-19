@@ -1,4 +1,5 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./GroupInfoView.scss";
 import GroupService, {GroupDetails, GroupMember} from "../../../../services/GroupService";
 import UserService from "../../../../services/UserService";

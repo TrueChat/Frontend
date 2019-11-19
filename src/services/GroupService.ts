@@ -22,11 +22,17 @@ export type GroupDetails = {
   name: string,
   description: string,
   members: GroupMember[],
-  creator: GroupMember
+  creator: GroupMember,
+  isDialog: boolean
 }
 
 
 export default interface GroupService {
+
+  findAll(
+    onSuccess?: ResponseHandler<GroupDetails[]>,
+    onFailure?: ResponseHandler<any>
+  ) : void;
 
   createGroup(
     data: GroupCreationData,

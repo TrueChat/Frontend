@@ -5,7 +5,7 @@
   .group-members {
 
     .actions-row {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: $DARKER;
       color: $WHITE_60;
     }
 
@@ -81,6 +81,10 @@
     background-color: $DARK;
     margin: 0.5rem 0;
     padding: 0.5rem 0;
+
+    &:last-child {
+      margin: 0;
+    }
   }
 
   .input-label {

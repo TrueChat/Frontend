@@ -3,7 +3,6 @@ import {ResponseHandler, Response} from "../types";
 
 export default class MockGroupService implements GroupService {
   private readonly timeout?: number;
-
   constructor(timeout?: number) {
     this.timeout = timeout;
   }
@@ -17,24 +16,48 @@ export default class MockGroupService implements GroupService {
     });
   }
 
+  findAll(onSuccess?: ResponseHandler<GroupDetails[]> | undefined, onFailure?: ResponseHandler<any> | undefined): void {
+    this.useTimeout(() => {
+      if (!onSuccess) {
+        return;
+      }
+
+      const data = [];
+      for (let i = 0; i < 20; i++) {
+        data.push(this.mockGroup());
+      }
+
+      onSuccess({
+        status: 200,
+        headers: { },
+        data: data
+      })
+    });
+  }
+
   loadDetails(groupId: string, onSuccess: (details: GroupDetails) => void, onFailure: () => void): void {
     this.useTimeout(() => {
       if (onSuccess) {
-        onSuccess({
-          groupId: "1234",
-          name: "mock group",
-          description: "mock description",
-          creator: { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
-          members: [
-            { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
-            { id: "2", firstName: "Name", lastName: "Surname", username: "username"},
-            { id: "3", firstName: "Name", lastName: "Surname", username: "username"},
-            { id: "4", firstName: "Name", lastName: "Surname", username: "username"},
-            { id: "5", firstName: "Name", lastName: "Surname", username: "username"},
-          ]
-        })
+        onSuccess(this.mockGroup());
       }
     })
+  }
+
+  private mockGroup() : GroupDetails {
+    return {
+      groupId: "1234",
+      name: "mock group",
+      description: "mock description",
+      creator: { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
+      isDialog: false,
+      members: [
+        { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
+        { id: "2", firstName: "Name", lastName: "Surname", username: "username"},
+        { id: "3", firstName: "Name", lastName: "Surname", username: "username"},
+        { id: "4", firstName: "Name", lastName: "Surname", username: "username"},
+        { id: "5", firstName: "Name", lastName: "Surname", username: "username"},
+      ]
+    };
   }
 
   useTimeout(func: () => void) {

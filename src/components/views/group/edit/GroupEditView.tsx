@@ -3,7 +3,7 @@ import "./GroupEditView.scss";
 import GroupInfoTab from "./tabs/info/GroupInfoTab";
 import GroupService, {GroupDetails} from "../../../../services/GroupService";
 import UserService from "../../../../services/UserService";
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default class GroupEditView
     extends React.Component<Props, State>

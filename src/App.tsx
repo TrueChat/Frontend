@@ -1,24 +1,23 @@
 import React from 'react';
-import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
-import { BrowserRouter, Route } from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+// import MockGroupService from "./services/mock/MockGroupService";
+// import MockUserService from "./services/mock/MockUserService";
 import MainPage from "./components/pages/main/MainPage";
-import GroupCreationPage from "./components/pages/group/GroupCreationPage";
-import GroupInfoPage from "./components/pages/group/GroupInfoPage";
-import UserProfilePage from "./components/pages/profile/UserProfilePage";
-// import RemoteUserService from "./services/impl/RemoteUserService";
-// import RemoteAuthService from "./services/impl/RemoteAuthService";
-// import RemoteGroupService from "./services/impl/RemoteGroupService";
-import MockUserService from "./services/mock/MockUserService";
-import MockGroupService from "./services/mock/MockGroupService";
+import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
 import RemoteUserService from "./services/impl/RemoteUserService";
-import RemoteAuthService from "./services/impl/RemoteAuthService";
 import RemoteGroupService from "./services/impl/RemoteGroupService";
+import RemoteAuthService from "./services/impl/RemoteAuthService";
+
 
 export default class App extends React.Component {
 
-  state = {
-    value: ""
-  };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      value: "",
+      previousLocation: props.location
+    };
+  }
 
   private readonly baseUrl = "https://true-chat.herokuapp.com";
   private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
@@ -31,33 +30,18 @@ export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Route exact path="/">
-          <MainPage userService={this.userService}/>
-        </Route>
-        <Route exact path="/auth">
-          <AuthenticationPage userService={this.userService}/>
-        </Route>
-        <Route exact path="/group/">
-          <GroupCreationPage
-            userService={this.userService}
-            groupService={this.groupService}
-          />
-        </Route>
-        <Route path="/group/:groupId" render={props => (
-          <GroupInfoPage
-            userService={this.userService}
-            groupService={this.groupService}
-            match={props.match}
-          />
-        )}>
-        </Route>
-        <Route exact path="/profile/">
-          <UserProfilePage userService={this.userService}/>
-        </Route>
-        <Route path="/profile/:username" render={props => (
-          <UserProfilePage userService={this.userService} match={props.match}/>
-        )}>
-        </Route>
+        <Switch>
+          <Route path="/auth">
+            <AuthenticationPage userService={this.userService}/>
+          </Route>
+          <Route path="/" children={props => (
+            <MainPage
+              location={props.location}
+              groupService={this.groupService}
+              userService={this.userService}
+            />
+          )}/>
+        </Switch>
       </BrowserRouter>
     )
   }

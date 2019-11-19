@@ -57,11 +57,15 @@ export default class RemoteGroupService implements GroupService {
       description: chat.description as string,
       groupId: chat.id as string,
       creator: this.mapChatMemberToGroupMember(chat.creator),
-      members: chat.users.map(this.mapChatMemberToGroupMember)
+      isDialog: chat.is_dialog,
+      members: chat.users.map(this.mapChatMemberToGroupMember),
     }
   }
 
   private mapChatMemberToGroupMember(chatMember: any) : GroupMember {
+    if (chatMember === null) {
+      return { id: "", username: "", firstName: "", lastName: "" };
+    }
     return {
       id: chatMember.id,
       username: chatMember.username,
@@ -128,6 +132,28 @@ export default class RemoteGroupService implements GroupService {
 
   private wrapHandler(handler?: ResponseHandler<any>) : ResponseHandler<any> {
     return (response: Response<any>) => handler && handler(response);
+  }
+
+  findAll(onSuccess?: ResponseHandler<GroupDetails[]>, onFailure?: ResponseHandler<any>): void {
+    this.userService.sendAuthorizedRequest({
+        method: "GET",
+        url: `${this.baseUrl}/chats/`
+      },
+      response => {
+        if (!onSuccess) {
+          return;
+        }
+        const data = response.data.map((chat: any, i: number) => {
+          return this.mapChatDataToGroupDetails(chat);
+        });
+        onSuccess({
+          status: response.status,
+          headers: response.headers,
+          data: data
+        })
+      },
+      this.wrapHandler(onFailure)
+    );
   }
 
 }

@@ -5,6 +5,7 @@ import {Spinner, UserInitialsAvatar} from "../../widgets/Widgets";
 import {NavLink} from "react-router-dom";
 import Input from "../group/common/Input";
 import "./SearchView.scss";
+import ModalLink from "../../pages/main/modals/ModalLink";
 
 export default class SearchView extends React.Component<Props, State> {
 
@@ -54,11 +55,12 @@ export default class SearchView extends React.Component<Props, State> {
             {profile.first_name} {profile.last_name}
           </div>
           <div className="profile-username">
-            <NavLink
-              to={`/profile/${profile.username}`}
+            <ModalLink
+              modalName="userProfile"
+              relativePath={profile.username}
               className="profile-username-link">
               @{profile.username}
-            </NavLink>
+            </ModalLink>
           </div>
         </div>
       </div>

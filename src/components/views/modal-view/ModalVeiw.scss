@@ -1,0 +1,33 @@
+@import "../../styles/Common";
+
+.Modal-view {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+
+
+  .Modal-contents {
+    margin: 2rem auto;
+    max-width: 25rem;
+    border-radius: $BORDER_RADIUS;
+    border: 0.15rem solid $WHITE_70;
+
+    background-color: $BACKGROUND;
+
+    .Modal-header {
+      font-size: 1.5rem;
+      padding: 0.5rem 0 0.5rem 0;
+      text-align: center;
+      position: relative;
+      font-weight: bold;
+      background-color: $DARKER;
+      color: $ORANGE;
+    }
+  }
+}

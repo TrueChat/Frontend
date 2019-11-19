@@ -9,14 +9,8 @@
   border: 1px solid $WHITE_70;
   border-radius: $BORDER_RADIUS;
 
-  >.header {
+  .Absolute-header {
     height: $header-height;
-    z-index: -1;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    background-color: darken($PAGE_BG_COLOR, 2.5%);
-    text-align: center;
 
     .header-image-container {
       padding-top: $header-height / 6;

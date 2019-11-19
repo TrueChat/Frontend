@@ -6,6 +6,7 @@ import {SignUpData} from "./components/tabs/SignUpTab";
 import { Redirect } from "react-router-dom";
 import HeaderImage from "../../../resources/Form-Header.png";
 import UserService, {SubmissionFailureHandler, SubmissionSuccessHandler} from "../../../services/UserService";
+import AbsoluteHeader from "../layout/AbsoluteHeader";
 
 type AuthenticationPageProps = {
   userService: UserService
@@ -18,16 +19,19 @@ export default class AuthenticationPage extends React.Component<AuthenticationPa
   };
 
   render() {
+    if (this.props.userService.userIsPresent()) {
+      return <Redirect to="/"/>
+    }
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectTo}/>
     }
     return (
       <div className="Authentication-page">
-        <div className="header">
+        <AbsoluteHeader>
           <div className="header-image-container">
-            <img src={HeaderImage}/>
+            <img src={HeaderImage} />
           </div>
-        </div>
+        </AbsoluteHeader>
         <div className="form-container">
           <AuthForm
             onSignIn={this.handleSignIn}
