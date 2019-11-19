@@ -14,10 +14,12 @@ import AbsoluteHeader from "../layout/AbsoluteHeader";
 import GroupList from "./left-bar/group-list/GroupList";
 import Header from "./left-bar/header/Header";
 import SearchView from "../../views/search/SearchView";
+import ChatService from "../../../services/ChatService";
 
 type Props = {
   userService: UserService,
   groupService: GroupService,
+  chatService: ChatService,
   location: any
 }
 

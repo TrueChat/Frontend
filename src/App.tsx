@@ -1,12 +1,13 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-// import MockGroupService from "./services/mock/MockGroupService";
-// import MockUserService from "./services/mock/MockUserService";
+import MockGroupService from "./services/mock/MockGroupService";
+import MockUserService from "./services/mock/MockUserService";
 import MainPage from "./components/pages/main/MainPage";
 import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
 import RemoteUserService from "./services/impl/RemoteUserService";
 import RemoteGroupService from "./services/impl/RemoteGroupService";
 import RemoteAuthService from "./services/impl/RemoteAuthService";
+import MockChatService from "./services/mock/MockChatService";
 
 
 export default class App extends React.Component {
@@ -20,12 +21,13 @@ export default class App extends React.Component {
   }
 
   private readonly baseUrl = "https://true-chat.herokuapp.com";
-  private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
-  private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
+  // private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
+  // private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
 
   // For testing purposes
-  // private readonly userService = new MockUserService(300);
-  // private readonly groupService = new MockGroupService(300);
+  private readonly userService = new MockUserService(300);
+  private readonly groupService = new MockGroupService(300);
+  private readonly chatService = new MockChatService(300);
 
   render() {
     return (
@@ -39,6 +41,7 @@ export default class App extends React.Component {
               location={props.location}
               groupService={this.groupService}
               userService={this.userService}
+              chatService={this.chatService}
             />
           )}/>
         </Switch>
