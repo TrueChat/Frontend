@@ -4,7 +4,8 @@
   @import "../../../../widgets/InitialsAvatar";
   @import "../../../../views/group/edit/styles/InitialsAvatarOverride";
   @extend .scrollable;
-  max-height: 90vh;
+  height: 100%;
+  padding-top: 3.5rem;
   overflow-y: scroll;
 
   .row {

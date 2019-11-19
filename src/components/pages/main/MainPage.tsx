@@ -54,14 +54,12 @@ export default class MainPage extends React.Component<Props> {
             <div className="Main-page">
               <div className="left-bar">
                 <Header />
-                <div>
-                  <GroupList
-                    groupService={this.props.groupService}
-                    userService={this.props.userService}
-                  />
-                </div>
+                <GroupList
+                  groupService={this.props.groupService}
+                  userService={this.props.userService}
+                />
               </div>
-              <div className="right-bar">
+              <div className="right-bar h-100">
                 <Switch>
                   <Route path="/group/:groupId" component={(props: RouteComponentProps) => (
                     <div>Group View</div>
