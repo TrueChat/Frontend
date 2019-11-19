@@ -143,12 +143,9 @@ export default class RemoteGroupService implements GroupService {
         if (!onSuccess) {
           return;
         }
-        console.log(response.data.length);
         const data = response.data.map((chat: any, i: number) => {
-          console.log(i);
           return this.mapChatDataToGroupDetails(chat);
         });
-        console.log(data);
         onSuccess({
           status: response.status,
           headers: response.headers,

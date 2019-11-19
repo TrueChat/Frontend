@@ -12,8 +12,20 @@ export default class GroupList extends React.Component<Props, State> {
     groups: undefined
   };
 
-  componentDidMount(): void {
+  private intervalId: any;
+
+  loadGroups = () => {
     this.props.groupService.findAll(result => this.updateGroups(result.data));
+  };
+
+  componentDidMount(): void {
+    this.intervalId = setInterval(this.loadGroups, 500);
+  }
+
+  componentWillUnmount(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   updateGroups = (groups: GroupDetails[]) => {
@@ -51,7 +63,7 @@ export default class GroupList extends React.Component<Props, State> {
     return (
       <div className="Group-list">
         {groups.map((details, i) => (
-          <div className="group-details" key={details.groupId + i}>
+          <div className="group-details" key={details.groupId}>
             <div className="row">
               <div className="col-2">
                 <GroupInitialsAvatar groupData={details} />
