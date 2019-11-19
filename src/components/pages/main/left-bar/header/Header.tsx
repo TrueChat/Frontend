@@ -49,7 +49,7 @@ export default class Header extends React.Component<any, State> {
             </ModalLink>
           </div>
           <div className="header-dropdown-item">
-            <ModalLink modalName="search" relativePath="" className="a-none w-100 text-left">
+            <ModalLink modalName="search" className="a-none w-100 text-left">
               <div className="row">
                 <div className="col-1">
                   <i className="fas fa-search"/>

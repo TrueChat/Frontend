@@ -11,10 +11,6 @@ export default class GroupList extends React.Component<Props, State> {
     groups: undefined
   };
 
-  shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
-    return true;
-  }
-
   componentDidMount(): void {
     this.props.groupService
       .findAll(result => this.setState(state => ({

@@ -13,6 +13,7 @@ import GroupCreationModalView from "./modals/GroupCreationModal";
 import AbsoluteHeader from "../layout/AbsoluteHeader";
 import GroupList from "./left-bar/group-list/GroupList";
 import Header from "./left-bar/header/Header";
+import SearchView from "../../views/search/SearchView";
 
 type Props = {
   userService: UserService,
@@ -82,6 +83,8 @@ export default class MainPage extends React.Component<Props> {
         <Route exact path="/modal/currentUserProfile/" component={this.CurrentUserProfileModal}/>
         <Route exact path="/modal/userProfile/:username" component={this.UserProfileModal}/>
         <Route exact path="/modal/groupProfile/:groupId" component={this.GroupProfileModal}/>
+        <Route exact path="/modal/groupCreation" component={this.GroupCreationModal}/>
+        <Route exact path="/modal/search" component={this.SearchModal}/>
       </React.Fragment>
     );
   }
@@ -118,9 +121,22 @@ export default class MainPage extends React.Component<Props> {
           ? <Route exact path="/modal/groupCreation" component={this.GroupCreationModal}/>
           : null
         }
+        {isActiveModal("search")
+          ? <Route exact path="/modal/search" component={this.SearchModal} />
+          : null
+        }
       </React.Fragment>
     )
   }
+
+  SearchModal = (props: RouteComponentProps) => {
+    return (
+      <ModalView history={props.history}>
+        <SearchView userService={this.props.userService}/>
+      </ModalView>
+    );
+  };
+
 
   GroupCreationModal = (props: RouteComponentProps) => {
     return (
