@@ -15,6 +15,7 @@ import GroupList from "./left-bar/group-list/GroupList";
 import Header from "./left-bar/header/Header";
 import SearchView from "../../views/search/SearchView";
 import ChatService from "../../../services/ChatService";
+import ChatView from "./right-bar/chat-view/ChatView";
 
 type Props = {
   userService: UserService,
@@ -64,7 +65,11 @@ export default class MainPage extends React.Component<Props> {
               <div className="right-bar h-100">
                 <Switch>
                   <Route path="/group/:groupId" component={(props: RouteComponentProps) => (
-                    <div>Group View</div>
+                    <ChatView
+                      chatService={this.props.chatService}
+                      chatId={(props.match.params as any).groupId}
+                      groupService={this.props.groupService}
+                    />
                   )}/>
                   <Route path="/">
                     <div>Empty</div>
