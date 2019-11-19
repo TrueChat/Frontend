@@ -62,8 +62,8 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
           <div className="row info-row">
             <div className="col-12">
               <div className="row-title">Username</div>
-              <div>
-                <FormInput value={userProfile.username} onChange={this.updateUsername} />
+              <div className="font-weight-bold color-white-70">
+                @{userProfile.username}
               </div>
             </div>
           </div>
