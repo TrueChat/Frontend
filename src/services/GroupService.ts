@@ -22,7 +22,8 @@ export type GroupDetails = {
   name: string,
   description: string,
   members: GroupMember[],
-  creator: GroupMember
+  creator: GroupMember,
+  isDialog: boolean
 }
 
 

@@ -55,7 +55,10 @@ export default class MainPage extends React.Component<Props> {
               <div className="left-bar">
                 <Header />
                 <div>
-                  <GroupList groupService={this.props.groupService} />
+                  <GroupList
+                    groupService={this.props.groupService}
+                    userService={this.props.userService}
+                  />
                 </div>
               </div>
               <div className="right-bar">

@@ -49,6 +49,7 @@ export default class MockGroupService implements GroupService {
       name: "mock group",
       description: "mock description",
       creator: { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
+      isDialog: false,
       members: [
         { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
         { id: "2", firstName: "Name", lastName: "Surname", username: "username"},
