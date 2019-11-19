@@ -11,11 +11,14 @@
   background-color: rgba(0, 0, 0, 0.35);
   z-index: 9999;
 
+
   .Modal-contents {
     margin: 2rem auto;
     max-width: 25rem;
     border-radius: $BORDER_RADIUS;
     border: 0.15rem solid $WHITE_70;
+
+    background-color: $BACKGROUND;
 
     .Modal-header {
       font-size: 1.5rem;

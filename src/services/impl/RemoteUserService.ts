@@ -25,6 +25,7 @@ export default class RemoteUserService implements UserService {
     this.authService = authService;
     this.baseUrl = baseUrl;
   }
+
   public login(
       username: string,
       password: string,
@@ -160,7 +161,7 @@ export default class RemoteUserService implements UserService {
   }
 
 
-  loadProfile(username: string): Promise<UserProfile> {
+  public loadProfile(username: string): Promise<UserProfile> {
     return new Promise((resolve, reject) => {
       this.sendAuthorizedRequest({
         method: "GET",

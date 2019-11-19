@@ -78,6 +78,7 @@ export default class MainPage extends React.Component<Props> {
   }
 
   modalRoutes() {
+    // TODO when restoring modals after page reload they do overlap each other
     return (
       <React.Fragment>
         <Route exact path="/modal/currentUserProfile/" component={this.CurrentUserProfileModal}/>
@@ -99,7 +100,7 @@ export default class MainPage extends React.Component<Props> {
     );
 
     const isActiveModal = (modalName: string) => {
-      return isModal && location.state.modal.name === modalName;
+      return !!(isModal && location.state.modal.name === modalName);
     };
 
     return (
