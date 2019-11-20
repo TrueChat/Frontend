@@ -8,6 +8,7 @@ export interface Sender {
 }
 
 export interface Message {
+  id: number,
   content: string
   dateCreated: Date,
   sender: Sender

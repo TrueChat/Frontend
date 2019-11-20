@@ -1,5 +1,5 @@
 import ChatService from "../ChatService";
-import ChatSession, {Message, Page} from "../ChatSession";
+import ChatSession, {Message, Page, Sender} from "../ChatSession";
 import {ResponseHandler} from "../types";
 
 class MockChatSession implements ChatSession {
@@ -12,14 +12,14 @@ class MockChatSession implements ChatSession {
     if (interval) {
       this.interval = interval;
     }
-    this.intervalId = setInterval(() => {
-      this.listeners.forEach(listener => {
-        listener({
-          status: 200, headers: { },
-          data: [ this.mockMessage(), this.mockMessage(), this.mockMessage(), this.mockMessage() ]
-        })
-      });
-    }, this.interval)
+    // this.intervalId = setInterval(() => {
+    //   this.listeners.forEach(listener => {
+    //     listener({
+    //       status: 200, headers: { },
+    //       data: [ this.mockMessage(), this.mockMessage(), this.mockMessage(), this.mockMessage() ]
+    //     })
+    //   });
+    // }, this.interval)
   }
 
   addListener(listener: ResponseHandler<Message[]>): void {
@@ -41,33 +41,44 @@ class MockChatSession implements ChatSession {
         next: null,
         previous: null,
         content: [
-          this.mockMessage(1),
-          this.mockMessage(2),
-          this.mockMessage(3),
-          this.mockMessage(4),
-          this.mockMessage()
+          this.mockMessage(1, 1, this.time(20, 40)),
+          this.mockMessage(2, 1, this.time(20, 40)),
+          this.mockMessage(3, 1, this.time(20, 40)),
+          this.mockMessage(4, 1, this.time(20, 45)),
+          this.mockMessage(5, 2, this.time(20, 55))
         ]
       }
     })
   }
 
-  mockMessage(number?: number) : Message {
+  time(hour: number, minute: number) : Date {
+    return new Date(2019, 11, 12, hour, minute);
+  }
+
+  mockMessage(number?: number, senderId?: number, date?: Date) : Message {
     return {
+      id: number ? number : 0,
       sender: {
         firstName: "User",
         lastName: "Mock",
-        id: 1,
+        id: senderId ? senderId : 0,
         username: "mock_user"
       },
-      content: "mock message" + number,
-      dateCreated: new Date()
+      content: "mock long chat message",
+      dateCreated: date ? date : new Date()
     }
   }
 
   loadAllMessages(handler: ResponseHandler<Message[]>) : void {
     handler({
       status: 200, headers: { },
-      data: [ this.mockMessage(1), this.mockMessage(2), this.mockMessage(3), this.mockMessage() ]
+      data: [
+        this.mockMessage(1, 1, this.time(20, 40)),
+        this.mockMessage(2, 1, this.time(20, 40)),
+        this.mockMessage(3, 1, this.time(20, 45)),
+        this.mockMessage(4, 1, this.time(20, 45)),
+        this.mockMessage(5, 2, this.time(20, 55))
+      ]
     })
   }
 

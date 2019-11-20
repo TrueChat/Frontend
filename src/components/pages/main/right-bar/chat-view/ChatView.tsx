@@ -41,9 +41,12 @@ export default class ChatView extends React.Component<Props, State> {
         <Header groupService={this.props.groupService} groupId={this.props.chatId}/>
         <div className="body">
           <div className="messages">
-            {this.state.messages.map(message => {
+            {this.mergeMessages(this.state.messages).map(messageGroup => {
               return (
-                <this.MessageView message={message}/>
+                <this.MessageView
+                  key={`Message-group-${messageGroup.messages[0].id}`}
+                  messageGroup={messageGroup}
+                />
               )
             })}
           </div>
@@ -54,34 +57,47 @@ export default class ChatView extends React.Component<Props, State> {
     );
   }
 
-  MessageView = ({message}: { message: Message }) => {
+  MessageView = ({messageGroup}: { messageGroup: MessageGroup }) => {
     return (
-      <div className="Message-view">
+      <div className="Message-group-view">
         <div className="row">
-          <div className="col-2">
+          <div className="col-1">
             <UserInitialsAvatar profile={{
-              first_name: message.sender.username,
-              last_name: message.sender.lastName,
-              username: message.sender.firstName,
+              first_name: messageGroup.sender.username,
+              last_name: messageGroup.sender.lastName,
+              username: messageGroup.sender.firstName,
               about: ""
             }}/>
           </div>
-          <div className="col-9">
-            <div className="message-sender">
-              <ModalLink
-                modalName="userProfile"
-                relativePath={`${message.sender.id}`}
-                className="a-none"
-              >
-                {this.displaySenderName(message.sender)}
-              </ModalLink>
+          <div className="col-11">
+            <div className="row">
+              <div className="col-10 message-sender">
+                <ModalLink
+                  modalName="userProfile"
+                  relativePath={`${messageGroup.sender.id}`}
+                  className="a-none"
+                >
+                  {this.displaySenderName(messageGroup.sender)}
+                </ModalLink>
+              </div>
+              <div className="col-2 text-right">
+                {`${messageGroup.date.getHours()}:${messageGroup.date.getMinutes()}`}
+              </div>
             </div>
             <div className="message-contents">
-              {message.content}
+              {messageGroup.messages.map(message => (
+                <div key={`message-${message.id}`}>
+                  <div className="row mt-1">
+                    <div className="col-10">
+                      {message.content}
+                    </div>
+                    <div className="col-2 text-right">
+
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="col-1">
-            {`${message.dateCreated.getHours()}:${message.dateCreated.getMinutes()}`}
           </div>
         </div>
       </div>
@@ -96,8 +112,60 @@ export default class ChatView extends React.Component<Props, State> {
       return sender.firstName;
     }
     return sender.username;
+  };
+
+  mergeMessages = (messages: Message[]) => {
+    const groups: MessageGroup[] = [];
+
+    if (messages.length === 0) {
+      return groups;
+    }
+
+    groups.push(this.messageGroup(messages[0]));
+
+    for (let i = 1; i < messages.length; i++) {
+      let currentGroup = groups[groups.length - 1];
+      let currentMessage = messages[i];
+
+      if (this.canMerge(currentGroup, currentMessage)) {
+        currentGroup.messages.push(currentMessage);
+      } else {
+        groups.push(this.messageGroup(currentMessage));
+      }
+    }
+
+    return groups;
+  };
+
+  canMerge(group: MessageGroup, lastMessage: Message): boolean {
+    if (group.sender.id !== lastMessage.sender.id) {
+      return false;
+    }
+
+    const firstMessage = group.messages[0];
+    const acceptableTimeDifference = 60 * 1000;
+    const difference = lastMessage.dateCreated.getTime() - firstMessage.dateCreated.getTime();
+
+    console.log(difference);
+    return difference <= acceptableTimeDifference;
   }
+
+  messageGroup(firstMessage: Message) : MessageGroup {
+    return {
+      messages: [firstMessage],
+      date: firstMessage.dateCreated,
+      sender: firstMessage.sender
+    };
+  }
+
 }
+
+type MessageGroup = {
+  messages: Message[],
+  sender: Sender,
+  date: Date
+}
+
 type Props = {
   chatService: ChatService,
   groupService: GroupService,
