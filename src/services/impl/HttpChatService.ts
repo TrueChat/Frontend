@@ -16,6 +16,12 @@ class HttpChatSession implements ChatSession {
     this.userService = userService;
     this.chatId = chatId;
     this.baseUrl = baseUrl;
+
+    this.intervalId = setInterval(() => {
+      this.loadAllMessages(response => {
+        this.listeners.forEach(listener => listener(response));
+      })
+    }, interval)
   }
 
   addListener(listener: ResponseHandler<Message[]>) {
@@ -23,6 +29,9 @@ class HttpChatSession implements ChatSession {
   }
 
   close(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   deleteMessage(message: Message): void {
@@ -44,10 +53,15 @@ class HttpChatSession implements ChatSession {
 
   loadAllMessages(handler: ResponseHandler<Message[]>) : void {
     this.userService.sendAuthorizedRequest({
-      url: `${this.baseUrl}/chats/${this.chatId}/`,
+      url: `${this.baseUrl}/chats/${this.chatId}/messages/`,
       method: "GET",
     }, response => {
-      const messages = response.data.map((responseMessage: any) => this.mapResponseMessageToMessage(responseMessage));
+      const messages: Message[] = [];
+
+      for (let i = response.data.length - 1; i >= 0; i--) {
+        messages.push(this.mapResponseMessageToMessage(response.data[i]))
+      }
+
       handler({
         status: response.status,
         headers: { },
@@ -72,14 +86,16 @@ class HttpChatSession implements ChatSession {
     };
   }
 
-  sendMessage(message: string): void {
+  sendMessage(message: string, onSuccess: (message: Message) => void): void {
     this.userService.sendAuthorizedRequest({
       url: `${this.baseUrl}/chats/${this.chatId}/add_message/`,
       method: "POST",
       body: {
         content: message
       }
-    }, () => { }, () => { });
+    }, (response) => {
+      onSuccess(this.mapResponseMessageToMessage(response.data));
+    }, () => { });
   }
 
 }

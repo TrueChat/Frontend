@@ -31,7 +31,7 @@ export default interface ChatSession {
 
   editMessage(message: Message) : void;
 
-  sendMessage(message: string) : void;
+  sendMessage(message: string, onSuccess: (message: Message) => void) : void;
 
   deleteMessage(message: Message) : void;
 }

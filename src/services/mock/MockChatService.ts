@@ -71,17 +71,11 @@ class MockChatSession implements ChatSession {
 
   }
 
-  sendMessage(messageContent: string): void {
+  sendMessage(messageContent: string, onSuccess: (message: Message) => void): void {
     console.log(messageContent);
     const message = this.mockMessage(this.lastId++, 1, this.time(20, 55), messageContent);
     this.messages.push(message);
-    this.listeners.forEach(listener => {
-      listener({
-        status: 200,
-        headers: { },
-        data: [ message ]
-      })
-    })
+    onSuccess(message);
   }
 
   deleteMessage(message: Message): void {

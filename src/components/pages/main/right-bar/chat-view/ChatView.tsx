@@ -22,14 +22,14 @@ export default class ChatView extends React.Component<Props, State> {
     this.chatSession = this.props.chatService.connect(this.props.chatId);
     this.chatSession.addListener(response => {
       this.setState(state => ({
-        ...state, messages: [...state.messages, ...response.data]
+        ...state, messages: response.data
       }));
     });
-    this.chatSession.loadAllMessages(response => {
-      this.setState(state => ({
-        ...state, messages: [...state.messages, ...response.data]
-      }))
-    })
+    // this.chatSession.loadAllMessages(response => {
+    //   this.setState(state => ({
+    //     ...state, messages: [...state.messages, ...response.data]
+    //   }))
+    // })
   }
 
   componentWillUnmount(): void {
@@ -99,7 +99,11 @@ export default class ChatView extends React.Component<Props, State> {
       ...state, messageInput: ""
     }), () => {
       if (mode === Mode.NONE) {
-        this.chatSession && this.chatSession.sendMessage(message);
+        this.chatSession && this.chatSession.sendMessage(message, (message) => {
+          this.setState(state => ({
+            ...state, messages: [...state.messages, message]
+          }));
+        });
       }
     });
   };
@@ -214,6 +218,9 @@ export default class ChatView extends React.Component<Props, State> {
 
   canMerge(group: MessageGroup, lastMessage: Message): boolean {
     if (group.sender.id !== lastMessage.sender.id) {
+      return false;
+    }
+    if (group.messages.length === 5) {
       return false;
     }
 
