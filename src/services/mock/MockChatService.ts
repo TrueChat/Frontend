@@ -42,19 +42,6 @@ class MockChatSession implements ChatSession {
     }
   }
 
-  loadMessagesPage(page: number, handler: ResponseHandler<Page<Message>>): void {
-    handler({
-      status: 200,
-      headers: { },
-      data: {
-        size: 5,
-        next: null,
-        previous: null,
-        content: this.messages
-      }
-    })
-  }
-
   time(hour: number, minute: number) : Date {
     return new Date(2019, 11, 12, hour, minute);
   }

@@ -25,8 +25,6 @@ export default interface ChatSession {
 
   addListener(listener: ResponseHandler<Message[]>) : void
 
-  loadMessagesPage(page: number, handler: ResponseHandler<Page<Message>>) : void;
-
   loadAllMessages(handler: ResponseHandler<Message[]>) : void;
 
   close() : void;

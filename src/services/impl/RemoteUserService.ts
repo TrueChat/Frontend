@@ -174,7 +174,7 @@ export default class RemoteUserService implements UserService {
     });
   }
 
-  public sendAuthorizedRequest(
+  sendAuthorizedRequest(
     request: Request,
     onSuccess: (response: Response<any>) => void,
     onFailure: (response: Response<any>) => void

@@ -1,5 +1,5 @@
 import {RegistrationData} from "./AuthService";
-import { ConstraintViolation } from "./types";
+import {ConstraintViolation, Request, Response} from "./types";
 
 export type UserProfile = {
   first_name: string,
@@ -41,4 +41,10 @@ export default interface UserService {
   userIsPresent(): boolean;
 
   searchUsers(searchString: string): Promise<UserProfile[]>
+
+  sendAuthorizedRequest(
+    request: Request,
+    onSuccess: (response: Response<any>) => void,
+    onFailure: (response: Response<any>) => void
+  ) : void;
 }

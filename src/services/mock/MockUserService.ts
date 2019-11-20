@@ -84,4 +84,7 @@ export default class MockUserService implements UserService{
     })
   }
 
+  sendAuthorizedRequest(request: Request, onSuccess: (response: Response<any>) => void, onFailure: (response: Response<any>) => void): void {
+  }
+
 }
