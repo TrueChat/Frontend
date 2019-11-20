@@ -33,6 +33,7 @@ export default interface ChatSession {
 
   editMessage(message: Message) : void;
 
-  sendMessage(message: Message) : void;
+  sendMessage(message: string) : void;
 
+  deleteMessage(message: Message) : void;
 }

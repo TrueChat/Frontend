@@ -4,6 +4,7 @@ import {ResponseHandler} from "../types";
 
 class MockChatSession implements ChatSession {
 
+  private lastId: number = 0;
   private listeners: ResponseHandler<Message[]>[] = [];
   private interval: number = 300;
   private intervalId: any;
@@ -23,11 +24,11 @@ class MockChatSession implements ChatSession {
     // }, this.interval)
 
     this.messages = [
-      this.mockMessage(1, 1, this.time(20, 40)),
-      this.mockMessage(2, 1, this.time(20, 40)),
-      this.mockMessage(3, 1, this.time(20, 45)),
-      this.mockMessage(4, 1, this.time(20, 45)),
-      this.mockMessage(5, 2, this.time(20, 55))
+      this.mockMessage(this.lastId++, 1, this.time(20, 40)),
+      this.mockMessage(this.lastId++, 1, this.time(20, 40)),
+      this.mockMessage(this.lastId++, 1, this.time(20, 45)),
+      this.mockMessage(this.lastId++, 1, this.time(20, 45)),
+      this.mockMessage(this.lastId++, 2, this.time(20, 55))
     ]
   }
 
@@ -58,7 +59,7 @@ class MockChatSession implements ChatSession {
     return new Date(2019, 11, 12, hour, minute);
   }
 
-  mockMessage(number?: number, senderId?: number, date?: Date) : Message {
+  mockMessage(number?: number, senderId?: number, date?: Date, content?: string) : Message {
     return {
       id: number ? number : 0,
       sender: {
@@ -67,7 +68,7 @@ class MockChatSession implements ChatSession {
         id: senderId ? senderId : 0,
         username: "mock_user"
       },
-      content: "mock long chat message",
+      content: content ? content : "mock long chat message",
       dateCreated: date ? date : new Date()
     }
   }
@@ -83,8 +84,20 @@ class MockChatSession implements ChatSession {
 
   }
 
-  sendMessage(message: Message): void {
+  sendMessage(messageContent: string): void {
+    console.log(messageContent);
+    const message = this.mockMessage(this.lastId++, 1, this.time(20, 55), messageContent);
     this.messages.push(message);
+    this.listeners.forEach(listener => {
+      listener({
+        status: 200,
+        headers: { },
+        data: [ message ]
+      })
+    })
+  }
+
+  deleteMessage(message: Message): void {
   }
 
 }

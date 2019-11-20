@@ -13,7 +13,9 @@ export default class ChatView extends React.Component<Props, State> {
   chatSession?: ChatSession;
 
   state = {
-    messages: ([] as Message[])
+    messages: ([] as Message[]),
+    mode: Mode.NONE,
+    messageInput: ""
   };
 
   componentDidMount(): void {
@@ -37,6 +39,7 @@ export default class ChatView extends React.Component<Props, State> {
   }
 
   render() {
+    const { messageInput } = this.state;
     return (
       <div className="Chat-view">
         <Header groupService={this.props.groupService} groupId={this.props.chatId}/>
@@ -59,10 +62,18 @@ export default class ChatView extends React.Component<Props, State> {
 
               </div>
               <div className="col-8">
-                <MessageInput value="" onChange={() => {}} placeholder="Write a message"/>
+                <MessageInput
+                  value={messageInput}
+                  onEnter={this.onMessageEnter}
+                  onChange={this.updateMessageInput}
+                  placeholder="Write a message"
+                />
               </div>
               <div className="col-2">
-                <i className="fas fa-angle-double-right send-message-icon"/>
+                <i
+                  className="fas fa-angle-double-right send-message-icon"
+                  onClick={this.onMessageEnter}
+                />
               </div>
             </div>
           </div>
@@ -70,6 +81,28 @@ export default class ChatView extends React.Component<Props, State> {
       </div>
     );
   }
+
+  updateMessageInput = (value: string) => {
+    this.setState(state => ({
+      ...state, messageInput: value
+    }));
+  };
+
+  onMessageEnter = () => {
+    if (this.state.messageInput.length === 0) {
+      return;
+    }
+
+    const mode = this.state.mode;
+    const message = this.state.messageInput;
+    this.setState(state => ({
+      ...state, messageInput: ""
+    }), () => {
+      if (mode === Mode.NONE) {
+        this.chatSession && this.chatSession.sendMessage(message);
+      }
+    });
+  };
 
   MessageView = ({messageGroup}: { messageGroup: MessageGroup }) => {
     return (
@@ -108,7 +141,7 @@ export default class ChatView extends React.Component<Props, State> {
                     <Dropdown
                       toggle={<i className="fas fa-ellipsis-h message-actions"/>}
                       options={["Edit", "Remove"]}
-                      onSelect={action => console.log(action)}
+                      onSelect={action => this.handleMessageActionSelected(message, action)}
                     />
                   </div>
                 </div>
@@ -118,6 +151,32 @@ export default class ChatView extends React.Component<Props, State> {
         </div>
       </div>
     );
+  };
+
+  handleMessageActionSelected = (message: Message, action: string) => {
+    switch (action) {
+      case "Remove":
+        this.deleteMessage(message);
+        break;
+    }
+  };
+
+  deleteMessage = (message: Message) => {
+    this.setState(state => ({
+      ...state, messages: this.removeMessage(message, state.messages)
+    }), () => {
+      this.chatSession && this.chatSession.deleteMessage(message);
+    });
+  };
+
+  removeMessage(message: Message, messages: Message[]) : Message[] {
+    const index = messages.findIndex(m => m.id === message.id);
+    if (index === -1) {
+      return messages;
+    }
+    messages = messages.slice(0);
+    messages.splice(index, 1);
+    return messages;
   };
 
   displaySenderName = (sender: Sender) => {
@@ -162,7 +221,6 @@ export default class ChatView extends React.Component<Props, State> {
     const acceptableTimeDifference = 60 * 1000;
     const difference = lastMessage.dateCreated.getTime() - firstMessage.dateCreated.getTime();
 
-    console.log(difference);
     return difference <= acceptableTimeDifference;
   }
 
@@ -189,5 +247,11 @@ type Props = {
 }
 
 type State = {
-  messages: Message[]
+  messages: Message[],
+  mode: Mode,
+  messageInput: string
+}
+
+enum Mode {
+  EDIT, NONE
 }
