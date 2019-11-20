@@ -62,7 +62,7 @@ export default class GroupList extends React.Component<Props, State> {
 
     return (
       <div className="Group-list">
-        {groups.map((details, i) => (
+        {groups.map((details) => (
           <div className="group-details" key={details.groupId}>
             <div className="row">
               <div className="col-2">

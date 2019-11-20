@@ -1,8 +1,8 @@
 import UserService, {UserProfile} from "../UserService";
 import {RegistrationData} from "../AuthService";
-import {ConstraintViolation} from "../types";
+import {ConstraintViolation, Response, Request} from "../types";
 
-export default class MockUserService implements UserService{
+export default class MockUserService implements UserService {
 
   private timeout?: number;
 
@@ -83,5 +83,10 @@ export default class MockUserService implements UserService{
       resolve({ username: "mock_user", first_name: "Name", last_name: "Surname", about: "mock_about"});
     })
   }
+
+  sendAuthorizedRequest(
+      request: Request,
+      onSuccess: (response: Response<any>) => void,
+      onFailure: (response: Response<any>) => void): void { }
 
 }

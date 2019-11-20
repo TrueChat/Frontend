@@ -21,5 +21,8 @@
 
   .right-bar {
     width: 70%;
+    box-sizing: border-box;
+    position: relative;
+    height: 100%;
   }
 }
