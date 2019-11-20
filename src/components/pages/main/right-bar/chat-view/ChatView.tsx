@@ -6,6 +6,7 @@ import Header from "./header/Header";
 import "./ChatView.scss"
 import {Dropdown, UserInitialsAvatar} from "../../../../widgets/Widgets";
 import ModalLink from "../../modals/ModalLink";
+import MessageInput from "./input/MessageInput";
 
 export default class ChatView extends React.Component<Props, State> {
 
@@ -52,6 +53,19 @@ export default class ChatView extends React.Component<Props, State> {
           </div>
         </div>
         <div className="message-input-container">
+          <div className="container">
+            <div className="row">
+              <div className="col-2">
+
+              </div>
+              <div className="col-8">
+                <MessageInput value="" onChange={() => {}} placeholder="Write a message"/>
+              </div>
+              <div className="col-2">
+                <i className="fas fa-angle-double-right send-message-icon"/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

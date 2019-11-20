@@ -1,0 +1,13 @@
+@import "../../../../../styles/Common";
+
+.Message-input {
+  background-color: transparent;
+  border: 0;
+  color: $WHITE_60;
+  width: 100%;
+  font-weight: bold;
+  padding-right: 1.5rem;
+
+  outline-width: 0;
+  border-bottom: 0.1rem solid $ORANGE;
+}

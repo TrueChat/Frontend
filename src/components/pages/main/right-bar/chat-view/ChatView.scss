@@ -61,8 +61,6 @@
             }
           }
         }
-
-
       }
     }
   }
@@ -75,5 +73,12 @@
     left: 0;
     width: 100%;
     color: $WHITE_70;
+    box-sizing: border-box;
+    padding: 2rem;
+
+    .send-message-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
   }
 }
