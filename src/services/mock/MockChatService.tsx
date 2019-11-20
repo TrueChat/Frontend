@@ -19,7 +19,7 @@ class MockChatSession implements ChatSession {
           data: [ this.mockMessage(), this.mockMessage(), this.mockMessage(), this.mockMessage() ]
         })
       });
-    })
+    }, this.interval)
   }
 
   addListener(listener: ResponseHandler<Message[]>): void {
@@ -41,17 +41,17 @@ class MockChatSession implements ChatSession {
         next: null,
         previous: null,
         content: [
-          this.mockMessage(),
-          this.mockMessage(),
-          this.mockMessage(),
-          this.mockMessage(),
+          this.mockMessage(1),
+          this.mockMessage(2),
+          this.mockMessage(3),
+          this.mockMessage(4),
           this.mockMessage()
         ]
       }
     })
   }
 
-  mockMessage() : Message {
+  mockMessage(number?: number) : Message {
     return {
       sender: {
         firstName: "User",
@@ -59,7 +59,7 @@ class MockChatSession implements ChatSession {
         id: 1,
         username: "mock_user"
       },
-      content: "mock message",
+      content: "mock message" + number,
       dateCreated: new Date()
     }
   }
@@ -67,7 +67,7 @@ class MockChatSession implements ChatSession {
   loadAllMessages(handler: ResponseHandler<Message[]>) : void {
     handler({
       status: 200, headers: { },
-      data: [ this.mockMessage(), this.mockMessage(), this.mockMessage(), this.mockMessage() ]
+      data: [ this.mockMessage(1), this.mockMessage(2), this.mockMessage(3), this.mockMessage() ]
     })
   }
 

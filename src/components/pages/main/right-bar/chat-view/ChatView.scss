@@ -1,3 +1,49 @@
+@import "../../../../styles/Common";
+
 .Chat-view {
+  @import "../../../../widgets/InitialsAvatar";
+  @import "../../../../views/group/edit/styles/InitialsAvatarOverride";
+
+  height: 100%;
   position: relative;
+  $message-input-container-height: 5rem;
+
+  .body {
+    height: calc(100% - 5rem);
+    @extend .scrollable;
+    overflow-y: scroll;
+    padding-top: 3.5rem;
+
+    .messages {
+      min-height: min-content;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      .Message-view {
+        background-color: $DARKER;
+        color: $WHITE_70;
+        padding: 0.375rem 0.75rem;
+        margin: 0.25rem;
+        align-self: flex-end;
+        width: 100%;
+
+        .message-sender {
+          color: $WHITE_90;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .message-input-container {
+    position: absolute;
+    height: $message-input-container-height;
+    background-color: $DARKER ;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: $WHITE_70;
+  }
 }

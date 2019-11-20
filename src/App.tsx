@@ -27,7 +27,7 @@ export default class App extends React.Component {
   // For testing purposes
   private readonly userService = new MockUserService(300);
   private readonly groupService = new MockGroupService(300);
-  private readonly chatService = new MockChatService(300);
+  private readonly chatService = new MockChatService(1000);
 
   render() {
     return (
