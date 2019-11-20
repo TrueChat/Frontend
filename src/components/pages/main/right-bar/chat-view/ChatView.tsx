@@ -4,7 +4,7 @@ import ChatSession, {Message, Sender} from "../../../../../services/ChatSession"
 import GroupService from "../../../../../services/GroupService";
 import Header from "./header/Header";
 import "./ChatView.scss"
-import {UserInitialsAvatar} from "../../../../widgets/Widgets";
+import {Dropdown, UserInitialsAvatar} from "../../../../widgets/Widgets";
 import ModalLink from "../../modals/ModalLink";
 
 export default class ChatView extends React.Component<Props, State> {
@@ -86,14 +86,16 @@ export default class ChatView extends React.Component<Props, State> {
             </div>
             <div className="message-contents">
               {messageGroup.messages.map(message => (
-                <div key={`message-${message.id}`}>
-                  <div className="row mt-1">
-                    <div className="col-10">
-                      {message.content}
-                    </div>
-                    <div className="col-2 text-right">
-
-                    </div>
+                <div key={`message-${message.id}`} className="row mt-1 message">
+                  <div className="col-10">
+                    {message.content}
+                  </div>
+                  <div className="col-2 text-right message-dropdown">
+                    <Dropdown
+                      toggle={<i className="fas fa-ellipsis-h message-actions"/>}
+                      options={["Edit", "Remove"]}
+                      onSelect={action => console.log(action)}
+                    />
                   </div>
                 </div>
               ))}

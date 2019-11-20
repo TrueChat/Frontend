@@ -7,6 +7,7 @@ class MockChatSession implements ChatSession {
   private listeners: ResponseHandler<Message[]>[] = [];
   private interval: number = 300;
   private intervalId: any;
+  private messages: Message[];
 
   constructor(interval?: number) {
     if (interval) {
@@ -20,6 +21,14 @@ class MockChatSession implements ChatSession {
     //     })
     //   });
     // }, this.interval)
+
+    this.messages = [
+      this.mockMessage(1, 1, this.time(20, 40)),
+      this.mockMessage(2, 1, this.time(20, 40)),
+      this.mockMessage(3, 1, this.time(20, 45)),
+      this.mockMessage(4, 1, this.time(20, 45)),
+      this.mockMessage(5, 2, this.time(20, 55))
+    ]
   }
 
   addListener(listener: ResponseHandler<Message[]>): void {
@@ -40,13 +49,7 @@ class MockChatSession implements ChatSession {
         size: 5,
         next: null,
         previous: null,
-        content: [
-          this.mockMessage(1, 1, this.time(20, 40)),
-          this.mockMessage(2, 1, this.time(20, 40)),
-          this.mockMessage(3, 1, this.time(20, 40)),
-          this.mockMessage(4, 1, this.time(20, 45)),
-          this.mockMessage(5, 2, this.time(20, 55))
-        ]
+        content: this.messages
       }
     })
   }
@@ -72,14 +75,16 @@ class MockChatSession implements ChatSession {
   loadAllMessages(handler: ResponseHandler<Message[]>) : void {
     handler({
       status: 200, headers: { },
-      data: [
-        this.mockMessage(1, 1, this.time(20, 40)),
-        this.mockMessage(2, 1, this.time(20, 40)),
-        this.mockMessage(3, 1, this.time(20, 45)),
-        this.mockMessage(4, 1, this.time(20, 45)),
-        this.mockMessage(5, 2, this.time(20, 55))
-      ]
+      data: this.messages
     })
+  }
+
+  editMessage(message: Message): void {
+
+  }
+
+  sendMessage(message: Message): void {
+    this.messages.push(message);
   }
 
 }

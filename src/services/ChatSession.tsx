@@ -31,4 +31,8 @@ export default interface ChatSession {
 
   close() : void;
 
+  editMessage(message: Message) : void;
+
+  sendMessage(message: Message) : void;
+
 }
