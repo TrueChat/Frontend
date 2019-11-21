@@ -57,8 +57,8 @@ export default class GroupList extends React.Component<Props, State> {
     if (!message) {
       return "no messages yet...";
     }
-    if (message.length > 16) {
-      return `${message.slice(0, 16)} + "..."`
+    if (message.length > 24) {
+      return `${message.slice(0, 24)}...`
     }
     return message;
   };
@@ -76,7 +76,9 @@ export default class GroupList extends React.Component<Props, State> {
           <div className="group-details" key={details.groupId}>
             <div className="row">
               <div className="col-2">
-                <GroupInitialsAvatar groupData={details} />
+                <Link to={`/group/${details.groupId}`} className="a-none">
+                  <GroupInitialsAvatar groupData={details} />
+                </Link>
               </div>
               <div className="col-10">
                 <div className="row">
@@ -88,7 +90,9 @@ export default class GroupList extends React.Component<Props, State> {
                 </div>
                 <div className="row">
                   <div className="col-12 group-first-message">
-                    {this.displayLastMessage(details.lastMessage)}
+                    <Link to={`/group/${details.groupId}`} className="a-none">
+                      {this.displayLastMessage(details.lastMessage)}
+                    </Link>
                   </div>
                 </div>
               </div>
