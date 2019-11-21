@@ -3,11 +3,23 @@ import {UserInitialsAvatar} from "../../../widgets/Widgets";
 import {UserProfile} from "../../../../services/UserService";
 import "./UserProfileView.scss";
 import "bootstrap/dist/css/bootstrap.min.css"
+import { Redirect } from "react-router";
+import PrivateChatService from "../../../../services/PrivateChatService";
 
-export default class UserProfileView extends React.Component<Props> {
+export default class UserProfileView extends React.Component<Props, State> {
+
+  state = {
+    redirect: undefined
+  };
 
   render() {
     const { userProfile } = this.props;
+    const redirect  = this.state.redirect;
+
+    if (redirect) {
+      return <Redirect to={(redirect as string)} />
+    }
+
     return (
       <div className="User-profile-view">
         <div className="header">
@@ -16,7 +28,7 @@ export default class UserProfileView extends React.Component<Props> {
         <div className="body">
           <div className="row info-row align-center">
             <div className="col-3">
-              <div className="user-image-container">
+              <div className="user-image-container" onClick={() => this.redirectToUserChat(userProfile.username)}>
                 <UserInitialsAvatar profile={userProfile}/>
               </div>
             </div>
@@ -35,6 +47,13 @@ export default class UserProfileView extends React.Component<Props> {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="row info-row text-light font-weight-bold cursor-pointer" onClick={() => {
+            this.redirectToUserChat(userProfile.username);
+          }}>
+            <div className="col-12">
+              <i className="fas fa-envelope"/> Send a message
             </div>
           </div>
           <div className="row info-row">
@@ -57,8 +76,29 @@ export default class UserProfileView extends React.Component<Props> {
       </div>
     );
   }
+
+  redirectToUserChat = (username: string) => {
+    this.props.privateChatService.exists(username, response => {
+      if (response.data) {
+        this.setState(state => ({
+          ...state, redirect: `/group/${response.data}`
+        }))
+      } else {
+        this.props.privateChatService.createChat(username, response => {
+          this.setState(state => ({
+            ...state, redirect: `/group/${response.data}`
+          }));
+        });
+      }
+    });
+  }
+}
+
+type State = {
+  redirect?: string
 }
 
 type Props = {
-  userProfile: UserProfile
+  userProfile: UserProfile,
+  privateChatService: PrivateChatService
 }

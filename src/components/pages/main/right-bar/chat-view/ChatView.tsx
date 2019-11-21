@@ -10,18 +10,27 @@ import { Response } from "../../../../../services/types";
 import MessageGroupView, {mergeMessages} from "../message-group/MessageGroupView";
 import UserService from "../../../../../services/UserService";
 
-export default class ChatView extends React.Component<Props, State> {
+export default class ChatView<P extends Props, S extends State> extends React.Component<P, S> {
 
   chatSession?: ChatSession;
 
-  state = {
-    messages: ([] as Message[]),
-    mode: Mode.WRITE_NEW,
-    messageInput: "",
-    loading: true,
-    selectedMessage: undefined
-  };
+  constructor(props: P) {
+    super(props);
 
+    //@ts-ignore
+    this.state = {
+      messages: ([] as Message[]),
+      mode: Mode.WRITE_NEW,
+      messageInput: "",
+      loading: true,
+      selectedMessage: undefined
+    }
+  }
+
+  /*
+   * All code responsible for connecting lies in
+   * componentDidMount and componentDidUpdate componentWillUnmount
+   */
   componentDidMount(): void {
     if (!this.chatSession) {
       this.connectToChat();
@@ -31,6 +40,12 @@ export default class ChatView extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     if (prevProps.chatId !== this.props.chatId) {
       this.reloadSession();
+    }
+  }
+
+  componentWillUnmount(): void {
+    if (this.chatSession) {
+      this.chatSession.close();
     }
   }
 
@@ -54,7 +69,7 @@ export default class ChatView extends React.Component<Props, State> {
     }
   }
 
-  chatMessagesDeletionListener(chatId: string) {
+  private chatMessagesDeletionListener(chatId: string) {
     return (messagesDeleted: Message[]) => {
       if (chatId !== this.props.chatId) {
         return;
@@ -70,7 +85,7 @@ export default class ChatView extends React.Component<Props, State> {
     }
   }
 
-  chatMessagesEditingListener(chatId: string) {
+  private chatMessagesEditingListener(chatId: string) {
     return (messagesEdited: Message[]) => {
       if (chatId !== this.props.chatId) {
         return;
@@ -91,7 +106,7 @@ export default class ChatView extends React.Component<Props, State> {
     }
   }
 
-  removeMessages(targetArray: Message[], messagesToRemove: Message[]) {
+  private removeMessages(targetArray: Message[], messagesToRemove: Message[]) {
     for (let messageToRemove of messagesToRemove) {
       let i = targetArray.findIndex(message => message.id === messageToRemove.id);
       if (i !== - 1) {
@@ -100,7 +115,7 @@ export default class ChatView extends React.Component<Props, State> {
     }
   }
 
-  allMessagesLoadingHandler = (chatId: string) => {
+  private allMessagesLoadingHandler = (chatId: string) => {
 
     return (response: Response<Message[]>) => {
       if (chatId !== this.props.chatId) {
@@ -113,7 +128,7 @@ export default class ChatView extends React.Component<Props, State> {
     }
   };
 
-  connectToChat() {
+  private connectToChat() {
     this.chatSession = this.props.chatService.connect(this.props.chatId);
     this.setState(state => ({
       ...state, messages: [], loading: true
@@ -128,12 +143,6 @@ export default class ChatView extends React.Component<Props, State> {
         chatSession.addMessagesEditingListener(this.chatMessagesEditingListener(chatId));
       }
     });
-  }
-
-  componentWillUnmount(): void {
-    if (this.chatSession) {
-      this.chatSession.close();
-    }
   }
 
   render() {
@@ -296,16 +305,17 @@ export default class ChatView extends React.Component<Props, State> {
 
 }
 
-type Props = {
+export interface Props {
   chatService: ChatService,
   groupService: GroupService,
   userService: UserService,
   chatId: string
 }
 
-type State = {
+export interface State {
   messages: Message[],
   mode: Mode,
+  loading: boolean,
   messageInput: string,
   selectedMessage: Message|undefined
 }
