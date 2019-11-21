@@ -1,12 +1,14 @@
 import ChatService from "../../../../../services/ChatService";
 import React from "react";
-import ChatSession, {Message, Sender} from "../../../../../services/ChatSession";
+import ChatSession, {Message} from "../../../../../services/ChatSession";
 import GroupService from "../../../../../services/GroupService";
 import Header from "./header/Header";
 import "./ChatView.scss"
-import {Dropdown, UserInitialsAvatar} from "../../../../widgets/Widgets";
-import ModalLink from "../../modals/ModalLink";
+import {Spinner} from "../../../../widgets/Widgets";
 import MessageInput from "./input/MessageInput";
+import { Response } from "../../../../../services/types";
+import MessageGroupView, {mergeMessages} from "../message-group/MessageGroupView";
+import UserService from "../../../../../services/UserService";
 
 export default class ChatView extends React.Component<Props, State> {
 
@@ -14,22 +16,118 @@ export default class ChatView extends React.Component<Props, State> {
 
   state = {
     messages: ([] as Message[]),
-    mode: Mode.NONE,
-    messageInput: ""
+    mode: Mode.WRITE_NEW,
+    messageInput: "",
+    loading: true,
+    selectedMessage: undefined
   };
 
   componentDidMount(): void {
-    this.chatSession = this.props.chatService.connect(this.props.chatId);
-    this.chatSession.addListener(response => {
+    if (!this.chatSession) {
+      this.connectToChat();
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    if (prevProps.chatId !== this.props.chatId) {
+      this.reloadSession();
+    }
+  }
+
+  reloadSession() {
+    if (this.chatSession) {
+      this.chatSession.close();
+      this.connectToChat();
+    }
+  }
+
+  chatMessagesAddingListener(chatId: string) {
+
+    return (messagesAdded: Message[]) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
       this.setState(state => ({
-        ...state, messages: response.data
+        ...state, messages: [...state.messages, ...messagesAdded]
       }));
+    }
+  }
+
+  chatMessagesDeletionListener(chatId: string) {
+    return (messagesDeleted: Message[]) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
+      this.setState(state => {
+        const messages = state.messages.slice(0);
+        this.removeMessages(messages, messagesDeleted);
+        return {
+          ...state, messages: messages
+        }
+      })
+    }
+  }
+
+  chatMessagesEditingListener(chatId: string) {
+    return (messagesEdited: Message[]) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
+      this.setState(state => {
+        const messages = state.messages.slice(0);
+        for (let messageEdited of messagesEdited) {
+          let i = messages.findIndex(message => message.id === messageEdited.id);
+          if (i !== -1) {
+            messages.splice(i, 1, messageEdited);
+          }
+        }
+        return {
+          ...state, messages: messages
+        }
+      })
+    }
+  }
+
+  removeMessages(targetArray: Message[], messagesToRemove: Message[]) {
+    for (let messageToRemove of messagesToRemove) {
+      let i = targetArray.findIndex(message => message.id === messageToRemove.id);
+      if (i !== - 1) {
+        targetArray.splice(i, 1);
+      }
+    }
+  }
+
+  allMessagesLoadingHandler = (chatId: string) => {
+
+    return (response: Response<Message[]>) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
+      this.setState(state => ({
+        ...state, messages: [...response.data, ...state.messages], loading: false
+      }));
+    }
+  };
+
+  connectToChat() {
+    this.chatSession = this.props.chatService.connect(this.props.chatId);
+    this.setState(state => ({
+      ...state, messages: [], loading: true
+    }), () => {
+      if (this.chatSession) {
+        const chatId = this.props.chatId;
+        const chatSession = this.chatSession;
+
+        chatSession.loadAllMessages(this.allMessagesLoadingHandler(chatId));
+        chatSession.addMessagesAddingListener(this.chatMessagesAddingListener(chatId));
+        chatSession.addMessagesDeletionListener(this.chatMessagesDeletionListener(chatId));
+        chatSession.addMessagesEditingListener(this.chatMessagesEditingListener(chatId));
+      }
     });
-    // this.chatSession.loadAllMessages(response => {
-    //   this.setState(state => ({
-    //     ...state, messages: [...state.messages, ...response.data]
-    //   }))
-    // })
   }
 
   componentWillUnmount(): void {
@@ -39,17 +137,33 @@ export default class ChatView extends React.Component<Props, State> {
   }
 
   render() {
-    const { messageInput } = this.state;
+    const { loading, messageInput, mode } = this.state;
+    if (loading) {
+      return (
+        <div className="Chat-view">
+          <div className="d-flex flex-column align-items-center">
+            <Spinner/>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="Chat-view">
         <Header groupService={this.props.groupService} groupId={this.props.chatId}/>
         <div className="body">
+          {mode === Mode.EDIT
+            ? <div className="overlay"/>
+            : null
+          }
           <div className="messages">
-            {this.mergeMessages(this.state.messages).map(messageGroup => {
+            {mergeMessages(this.state.messages).map(messageGroup => {
               return (
-                <this.MessageView
+                <MessageGroupView
                   key={`Message-group-${messageGroup.messages[0].id}`}
                   messageGroup={messageGroup}
+                  onActionSelected={this.handleMessageActionSelected}
+                  currentUser={this.props.userService.getCurrentUser()}
                 />
               )
             })}
@@ -62,6 +176,10 @@ export default class ChatView extends React.Component<Props, State> {
 
               </div>
               <div className="col-8">
+                {mode === Mode.EDIT
+                  ? this.renderUndoEditButton()
+                  : null
+                }
                 <MessageInput
                   value={messageInput}
                   onEnter={this.onMessageEnter}
@@ -82,6 +200,22 @@ export default class ChatView extends React.Component<Props, State> {
     );
   }
 
+  renderUndoEditButton = () => {
+    return (
+      <div className="undo-edit-button-container">
+        <div className="undo-edit-button" onClick={this.undoEditMessage}>
+          Editing <i className="fas fa-times"/>
+        </div>
+      </div>
+    )
+  };
+
+  undoEditMessage = () => {
+    this.setState(state => ({
+      ...state, messageInput: "", mode: Mode.WRITE_NEW, selectedMessage: undefined
+    }));
+  };
+
   updateMessageInput = (value: string) => {
     this.setState(state => ({
       ...state, messageInput: value
@@ -98,78 +232,55 @@ export default class ChatView extends React.Component<Props, State> {
     this.setState(state => ({
       ...state, messageInput: ""
     }), () => {
-      if (mode === Mode.NONE) {
-        this.chatSession && this.chatSession.sendMessage(message, (message) => {
-          this.setState(state => ({
-            ...state, messages: [...state.messages, message]
-          }));
-        });
+      if (mode === Mode.WRITE_NEW) {
+        this.sendNewMessage(message);
+      } else if (mode === Mode.EDIT) {
+        this.sendEditedMessage(message);
       }
     });
   };
 
-  MessageView = ({messageGroup}: { messageGroup: MessageGroup }) => {
-    return (
-      <div className="Message-group-view">
-        <div className="row">
-          <div className="col-1">
-            <UserInitialsAvatar profile={{
-              first_name: messageGroup.sender.username,
-              last_name: messageGroup.sender.lastName,
-              username: messageGroup.sender.firstName,
-              about: ""
-            }}/>
-          </div>
-          <div className="col-11">
-            <div className="row">
-              <div className="col-10 message-sender">
-                <ModalLink
-                  modalName="userProfile"
-                  relativePath={`${messageGroup.sender.id}`}
-                  className="a-none"
-                >
-                  {this.displaySenderName(messageGroup.sender)}
-                </ModalLink>
-              </div>
-              <div className="col-2 text-right">
-                {`${messageGroup.date.getHours()}:${messageGroup.date.getMinutes()}`}
-              </div>
-            </div>
-            <div className="message-contents">
-              {messageGroup.messages.map(message => (
-                <div key={`message-${message.id}`} className="row mt-1 message">
-                  <div className="col-10">
-                    {message.content}
-                  </div>
-                  <div className="col-2 text-right message-dropdown">
-                    <Dropdown
-                      toggle={<i className="fas fa-ellipsis-h message-actions"/>}
-                      options={["Edit", "Remove"]}
-                      onSelect={action => this.handleMessageActionSelected(message, action)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  sendEditedMessage = (message: string) => {
+    const selectedMessage = this.state.selectedMessage as Message|undefined;
+    if (selectedMessage) {
+      selectedMessage.content = message;
+      this.chatSession && this.chatSession.editMessage(selectedMessage);
+      this.setState(state => ({
+        ...state, mode: Mode.WRITE_NEW, selectedMessage: undefined
+      }));
+    }
   };
 
-  handleMessageActionSelected = (message: Message, action: string) => {
+  sendNewMessage = (message: string) => {
+    this.chatSession && this.chatSession.sendMessage(message, () => { });
+  };
+
+  handleMessageActionSelected = (action: string, message: Message) => {
     switch (action) {
       case "Remove":
         this.deleteMessage(message);
         break;
+      case "Edit":
+        this.editMessage(message);
+        break;
     }
+  };
+
+  editMessage = (message: Message) => {
+    this.setState(state => ({
+      ...state,
+      messageInput: message.content,
+      mode: Mode.EDIT,
+      selectedMessage: message
+    }));
   };
 
   deleteMessage = (message: Message) => {
     this.setState(state => ({
-      ...state, messages: this.removeMessage(message, state.messages)
+      ...state,
+      messages: this.removeMessage(message, state.messages)
     }), () => {
-      this.chatSession && this.chatSession.deleteMessage(message);
+      this.chatSession && this.chatSession.deleteMessage(message, () => { });
     });
   };
 
@@ -183,82 +294,22 @@ export default class ChatView extends React.Component<Props, State> {
     return messages;
   };
 
-  displaySenderName = (sender: Sender) => {
-    if (sender.firstName) {
-      if (sender.lastName) {
-        return `${sender.firstName} ${sender.lastName}`;
-      }
-      return sender.firstName;
-    }
-    return sender.username;
-  };
-
-  mergeMessages = (messages: Message[]) => {
-    const groups: MessageGroup[] = [];
-
-    if (messages.length === 0) {
-      return groups;
-    }
-
-    groups.push(this.messageGroup(messages[0]));
-
-    for (let i = 1; i < messages.length; i++) {
-      let currentGroup = groups[groups.length - 1];
-      let currentMessage = messages[i];
-
-      if (this.canMerge(currentGroup, currentMessage)) {
-        currentGroup.messages.push(currentMessage);
-      } else {
-        groups.push(this.messageGroup(currentMessage));
-      }
-    }
-
-    return groups;
-  };
-
-  canMerge(group: MessageGroup, lastMessage: Message): boolean {
-    if (group.sender.id !== lastMessage.sender.id) {
-      return false;
-    }
-    if (group.messages.length === 5) {
-      return false;
-    }
-
-    const firstMessage = group.messages[0];
-    const acceptableTimeDifference = 60 * 1000;
-    const difference = lastMessage.dateCreated.getTime() - firstMessage.dateCreated.getTime();
-
-    return difference <= acceptableTimeDifference;
-  }
-
-  messageGroup(firstMessage: Message) : MessageGroup {
-    return {
-      messages: [firstMessage],
-      date: firstMessage.dateCreated,
-      sender: firstMessage.sender
-    };
-  }
-
-}
-
-type MessageGroup = {
-  messages: Message[],
-  sender: Sender,
-  date: Date
 }
 
 type Props = {
   chatService: ChatService,
   groupService: GroupService,
+  userService: UserService,
   chatId: string
 }
 
 type State = {
   messages: Message[],
   mode: Mode,
-  messageInput: string
+  messageInput: string,
+  selectedMessage: Message|undefined
 }
 
 enum Mode {
-  EDIT, NONE
+  EDIT, WRITE_NEW
 }

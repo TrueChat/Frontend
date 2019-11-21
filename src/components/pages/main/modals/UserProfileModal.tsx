@@ -36,7 +36,7 @@ export default class UserProfileModal extends React.Component<Props, State> {
         )
       }
     } else {
-      viewToRender = <Spinner />
+      viewToRender = <div className="text-center"><Spinner /></div>
     }
 
     return viewToRender;

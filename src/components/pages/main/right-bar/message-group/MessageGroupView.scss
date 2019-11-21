@@ -1,0 +1,42 @@
+@import "../../../../styles/Common";
+
+.Message-group-view {
+  background-color: $DARKER;
+  color: $WHITE_70;
+  padding: 0.5rem 0.75rem 1rem 1.5rem;
+  margin: 0.25rem;
+  align-self: flex-end;
+  width: 100%;
+
+  .message-sender {
+    color: $WHITE_90;
+    font-weight: bold;
+  }
+
+  .message {
+
+    .message-dropdown {
+      display: none;
+    }
+
+    &:hover {
+      .message-dropdown {
+        display: block;
+      }
+
+      .message-actions {
+        cursor: pointer;
+      }
+    }
+
+    .Dropdown {
+      .options {
+        left: 0;
+        top: 1.5rem
+      }
+      .toggle {
+        height: 0;
+      }
+    }
+  }
+}

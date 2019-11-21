@@ -9,6 +9,9 @@ import RemoteGroupService from "./services/impl/RemoteGroupService";
 import RemoteAuthService from "./services/impl/RemoteAuthService";
 // import MockChatService from "./services/mock/MockChatService";
 import HttpChatService from "./services/impl/HttpChatService";
+import MockUserService from "./services/mock/MockUserService";
+import MockGroupService from "./services/mock/MockGroupService";
+import MockChatService from "./services/mock/MockChatService";
 
 
 export default class App extends React.Component {

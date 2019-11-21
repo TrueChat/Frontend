@@ -21,9 +21,16 @@ export interface Page<T> {
   content: T[]
 }
 
+export type ChatEventListener = (messages: Message[]) => void;
+
+
 export default interface ChatSession {
 
-  addListener(listener: ResponseHandler<Message[]>) : void
+  addMessagesDeletionListener(listener: ChatEventListener) : void;
+
+  addMessagesAddingListener(listener: ChatEventListener) : void;
+
+  addMessagesEditingListener(listener: ChatEventListener) : void;
 
   loadAllMessages(handler: ResponseHandler<Message[]>) : void;
 
@@ -33,5 +40,5 @@ export default interface ChatSession {
 
   sendMessage(message: string, onSuccess: (message: Message) => void) : void;
 
-  deleteMessage(message: Message) : void;
+  deleteMessage(message: Message, onSuccess: () => void) : void;
 }

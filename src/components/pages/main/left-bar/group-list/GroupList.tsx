@@ -19,7 +19,7 @@ export default class GroupList extends React.Component<Props, State> {
   };
 
   componentDidMount(): void {
-    this.intervalId = setInterval(this.loadGroups, 500);
+    this.intervalId = setInterval(this.loadGroups, 2000);
   }
 
   componentWillUnmount(): void {
