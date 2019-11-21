@@ -59,6 +59,7 @@ export default class RemoteGroupService implements GroupService {
       creator: this.mapChatMemberToGroupMember(chat.creator),
       isDialog: chat.is_dialog,
       members: chat.users.map(this.mapChatMemberToGroupMember),
+      lastMessage: (chat.last_message ? chat.last_message.content : undefined)
     }
   }
 

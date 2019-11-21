@@ -53,6 +53,16 @@ export default class GroupList extends React.Component<Props, State> {
     return user.username;
   };
 
+  displayLastMessage = (message?: string) => {
+    if (!message) {
+      return "no messages yet...";
+    }
+    if (message.length > 16) {
+      return `${message.slice(0, 16)} + "..."`
+    }
+    return message;
+  };
+
   render() {
     const groups = (this.state.groups as GroupDetails[]|undefined);
 
@@ -78,7 +88,7 @@ export default class GroupList extends React.Component<Props, State> {
                 </div>
                 <div className="row">
                   <div className="col-12 group-first-message">
-                    Mock text
+                    {this.displayLastMessage(details.lastMessage)}
                   </div>
                 </div>
               </div>
@@ -88,6 +98,7 @@ export default class GroupList extends React.Component<Props, State> {
       </div>
     )
   }
+
 }
 
 type State = {
