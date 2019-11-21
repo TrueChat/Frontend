@@ -23,7 +23,8 @@ export type GroupDetails = {
   description: string,
   members: GroupMember[],
   creator: GroupMember,
-  isDialog: boolean
+  isDialog: boolean,
+  lastMessage?: string
 }
 
 
