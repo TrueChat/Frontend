@@ -1,6 +1,6 @@
 import ChatService from "../../../../../services/ChatService";
 import React from "react";
-import ChatSession, {Message, Sender} from "../../../../../services/ChatSession";
+import ChatSession, {Message} from "../../../../../services/ChatSession";
 import GroupService from "../../../../../services/GroupService";
 import Header from "./header/Header";
 import "./ChatView.scss"
@@ -16,7 +16,7 @@ export default class ChatView extends React.Component<Props, State> {
 
   state = {
     messages: ([] as Message[]),
-    mode: Mode.NONE,
+    mode: Mode.WRITE_NEW,
     messageInput: "",
     loading: true,
     selectedMessage: undefined
@@ -70,7 +70,7 @@ export default class ChatView extends React.Component<Props, State> {
   }
 
   render() {
-    const { loading, messageInput } = this.state;
+    const { loading, messageInput, mode } = this.state;
     if (loading) {
       return (
         <div className="Chat-view">
@@ -80,10 +80,15 @@ export default class ChatView extends React.Component<Props, State> {
         </div>
       );
     }
+
     return (
       <div className="Chat-view">
         <Header groupService={this.props.groupService} groupId={this.props.chatId}/>
         <div className="body">
+          {mode === Mode.EDIT
+            ? <div className="overlay"/>
+            : null
+          }
           <div className="messages">
             {mergeMessages(this.state.messages).map(messageGroup => {
               return (
@@ -104,6 +109,10 @@ export default class ChatView extends React.Component<Props, State> {
 
               </div>
               <div className="col-8">
+                {mode === Mode.EDIT
+                  ? this.renderUndoEditButton()
+                  : null
+                }
                 <MessageInput
                   value={messageInput}
                   onEnter={this.onMessageEnter}
@@ -124,6 +133,22 @@ export default class ChatView extends React.Component<Props, State> {
     );
   }
 
+  renderUndoEditButton = () => {
+    return (
+      <div className="undo-edit-button-container">
+        <div className="undo-edit-button" onClick={this.undoEditMessage}>
+          Editing <i className="fas fa-times"/>
+        </div>
+      </div>
+    )
+  };
+
+  undoEditMessage = () => {
+    this.setState(state => ({
+      ...state, messageInput: "", mode: Mode.WRITE_NEW, selectedMessage: undefined
+    }));
+  };
+
   updateMessageInput = (value: string) => {
     this.setState(state => ({
       ...state, messageInput: value
@@ -140,12 +165,23 @@ export default class ChatView extends React.Component<Props, State> {
     this.setState(state => ({
       ...state, messageInput: ""
     }), () => {
-      if (mode === Mode.NONE) {
+      if (mode === Mode.WRITE_NEW) {
         this.sendNewMessage(message);
-      } else {
-
+      } else if (mode === Mode.EDIT) {
+        this.sendEditedMessage(message);
       }
     });
+  };
+
+  sendEditedMessage = (message: string) => {
+    const selectedMessage = this.state.selectedMessage as Message|undefined;
+    if (selectedMessage) {
+      selectedMessage.content = message;
+      this.chatSession && this.chatSession.editMessage(selectedMessage);
+      this.setState(state => ({
+        ...state, mode: Mode.WRITE_NEW, selectedMessage: undefined
+      }));
+    }
   };
 
   sendNewMessage = (message: string) => {
@@ -169,13 +205,17 @@ export default class ChatView extends React.Component<Props, State> {
 
   editMessage = (message: Message) => {
     this.setState(state => ({
-      ...state, messageInput: message.content, mode: Mode.EDIT, selectedMessage: message
+      ...state,
+      messageInput: message.content,
+      mode: Mode.EDIT,
+      selectedMessage: message
     }));
   };
 
   deleteMessage = (message: Message) => {
     this.setState(state => ({
-      ...state, messages: this.removeMessage(message, state.messages)
+      ...state,
+      messages: this.removeMessage(message, state.messages)
     }), () => {
       this.chatSession && this.chatSession.deleteMessage(message, () => { });
     });
@@ -208,5 +248,5 @@ type State = {
 }
 
 enum Mode {
-  EDIT, NONE
+  EDIT, WRITE_NEW
 }

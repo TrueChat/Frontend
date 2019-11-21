@@ -2,6 +2,7 @@ import React from "react";
 import {Message, Sender} from "../../../../../services/ChatSession";
 import {Dropdown, UserInitialsAvatar} from "../../../../widgets/Widgets";
 import ModalLink from "../../modals/ModalLink";
+import "./MessageGroupView.scss";
 
 export type MessageGroup = {
   messages: Message[],
@@ -13,7 +14,7 @@ export type MessageGroup = {
 export default class MessageGroupView extends React.Component<Props> {
 
   render() {
-    const { messageGroup, onActionSelected, currentUser } = this.props;
+    const { messageGroup, currentUser } = this.props;
     return (
       <div className="Message-group-view">
         <div className="row">
@@ -48,7 +49,7 @@ export default class MessageGroupView extends React.Component<Props> {
                   </div>
                   <div className="col-2 text-right message-dropdown">
                     {currentUser === message.sender.username
-                      ? this.messageActionsDropdown(message)
+                      ? <this.MessageActionsDropdown key={`message-${message.id}-actions`} message={message}/>
                       : null
                     }
                   </div>
@@ -61,15 +62,15 @@ export default class MessageGroupView extends React.Component<Props> {
     )
   }
 
-  messageActionsDropdown(message: Message) {
+  MessageActionsDropdown = ({message}: {message: Message}) => {
     return (
       <Dropdown
         toggle={<i className="fas fa-ellipsis-h message-actions"/>}
         options={["Edit", "Remove"]}
         onSelect={action => this.props.onActionSelected(action, message)}
       />
-    )
-  }
+    );
+  };
 
   displaySenderName(sender: Sender) : string {
     if (sender.firstName) {

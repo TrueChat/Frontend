@@ -14,14 +14,20 @@ class MockChatSession implements ChatSession {
     if (interval) {
       this.interval = interval;
     }
-    // this.intervalId = setInterval(() => {
-    //   this.listeners.forEach(listener => {
-    //     listener({
-    //       status: 200, headers: { },
-    //       data: [ this.mockMessage(), this.mockMessage(), this.mockMessage(), this.mockMessage() ]
-    //     })
-    //   });
-    // }, this.interval)
+
+    this.intervalId = setInterval(() => {
+      const messages: Message[] = [];
+      for (let i = 1; i < 30; i++) {
+        messages.push(this.mockMessage(this.lastId++, 1 % 5, this.time(20, i)),
+        )
+      }
+      this.listeners.forEach(listener => {
+        listener({
+          status: 200, headers: { },
+          data: messages
+        })
+      });
+    }, this.interval);
 
     this.messages = [
       this.mockMessage(this.lastId++, 1, this.time(20, 40)),
