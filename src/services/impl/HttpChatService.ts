@@ -1,20 +1,26 @@
 import ChatService from "../ChatService";
-import ChatSession, {Message} from "../ChatSession";
+import ChatSession, {ChatEventListener, Message} from "../ChatSession";
 import {ResponseHandler} from "../types";
 import UserService from "../UserService";
+import {listeners} from "cluster";
 
 
 class HttpChatSession implements ChatSession {
   // workaround to prevent stack overflow exceptions
   private readonly maxCallStackSize = 100;
-
   private intervalId: any;
+
   private userService: UserService;
   private chatId: string;
-  private listeners: ResponseHandler<Message[]>[] = [];
+
+  private messagesDeletionListeners: ChatEventListener[] = [];
+  private messagesEditingListeners: ChatEventListener[] = [];
+  private messagesAddingListeners: ChatEventListener[] = [];
+
   private baseUrl: string;
   private closed: boolean =  false;
   private callStackSize: number = 0;
+  private messagesLoadedLastTime?: Message[] = undefined;
 
   constructor(baseUrl: string, interval: number, userService: UserService, chatId: string) {
     this.userService = userService;
@@ -36,15 +42,83 @@ class HttpChatSession implements ChatSession {
         return;
       }
       this.callStackSize--;
-      this.listeners.forEach(listener => listener(response));
+      this.notifyListeners(response.data)
       if (!this.closed) {
         this.load();
       }
     });
   }
 
-  addListener(listener: ResponseHandler<Message[]>) {
-    this.listeners.push(listener);
+  private notifyListeners(recentMessages: Message[]) {
+    if (!this.messagesLoadedLastTime) {
+      this.messagesLoadedLastTime = recentMessages;
+    }
+    const messagesEdited = this.findEditedMessages(this.messagesLoadedLastTime, recentMessages);
+    const messagesAdded = this.findNewMessages(this.messagesLoadedLastTime, recentMessages);
+    const messagesDeleted = this.findDeletedMessages(this.messagesLoadedLastTime, recentMessages);
+
+    this.messagesAddingListeners.forEach(listener => listener(messagesAdded));
+    this.messagesDeletionListeners.forEach(listener => listener(messagesDeleted));
+    this.messagesEditingListeners.forEach(listener => listener(messagesEdited));
+
+    this.messagesLoadedLastTime = recentMessages;
+  }
+
+  private findNewMessages(prevMessages: Message[], recentMessages: Message[]) : Message[] {
+    const result = [];
+
+    for (let recentMessage of recentMessages) {
+      let found = false;
+      for (let prevMessage of prevMessages) {
+        if (prevMessage.id === recentMessage.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        result.push(recentMessage);
+      }
+    }
+
+    return result;
+  }
+
+  private findEditedMessages(prevMessages: Message[], recentMessages: Message[]) : Message[] {
+    const result = [];
+
+    for (let recentMessage of recentMessages) {
+      let found = false;
+      for (let prevMessage of prevMessages) {
+        if (prevMessage.id === recentMessage.id && prevMessage.content !== recentMessage.content) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        result.push(recentMessage);
+      }
+    }
+
+    return result;
+  }
+
+  private findDeletedMessages(prevMessages: Message[], recentMessages: Message[]) : Message[] {
+    const result: Message[] = [];
+
+    for (let prevMessage of prevMessages) {
+      let found = false;
+      for (let recentMessage of recentMessages) {
+        if (prevMessage.id === recentMessage.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        result.push(prevMessage);
+      }
+    }
+
+    return result;
   }
 
   close(): void {
@@ -116,6 +190,18 @@ class HttpChatSession implements ChatSession {
     }, (response) => {
       onSuccess(this.mapResponseMessageToMessage(response.data));
     }, () => { });
+  }
+
+  addMessagesAddingListener(listener: ChatEventListener): void {
+    this.messagesAddingListeners.push(listener);
+  }
+
+  addMessagesDeletionListener(listener: ChatEventListener): void {
+    this.messagesDeletionListeners.push(listener);
+  }
+
+  addMessagesEditingListener(listener: ChatEventListener): void {
+    this.messagesEditingListeners.push(listener);
   }
 
 }

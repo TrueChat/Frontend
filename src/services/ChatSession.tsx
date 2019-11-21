@@ -21,9 +21,16 @@ export interface Page<T> {
   content: T[]
 }
 
+export type ChatEventListener = (messages: Message[]) => void;
+
+
 export default interface ChatSession {
 
-  addListener(listener: ResponseHandler<Message[]>) : void
+  addMessagesDeletionListener(listener: ChatEventListener) : void;
+
+  addMessagesAddingListener(listener: ChatEventListener) : void;
+
+  addMessagesEditingListener(listener: ChatEventListener) : void;
 
   loadAllMessages(handler: ResponseHandler<Message[]>) : void;
 

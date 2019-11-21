@@ -41,7 +41,66 @@ export default class ChatView extends React.Component<Props, State> {
     }
   }
 
-  chatSessionListener(chatId: string) {
+  chatMessagesAddingListener(chatId: string) {
+
+    return (messagesAdded: Message[]) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
+      this.setState(state => ({
+        ...state, messages: [...state.messages, ...messagesAdded]
+      }));
+    }
+  }
+
+  chatMessagesDeletionListener(chatId: string) {
+    return (messagesDeleted: Message[]) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
+      this.setState(state => {
+        const messages = state.messages.slice(0);
+        this.removeMessages(messages, messagesDeleted);
+        return {
+          ...state, messages: messages
+        }
+      })
+    }
+  }
+
+  chatMessagesEditingListener(chatId: string) {
+    return (messagesEdited: Message[]) => {
+      if (chatId !== this.props.chatId) {
+        return;
+      }
+
+      this.setState(state => {
+        const messages = state.messages.slice(0);
+        for (let messageEdited of messagesEdited) {
+          let i = messages.findIndex(message => message.id === messageEdited.id);
+          if (i !== -1) {
+            messages.splice(i, 1, messageEdited);
+          }
+        }
+        return {
+          ...state, messages: messages
+        }
+      })
+    }
+  }
+
+  removeMessages(targetArray: Message[], messagesToRemove: Message[]) {
+    for (let messageToRemove of messagesToRemove) {
+      let i = targetArray.findIndex(message => message.id === messageToRemove.id);
+      if (i !== - 1) {
+        targetArray.splice(i, 1);
+      }
+    }
+  }
+
+  allMessagesLoadingHandler = (chatId: string) => {
 
     return (response: Response<Message[]>) => {
       if (chatId !== this.props.chatId) {
@@ -49,17 +108,25 @@ export default class ChatView extends React.Component<Props, State> {
       }
 
       this.setState(state => ({
-        ...state, messages: response.data, loading: false
+        ...state, messages: [...response.data, ...state.messages], loading: false
       }));
     }
-  }
+  };
 
   connectToChat() {
     this.chatSession = this.props.chatService.connect(this.props.chatId);
     this.setState(state => ({
-      ...state, loading: true
+      ...state, messages: [], loading: true
     }), () => {
-      this.chatSession && this.chatSession.addListener(this.chatSessionListener(this.props.chatId));
+      if (this.chatSession) {
+        const chatId = this.props.chatId;
+        const chatSession = this.chatSession;
+
+        chatSession.loadAllMessages(this.allMessagesLoadingHandler(chatId));
+        chatSession.addMessagesAddingListener(this.chatMessagesAddingListener(chatId));
+        chatSession.addMessagesDeletionListener(this.chatMessagesDeletionListener(chatId));
+        chatSession.addMessagesEditingListener(this.chatMessagesEditingListener(chatId));
+      }
     });
   }
 
@@ -185,11 +252,7 @@ export default class ChatView extends React.Component<Props, State> {
   };
 
   sendNewMessage = (message: string) => {
-    this.chatSession && this.chatSession.sendMessage(message, (message) => {
-      this.setState(state => ({
-        ...state, messages: [...state.messages, message]
-      }));
-    });
+    this.chatSession && this.chatSession.sendMessage(message, () => { });
   };
 
   handleMessageActionSelected = (action: string, message: Message) => {

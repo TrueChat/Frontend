@@ -38,10 +38,6 @@ class MockChatSession implements ChatSession {
     ]
   }
 
-  addListener(listener: ResponseHandler<Message[]>): void {
-    this.listeners.push(listener);
-  }
-
   close(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -85,6 +81,18 @@ class MockChatSession implements ChatSession {
   }
 
   deleteMessage(message: Message): void {
+  }
+
+  addMessagesAddingListener(listener: (messages: Message[]) => void): void {
+
+  }
+
+  addMessagesDeletionListener(listener: (messages: Message[]) => void): void {
+
+  }
+
+  addMessagesEditingListener(listener: (messages: Message[]) => void): void {
+
   }
 
 }
