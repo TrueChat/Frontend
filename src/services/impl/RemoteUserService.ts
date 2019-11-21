@@ -165,7 +165,7 @@ export default class RemoteUserService implements UserService {
     return new Promise((resolve, reject) => {
       this.sendAuthorizedRequest({
         method: "GET",
-        url: `${this.baseUrl}/profile/${username}`
+        url: `${this.baseUrl}/profile/${username}/`
       }, response => {
         resolve(response.data);
       }, response => {

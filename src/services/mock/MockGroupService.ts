@@ -9,7 +9,6 @@ export default class MockGroupService implements GroupService {
 
   createGroup(data: GroupCreationData, onSuccess?: ResponseHandler, onFailure?: ResponseHandler): void {
     this.useTimeout(() => {
-      console.log(data);
       if (onSuccess) {
         onSuccess(this.mockResponse());
       }
@@ -24,7 +23,7 @@ export default class MockGroupService implements GroupService {
 
       const data = [];
       for (let i = 0; i < 20; i++) {
-        data.push(this.mockGroup());
+        data.push(this.mockGroup(i));
       }
 
       onSuccess({
@@ -38,15 +37,15 @@ export default class MockGroupService implements GroupService {
   loadDetails(groupId: string, onSuccess: (details: GroupDetails) => void, onFailure: () => void): void {
     this.useTimeout(() => {
       if (onSuccess) {
-        onSuccess(this.mockGroup());
+        onSuccess(this.mockGroup(groupId));
       }
     })
   }
 
-  private mockGroup() : GroupDetails {
+  private mockGroup(id: any) : GroupDetails {
     return {
-      groupId: "1234",
-      name: "mock group",
+      groupId: id,
+      name: `mock group ${id}`,
       description: "mock description",
       creator: { id: "1", firstName: "Name", lastName: "Surname", username: "mock_user"},
       isDialog: false,

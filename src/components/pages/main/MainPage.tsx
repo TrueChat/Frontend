@@ -64,13 +64,7 @@ export default class MainPage extends React.Component<Props> {
               </div>
               <div className="right-bar h-100">
                 <Switch>
-                  <Route path="/group/:groupId" component={(props: RouteComponentProps) => (
-                    <ChatView
-                      chatService={this.props.chatService}
-                      chatId={(props.match.params as any).groupId}
-                      groupService={this.props.groupService}
-                    />
-                  )}/>
+                  <Route path="/group/:groupId" component={this.ChatViewRoute}/>
                   <Route path="/">
                     <div>Empty</div>
                   </Route>
@@ -84,6 +78,17 @@ export default class MainPage extends React.Component<Props> {
       </React.Fragment>
     );
   }
+
+  ChatViewRoute = (props: RouteComponentProps) => {
+    return (
+      <ChatView
+        chatService={this.props.chatService}
+        userService={this.props.userService}
+        chatId={(props.match.params as any).groupId}
+        groupService={this.props.groupService}
+      />
+    );
+  };
 
   modalRoutes() {
     // TODO when restoring modals after page reload they do overlap each other

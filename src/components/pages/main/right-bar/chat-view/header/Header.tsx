@@ -10,8 +10,18 @@ export default class Header extends React.Component<Props, State> {
   };
 
   componentDidMount(): void {
-    this.props.groupService.loadDetails(this.props.groupId, this.setGroupDetails, () => {});
+    this.loadDetails();
   }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    if (prevProps.groupId !== this.props.groupId) {
+      this.loadDetails();
+    }
+  }
+
+  loadDetails() {
+    this.props.groupService.loadDetails(this.props.groupId, this.setGroupDetails, () => {});
+  };
 
   setGroupDetails = (details: GroupDetails) => {
     this.setState(state => ({

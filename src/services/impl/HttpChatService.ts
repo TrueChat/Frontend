@@ -5,12 +5,16 @@ import UserService from "../UserService";
 
 
 class HttpChatSession implements ChatSession {
+  // workaround to prevent stack overflow exceptions
+  private readonly maxCallStackSize = 100;
 
   private intervalId: any;
   private userService: UserService;
   private chatId: string;
   private listeners: ResponseHandler<Message[]>[] = [];
   private baseUrl: string;
+  private closed: boolean =  false;
+  private callStackSize: number = 0;
 
   constructor(baseUrl: string, interval: number, userService: UserService, chatId: string) {
     this.userService = userService;
@@ -18,10 +22,25 @@ class HttpChatSession implements ChatSession {
     this.baseUrl = baseUrl;
 
     this.intervalId = setInterval(() => {
-      this.loadAllMessages(response => {
-        this.listeners.forEach(listener => listener(response));
-      })
-    }, interval)
+      // check call stack
+      if (this.callStackSize === 0) {
+        this.callStackSize = this.maxCallStackSize;
+        this.load();
+      }
+    }, 500);
+  }
+
+  load() {
+    this.loadAllMessages(response => {
+      if (this.callStackSize === 0) {
+        return;
+      }
+      this.callStackSize--;
+      this.listeners.forEach(listener => listener(response));
+      if (!this.closed) {
+        this.load();
+      }
+    });
   }
 
   addListener(listener: ResponseHandler<Message[]>) {
@@ -29,16 +48,17 @@ class HttpChatSession implements ChatSession {
   }
 
   close(): void {
+    this.closed = true;
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
   }
 
-  deleteMessage(message: Message): void {
+  deleteMessage(message: Message, onSuccess: () => void ): void {
     this.userService.sendAuthorizedRequest({
       url: `${this.baseUrl}/chats/message/${message.id}/`,
       method: "DELETE",
-    }, () => { }, () => { })
+    }, onSuccess, () => { })
   }
 
   editMessage(message: Message): void {

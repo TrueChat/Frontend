@@ -9,6 +9,9 @@ import RemoteGroupService from "./services/impl/RemoteGroupService";
 import RemoteAuthService from "./services/impl/RemoteAuthService";
 // import MockChatService from "./services/mock/MockChatService";
 import HttpChatService from "./services/impl/HttpChatService";
+import MockUserService from "./services/mock/MockUserService";
+import MockGroupService from "./services/mock/MockGroupService";
+import MockChatService from "./services/mock/MockChatService";
 
 
 export default class App extends React.Component {
@@ -25,6 +28,7 @@ export default class App extends React.Component {
   private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
   private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
   private readonly chatService = new HttpChatService(this.userService, 1000, this.baseUrl);
+
 
   // For testing purposes
   // private readonly userService = new MockUserService(300);
