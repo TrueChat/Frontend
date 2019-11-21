@@ -16,11 +16,13 @@ import Header from "./left-bar/header/Header";
 import SearchView from "../../views/search/SearchView";
 import ChatService from "../../../services/ChatService";
 import ChatView from "./right-bar/chat-view/ChatView";
+import PrivateChatService from "../../../services/PrivateChatService";
 
 type Props = {
   userService: UserService,
   groupService: GroupService,
   chatService: ChatService,
+  privateChatService: PrivateChatService,
   location: any
 }
 
@@ -178,6 +180,7 @@ export default class MainPage extends React.Component<Props> {
         <UserProfileModalView
           username={this.props.userService.getCurrentUser()}
           userService={this.props.userService}
+          privateChatService={this.props.privateChatService}
         />
       </ModalView>
     );
@@ -189,6 +192,7 @@ export default class MainPage extends React.Component<Props> {
         <UserProfileModalView
           username={(props.match.params as any)["username"]}
           userService={this.props.userService}
+          privateChatService={this.props.privateChatService}
         />
       </ModalView>
     )

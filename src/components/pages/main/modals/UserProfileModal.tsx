@@ -3,6 +3,7 @@ import React from "react";
 import {Spinner} from "../../../widgets/Widgets";
 import UserProfileEditView from "../../../views/profile/edit/UserProfileEditView";
 import UserProfileView from "../../../views/profile/view/UserProfileView";
+import PrivateChatService from "../../../../services/PrivateChatService";
 
 export default class UserProfileModal extends React.Component<Props, State> {
 
@@ -32,7 +33,7 @@ export default class UserProfileModal extends React.Component<Props, State> {
         );
       } else {
         viewToRender = (
-          <UserProfileView userProfile={userProfile} />
+          <UserProfileView privateChatService={this.props.privateChatService} userProfile={userProfile} />
         )
       }
     } else {
@@ -46,7 +47,8 @@ export default class UserProfileModal extends React.Component<Props, State> {
 
 type Props = {
   userService: UserService,
-  username: string
+  username: string,
+  privateChatService: PrivateChatService
 }
 
 type State = {
