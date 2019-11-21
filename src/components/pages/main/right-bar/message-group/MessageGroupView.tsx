@@ -38,7 +38,7 @@ export default class MessageGroupView extends React.Component<Props> {
                 </ModalLink>
               </div>
               <div className="col-2 text-right">
-                {`${messageGroup.date.getHours()}:${messageGroup.date.getMinutes()}`}
+                {this.formatMessageTime(messageGroup.date)}
               </div>
             </div>
             <div className="message-contents">
@@ -61,6 +61,25 @@ export default class MessageGroupView extends React.Component<Props> {
       </div>
     )
   }
+
+  formatMessageTime = (date: Date) => {
+    let hours = "";
+    let minutes = "";
+    if (date.getHours() < 10) {
+      hours = `0${date.getHours()}`
+    } else {
+      hours = `${date.getHours()}`
+    }
+
+    if (date.getMinutes() < 10) {
+      minutes = `0${date.getMinutes()}`;
+    } else {
+      minutes = `${date.getMinutes()}`
+    }
+
+    return `${hours}:${minutes}`
+
+  };
 
   MessageActionsDropdown = ({message}: {message: Message}) => {
     return (
