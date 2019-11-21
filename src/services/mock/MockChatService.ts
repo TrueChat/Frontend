@@ -1,14 +1,18 @@
 import ChatService from "../ChatService";
-import ChatSession, {Message, Page, Sender} from "../ChatSession";
+import ChatSession, {ChatEventListener, Message, Page, Sender} from "../ChatSession";
 import {ResponseHandler} from "../types";
+import {listeners} from "cluster";
 
 class MockChatSession implements ChatSession {
 
   private lastId: number = 0;
-  private listeners: ResponseHandler<Message[]>[] = [];
   private interval: number = 300;
   private intervalId: any;
   private messages: Message[];
+
+  private messagesAddingListeners: ChatEventListener[] = [];
+  private messagesDeletionListeners: ChatEventListener[] = [];
+  private messagesEditingListeners: ChatEventListener[] = [];
 
   constructor(interval?: number) {
     if (interval) {
@@ -17,16 +21,11 @@ class MockChatSession implements ChatSession {
 
     this.intervalId = setInterval(() => {
       const messages: Message[] = [];
-      for (let i = 1; i < 30; i++) {
-        messages.push(this.mockMessage(this.lastId++, 1 % 5, this.time(20, i)),
-        )
+      for (let i = 1; i < 5; i++) {
+        messages.push(this.mockMessage(this.lastId++, 1 % 5, this.time(20, i)));
+        this.messagesAddingListeners.forEach(listener => listener(messages));
       }
-      this.listeners.forEach(listener => {
-        listener({
-          status: 200, headers: { },
-          data: messages
-        })
-      });
+
     }, this.interval);
 
     this.messages = [
@@ -66,33 +65,36 @@ class MockChatSession implements ChatSession {
     handler({
       status: 200, headers: { },
       data: this.messages
-    })
+    });
   }
 
   editMessage(message: Message): void {
-
+    setTimeout(() => {
+      this.messagesEditingListeners.forEach(listener => listener([message]));
+    }, 500);
   }
 
   sendMessage(messageContent: string, onSuccess: (message: Message) => void): void {
-    console.log(messageContent);
     const message = this.mockMessage(this.lastId++, 1, this.time(20, 55), messageContent);
-    this.messages.push(message);
     onSuccess(message);
   }
 
   deleteMessage(message: Message): void {
+    setTimeout(() => {
+      this.messagesDeletionListeners.forEach(listener => listener([message]));
+    }, 500);
   }
 
   addMessagesAddingListener(listener: (messages: Message[]) => void): void {
-
+    this.messagesAddingListeners.push(listener);
   }
 
   addMessagesDeletionListener(listener: (messages: Message[]) => void): void {
-
+    this.messagesDeletionListeners.push(listener);
   }
 
   addMessagesEditingListener(listener: (messages: Message[]) => void): void {
-
+    this.messagesEditingListeners.push(listener);
   }
 
 }
