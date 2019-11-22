@@ -18,7 +18,7 @@ export default interface StatisticsService {
   loadForCurrentUser(responseHandler: ResponseHandler<UserStatistics>, errorResponseHandler?: ResponseHandler<any>) : void;
 
   /**
-   * Returns image in base64 format
+   * Returns image in DataURL format
    */
   loadStatisticsPlot(responseHandler: ResponseHandler<string>, errorResponseHandler?: ResponseHandler<any>) : void;
 

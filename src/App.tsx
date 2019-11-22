@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter, Route, Switch } from "react-router-dom";
 import MainPage from "./components/pages/main/MainPage";
 import AuthenticationPage from "./components/pages/auth/AuthenticationPage";
 import RemoteUserService from "./services/impl/RemoteUserService";
@@ -12,7 +12,7 @@ import HttpChatService from "./services/impl/HttpChatService";
 import RemotePrivateChatService from "./services/impl/RemotePrivateChatService";
 // import MockStatisticsService from "./services/mock/MockStatisticsService";
 // import MockPrivateChatService from "./services/mock/MockPrivateChatService";
-import RemoteUserStatisticsService from "./services/impl/RemoteUserStatisticsService";
+import RemoteStatisticsService from "./services/impl/RemoteStatisticsService";
 
 
 export default class App extends React.Component {
@@ -31,7 +31,7 @@ export default class App extends React.Component {
   private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
   private readonly chatService = new HttpChatService(this.userService, 1000, this.baseUrl);
   private readonly privateChatService = new RemotePrivateChatService(this.baseUrl, this.userService);
-  private readonly statisticsService= new RemoteUserStatisticsService(this.statisticsBaseUrl, this.userService);
+  private readonly statisticsService= new RemoteStatisticsService(this.statisticsBaseUrl, this.userService);
 
   // For testing purposes
   // private readonly userService = new MockUserService(300);

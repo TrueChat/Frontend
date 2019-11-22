@@ -2,7 +2,7 @@ import StatisticsService, {UserStatistics} from "../StatisticsService";
 import {ResponseHandler} from "../types";
 import UserService from "../UserService";
 
-export default class RemoteUserStatisticsService implements StatisticsService {
+export default class RemoteStatisticsService implements StatisticsService {
 
   constructor(
       private baseUrl: string,
