@@ -60,6 +60,18 @@ export default class Header extends React.Component<any, State> {
               </div>
             </ModalLink>
           </div>
+          <div className="header-dropdown-item">
+            <ModalLink modalName="userStatistics" className="a-none w-100 text-left">
+              <div className="row">
+                <div className="col-1">
+                  <i className="fas fa-chart-bar"/>
+                </div>
+                <div className="col-11">
+                  View statistics
+                </div>
+              </div>
+            </ModalLink>
+          </div>
         </div>
       </div>
     );

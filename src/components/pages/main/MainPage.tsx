@@ -17,12 +17,15 @@ import SearchView from "../../views/search/SearchView";
 import ChatService from "../../../services/ChatService";
 import ChatView from "./right-bar/chat-view/ChatView";
 import PrivateChatService from "../../../services/PrivateChatService";
+import StatisticsService from "../../../services/StatisticsService";
+import UserStatisticsModalView from "./modals/UserStatisticsModal";
 
 type Props = {
   userService: UserService,
   groupService: GroupService,
   chatService: ChatService,
   privateChatService: PrivateChatService,
+  statisticsService: StatisticsService,
   location: any
 }
 
@@ -101,6 +104,7 @@ export default class MainPage extends React.Component<Props> {
         <Route exact path="/modal/groupProfile/:groupId" component={this.GroupProfileModal}/>
         <Route exact path="/modal/groupCreation" component={this.GroupCreationModal}/>
         <Route exact path="/modal/search" component={this.SearchModal}/>
+        <Route exact path="/modal/userStatistics" component={this.UserStatisticsModal} />
       </React.Fragment>
     );
   }
@@ -139,6 +143,10 @@ export default class MainPage extends React.Component<Props> {
         }
         {isActiveModal("search")
           ? <Route exact path="/modal/search" component={this.SearchModal} />
+          : null
+        }
+        {isActiveModal("userStatistics")
+          ? <Route exact path="/modal/userStatistics" component={this.UserStatisticsModal} />
           : null
         }
       </React.Fragment>
@@ -197,4 +205,12 @@ export default class MainPage extends React.Component<Props> {
       </ModalView>
     )
   };
+
+  UserStatisticsModal = (props: RouteComponentProps) => {
+    return (
+      <ModalView history={props.history}>
+        <UserStatisticsModalView statisticsService={this.props.statisticsService} />
+      </ModalView>
+    )
+  }
 }
