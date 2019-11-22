@@ -65,3 +65,13 @@ html {
     background: #555;
   }
 }
+
+._common-header {
+  font-size: 1.5rem;
+  padding: 0.5rem 0 0.5rem 0;
+  text-align: center;
+  position: relative;
+  font-weight: bold;
+  background-color: $DARKER;
+  color: $ORANGE;
+}

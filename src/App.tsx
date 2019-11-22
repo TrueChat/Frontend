@@ -13,6 +13,8 @@ import MockUserService from "./services/mock/MockUserService";
 import MockGroupService from "./services/mock/MockGroupService";
 import MockChatService from "./services/mock/MockChatService";
 import RemotePrivateChatService from "./services/impl/RemotePrivateChatService";
+import MockStatisticsService from "./services/mock/MockStatisticsService";
+import MockPrivateChatService from "./services/mock/MockPrivateChatService";
 
 
 export default class App extends React.Component {
@@ -25,16 +27,18 @@ export default class App extends React.Component {
     };
   }
 
-  private readonly baseUrl = "https://true-chat.herokuapp.com";
-  private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
-  private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
-  private readonly chatService = new HttpChatService(this.userService, 1000, this.baseUrl);
-  private readonly privateChatService = new RemotePrivateChatService(this.baseUrl, this.userService);
+  // private readonly baseUrl = "https://true-chat.herokuapp.com";
+  // private readonly userService = new RemoteUserService(this.baseUrl, new RemoteAuthService(this.baseUrl));
+  // private readonly groupService = new RemoteGroupService(this.baseUrl, this.userService);
+  // private readonly chatService = new HttpChatService(this.userService, 1000, this.baseUrl);
+  // private readonly privateChatService = new RemotePrivateChatService(this.baseUrl, this.userService);
 
   // For testing purposes
-  // private readonly userService = new MockUserService(300);
-  // private readonly groupService = new MockGroupService(300);
-  // private readonly chatService = new MockChatService(1000);
+  private readonly userService = new MockUserService(300);
+  private readonly groupService = new MockGroupService(300);
+  private readonly chatService = new MockChatService(1000);
+  private readonly privateChatService = new MockPrivateChatService();
+  private readonly statisticsService = new MockStatisticsService(300);
 
   render() {
     return (
@@ -50,6 +54,7 @@ export default class App extends React.Component {
               userService={this.userService}
               chatService={this.chatService}
               privateChatService={this.privateChatService}
+              statisticsService={this.statisticsService}
             />
           )}/>
         </Switch>
