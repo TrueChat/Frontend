@@ -7,6 +7,7 @@ export type Request = {
   url: string,
   headers?: Headers,
   body?: any
+  responseType?: string
 }
 
 

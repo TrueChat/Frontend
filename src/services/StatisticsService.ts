@@ -15,11 +15,11 @@ export interface UserStatistics {
 
 export default interface StatisticsService {
 
-  loadForCurrentUser(responseHandler: ResponseHandler<UserStatistics>) : void;
+  loadForCurrentUser(responseHandler: ResponseHandler<UserStatistics>, errorResponseHandler?: ResponseHandler<any>) : void;
 
   /**
    * Returns image in base64 format
    */
-  loadStatisticsPlot(responseHandler: ResponseHandler<string>) : void;
+  loadStatisticsPlot(responseHandler: ResponseHandler<string>, errorResponseHandler?: ResponseHandler<any>) : void;
 
 }

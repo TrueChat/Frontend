@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import React, { ReactElement} from "react";
+import React from "react";
 
 const ModalLink = (props: ModalLinkProps) => (
   <Link

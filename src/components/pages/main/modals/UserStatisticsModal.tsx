@@ -7,7 +7,8 @@ import UserStatisticsView from "../../../views/statistics/user/UserStatisticsVie
 export default class UserStatisticsModal extends React.Component<Props, State> {
 
   state = {
-    stats: undefined
+    stats: undefined,
+    errorMessage: undefined
   };
 
   componentDidMount(): void {
@@ -15,14 +16,23 @@ export default class UserStatisticsModal extends React.Component<Props, State> {
       this.setState(state => ({
         ...state, stats: response.data
       }))
+    }, response => {
+      this.setState(state => ({
+        ...state, errorMessage: "Sorry, we cannot currently load statistics"
+      }))
     });
   }
 
   render() {
     const stats = this.state.stats as UserStatistics|undefined;
+    const errorMessage = this.state.errorMessage as string|undefined;
 
     if (!stats) {
       return <div className="text-center"><Spinner/></div>
+    }
+
+    if (errorMessage) {
+      return <div className="p-2 text-center">{errorMessage}</div>
     }
 
     return (
@@ -36,5 +46,6 @@ type Props = {
 }
 
 type State = {
-  stats: UserStatistics|undefined
+  stats: UserStatistics|undefined,
+  errorMessage: string|undefined
 }

@@ -190,13 +190,16 @@ export default class RemoteUserService implements UserService {
       request.headers ? request.headers : { }
     );
 
+
+    // @ts-ignore
     axios({
       headers: headers,
       method: request.method,
       url: request.url,
-      data: request.body
+      data: request.body,
+      responseType: request.responseType ? request.responseType : "json",
     })
-    .then(response => {
+    .then((response: any) => {
       onSuccess({
         headers: response.headers,
         data: response.data,

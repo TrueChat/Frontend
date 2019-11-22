@@ -91,7 +91,7 @@ export default class UserStatisticsView extends React.Component<Props, State> {
             </div>
             <div className="statistics-section-body">
               {this.state.plot
-                ? <img src={`data:image/png;base64,${this.state.plot}`} alt="plot" width="100%" height="100%"/>
+                ? <img src={this.state.plot} alt="plot" width="100%" height="100%"/>
                 : <div className="text-center"><Spinner /></div>
               }
             </div>
