@@ -5,6 +5,7 @@ import GroupService, {GroupDetails, GroupMember} from "../../../../services/Grou
 import UserService from "../../../../services/UserService";
 import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
 import {Link} from "react-router-dom";
+import ModalLink from "../../../pages/main/modals/ModalLink";
 
 export default class GroupInfoView extends React.Component<Props, State> {
 
@@ -73,6 +74,16 @@ export default class GroupInfoView extends React.Component<Props, State> {
               <div className="label-value">
                 {groupDetails.name}
               </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <ModalLink
+                className="a-none"
+                modalName={"groupStatistics"}
+                relativePath={`${groupDetails.groupId}`}>
+                <i className="fas fa-chart-bar"/> Show statistics
+              </ModalLink>
             </div>
           </div>
           <div className="row">

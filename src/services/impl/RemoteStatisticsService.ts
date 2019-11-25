@@ -1,4 +1,4 @@
-import StatisticsService, {UserStatistics} from "../StatisticsService";
+import StatisticsService, {GroupStatistics, UserStatistics} from "../StatisticsService";
 import {ResponseHandler} from "../types";
 import UserService from "../UserService";
 
@@ -56,6 +56,18 @@ export default class RemoteStatisticsService implements StatisticsService {
       };
     }, () => {
     })
+  }
+
+  loadGroupStatistics(
+      groupId: string,
+      responseHandler: ResponseHandler<GroupStatistics>,
+      errorHandler?: ResponseHandler<any>): void {
+  }
+
+  loadGroupStatisticsPlot(
+      groupId: string,
+      responseHandler: ResponseHandler<string>,
+      errorResponseHandler?: ResponseHandler<any>): void {
   }
 
 }
