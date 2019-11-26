@@ -14,6 +14,7 @@ import {Response} from "../../../../../../services/types";
 import {ConstraintViolation} from "../../../../../../services/types";
 import {findConstraintViolation, hasViolation} from "../../../../../../services/utils";
 import ErrorMessage from "../../../../../pages/auth/components/common/ErrorMessage";
+import ModalLink from "../../../../../pages/main/modals/ModalLink";
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 
@@ -97,6 +98,17 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               <Input value={groupDetails.description} onChange={this.updateGroupDescription}/>
             </div>
             {this.renderViolationIfPresent("description")}
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <ModalLink
+                modalName="groupStatistics"
+                relativePath={`${groupDetails.groupId}`}
+                className="a-none text-white font-weight-bold"
+              >
+                <i className="fas fa-chart-bar"/> Show statistics
+              </ModalLink>
+            </div>
           </div>
         </div>
         <div className="group-members">

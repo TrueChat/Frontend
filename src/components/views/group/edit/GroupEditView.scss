@@ -3,6 +3,10 @@
 .Group-edit-view {
   @import "tabs/members/GroupSearchMembersTab";
   @import "tabs/info/GroupInfoTab";
+  @extend .scrollable;
+
+  max-height: $MODAL_MAX_HEIGHT;
+  overflow-y: scroll;
 
   .header {
     $tab-control-width: 3rem;

@@ -62,12 +62,60 @@ export default class RemoteStatisticsService implements StatisticsService {
       groupId: string,
       responseHandler: ResponseHandler<GroupStatistics>,
       errorHandler?: ResponseHandler<any>): void {
+
+    this.userService.sendAuthorizedRequest({
+      method: "GET",
+      url: `${this.baseUrl}/api/chat/${groupId}/`
+    }, response => {
+      const data = response.data;
+      responseHandler({
+        status: response.status,
+        headers: response.headers,
+        data: {
+          numberOfUsers: (data.users_num as number),
+          numberOfMessages: (data.mess_num as number),
+          daysExist: (data.days_exist as number),
+          meanMessageChars: (data.mean_mess_chars as number),
+          meanMessageWords: (data.mean_mess_words as number),
+          numberOfActiveUsers: (data.act_users_num as number),
+          numberOfAfkUsers: (data.afk_users_num as number),
+          membersStatistics: data.members.map((memStat: any) => ({
+            meanNumberOfCharacters: (memStat.mean_char as number),
+            meanNumberOfWords: (memStat.mean_word as number),
+            numberOfMessages: (memStat.num_mess as number),
+            numberOfCharacters: (memStat.num_chars as number),
+            percentOfMessages: (memStat.percent as number),
+            daysIn: (memStat.days_in as number),
+            username: (memStat.username as string)
+          }))
+        }
+      })
+    }, () => {
+
+    })
   }
 
   loadGroupStatisticsPlot(
       groupId: string,
       responseHandler: ResponseHandler<string>,
       errorResponseHandler?: ResponseHandler<any>): void {
+
+    this.userService.sendAuthorizedRequest({
+      method: "GET",
+      url: `${this.baseUrl}/api/chat/${groupId}/plot/`,
+      responseType: "blob",
+    }, response => {
+      const reader = new FileReader();
+      reader.readAsDataURL(response.data);
+      reader.onload = () => {
+        responseHandler({
+          status: response.status,
+          headers: response.headers,
+          data: (reader.result as string)
+        });
+      };
+    }, () => {
+    })
   }
 
 }

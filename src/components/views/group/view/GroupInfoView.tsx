@@ -79,9 +79,10 @@ export default class GroupInfoView extends React.Component<Props, State> {
           <div className="row">
             <div className="col-12">
               <ModalLink
-                className="a-none"
+                className="a-none text-white font-weight-bold"
                 modalName={"groupStatistics"}
-                relativePath={`${groupDetails.groupId}`}>
+                relativePath={`${groupDetails.groupId}`}
+              >
                 <i className="fas fa-chart-bar"/> Show statistics
               </ModalLink>
             </div>
