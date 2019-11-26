@@ -47,4 +47,6 @@ export default interface UserService {
     onSuccess: (response: Response<any>) => void,
     onFailure: (response: Response<any>) => void
   ) : void;
+
+  logout(doAfter: () => void) : void;
 }

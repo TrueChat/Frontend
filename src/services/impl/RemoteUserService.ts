@@ -25,7 +25,6 @@ export default class RemoteUserService implements UserService {
     this.authService = authService;
     this.baseUrl = baseUrl;
   }
-
   public login(
       username: string,
       password: string,
@@ -78,10 +77,10 @@ export default class RemoteUserService implements UserService {
     return Cookies.get("userData") !== undefined;
   }
 
-
   private saveUserToCookies(userData: UserData) {
     Cookies.set("userData", userData);
   }
+
 
   private clearState() {
     Cookies.remove("userData");
@@ -160,7 +159,6 @@ export default class RemoteUserService implements UserService {
     });
   }
 
-
   public loadProfile(username: string): Promise<UserProfile> {
     return new Promise((resolve, reject) => {
       this.sendAuthorizedRequest({
@@ -173,6 +171,7 @@ export default class RemoteUserService implements UserService {
       });
     });
   }
+
 
   sendAuthorizedRequest(
     request: Request,
@@ -213,6 +212,15 @@ export default class RemoteUserService implements UserService {
         status: error.response ? error.response.status: 400
       });
     })
+  }
+
+  public logout(doAfter: () => void): void {
+    this.authService
+      .logout()
+      .then(() => {
+        this.clearState();
+        doAfter();
+      });
   }
 
 
