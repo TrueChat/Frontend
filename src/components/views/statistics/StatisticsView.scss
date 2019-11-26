@@ -1,0 +1,31 @@
+@import "../../styles/Common";
+
+.Statistics-view {
+  max-height: 75vh;
+  @extend .scrollable;
+  overflow-y: scroll;
+
+  .header {
+    @extend ._common-header;
+  }
+
+  .statistics-section {
+    background-color: $DARK;
+    margin: 0.25rem 0 0.25rem 1px;
+    color: $WHITE_70;
+
+
+    .statistics-section-header {
+      padding: 0.5rem;
+      font-size: 1.15rem;
+      background-color: $DARK;
+      text-align: center;
+      color: $WHITE_90;
+      font-weight: bold;
+    }
+
+    .statistics-section-body {
+      padding: 0.5rem;
+    }
+  }
+}
