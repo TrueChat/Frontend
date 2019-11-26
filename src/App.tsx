@@ -10,7 +10,7 @@ import HttpChatService from "./services/impl/HttpChatService";
 // import MockGroupService from "./services/mock/MockGroupService";
 // import MockChatService from "./services/mock/MockChatService";
 import RemotePrivateChatService from "./services/impl/RemotePrivateChatService";
-import MockStatisticsService from "./services/mock/MockStatisticsService";
+// import MockStatisticsService from "./services/mock/MockStatisticsService";
 // import MockPrivateChatService from "./services/mock/MockPrivateChatService";
 import RemoteStatisticsService from "./services/impl/RemoteStatisticsService";
 
