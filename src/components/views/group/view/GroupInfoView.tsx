@@ -101,7 +101,7 @@ export default class GroupInfoView extends React.Component<Props, State> {
             <div className="col-12">
               <div className="text-white font-weight-bold cursor-pointer" onClick={() => {
                 this.props.groupService
-                  .kickUser(this.props.groupId, this.props.userService.getCurrentUser(), () => {
+                  .leaveGroup(this.props.groupId, () => {
                     window.location.href = "/";
                   })
               }}>
