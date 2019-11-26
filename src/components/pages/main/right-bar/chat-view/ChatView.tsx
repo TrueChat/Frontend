@@ -159,7 +159,11 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
     return (
       <div className="Chat-view">
-        <Header groupService={this.props.groupService} groupId={this.props.chatId}/>
+        <Header
+          groupService={this.props.groupService}
+          userService={this.props.userService}
+          groupId={this.props.chatId}
+        />
         <div className="body">
           {mode === Mode.EDIT
             ? <div className="overlay"/>

@@ -28,7 +28,16 @@ export default class GroupProfileModal extends React.Component<Props, State> {
     const groupDetails = (this.state.groupDetails as GroupDetails|undefined);
 
     if (groupDetails) {
-      if (groupDetails.creator.username === userService.getCurrentUser()) {
+      if (groupDetails.isDialog) {
+        return (
+          <GroupInfoView
+            groupService={groupService}
+            userService={userService}
+            groupId={groupDetails.groupId}
+            groupDetails={groupDetails}
+          />
+        );
+      } else if (groupDetails.creator.username === userService.getCurrentUser()) {
         return (
           <GroupEditView
             groupService={groupService}
