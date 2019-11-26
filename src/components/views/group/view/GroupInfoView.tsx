@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./GroupInfoView.scss";
 import GroupService, {GroupDetails, GroupMember} from "../../../../services/GroupService";
 import UserService from "../../../../services/UserService";
-import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
+import {GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
 import {Link} from "react-router-dom";
 import ModalLink from "../../../pages/main/modals/ModalLink";
 
@@ -136,7 +136,12 @@ type MemberDetailsProps = {  member: GroupMember }
 const MemberDetails = (props: MemberDetailsProps) => (
   <div className="row member-details">
     <div className="col-2 member-initials">
-      <Initials initials={`${props.member.firstName[0]}${props.member.lastName[0]}`}/>
+      <UserInitialsAvatar profile={{
+        username: props.member.username,
+        last_name: props.member.lastName,
+        first_name: props.member.firstName,
+        about: ""
+      }}/>
     </div>
     <div className="col-10">
       <div className="member-full-name">

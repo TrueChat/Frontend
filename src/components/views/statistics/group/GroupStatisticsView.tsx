@@ -136,7 +136,7 @@ class MemberStatisticsSection extends React.Component<MemberStatisticsSectionPro
             <div>Days in chat:</div><div>{stats.daysIn}</div>
           </div>
           <div className="d-flex flex-row justify-content-between">
-            <div>Activity percentage:</div><div>{stats.percentOfMessages}</div>
+            <div>Activity percentage:</div><div>{stats.percentOfMessages} %</div>
           </div>
           <div className="d-flex flex-row justify-content-between">
             <div>Total number of messages:</div><div>{stats.numberOfMessages}</div>
