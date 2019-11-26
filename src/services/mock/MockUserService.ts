@@ -3,11 +3,16 @@ import {RegistrationData} from "../AuthService";
 import {ConstraintViolation, Response, Request} from "../types";
 
 export default class MockUserService implements UserService {
-
   private timeout?: number;
 
   constructor(timeout?: number) {
     this.timeout = timeout;
+  }
+
+  logout(doAfter: () => void): void {
+    this.useTimeout(() => {
+      doAfter()
+    });
   }
 
   loadProfileForCurrentUser(): Promise<UserProfile> {

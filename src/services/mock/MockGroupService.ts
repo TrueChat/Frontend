@@ -106,4 +106,10 @@ export default class MockGroupService implements GroupService {
     }
   }
 
+  leaveGroup(groupId: string, onSuccess: (response: Response<any>) => void): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess(this.mockResponse());
+    })
+  }
+
 }

@@ -13,6 +13,28 @@ export interface UserStatistics {
   activeNumberOfCharacters: number
 }
 
+export interface UserGroupStatistics {
+  username: string,
+  meanNumberOfCharacters: number,
+  meanNumberOfWords: number,
+  numberOfMessages: number,
+  numberOfWords: number,
+  numberOfCharacters: number,
+  percentOfMessages: number,
+  daysIn: number
+}
+
+export interface GroupStatistics {
+  numberOfMessages: number,
+  numberOfUsers: number,
+  daysExist: number,
+  meanMessageChars: number,
+  meanMessageWords: number,
+  numberOfActiveUsers: number,
+  numberOfAfkUsers: number,
+  membersStatistics: UserGroupStatistics[]
+}
+
 export default interface StatisticsService {
 
   loadForCurrentUser(responseHandler: ResponseHandler<UserStatistics>, errorResponseHandler?: ResponseHandler<any>) : void;
@@ -21,5 +43,16 @@ export default interface StatisticsService {
    * Returns image in DataURL format
    */
   loadStatisticsPlot(responseHandler: ResponseHandler<string>, errorResponseHandler?: ResponseHandler<any>) : void;
+
+  loadGroupStatistics(
+      groupId: string,
+      responseHandler: ResponseHandler<GroupStatistics>,
+      errorHandler?: ResponseHandler<any>) : void;
+
+  loadGroupStatisticsPlot(
+      groupId: string,
+      responseHandler: ResponseHandler<string>,
+      errorResponseHandler?: ResponseHandler<any>) : void;
+
 
 }

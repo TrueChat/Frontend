@@ -2,12 +2,13 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./Header.scss"
 import ModalLink from "../../modals/ModalLink";
+import UserService from "../../../../../services/UserService";
 
 
-export default class Header extends React.Component<any, State> {
+export default class Header extends React.Component<Props, State> {
 
   state = {
-    isDropdownOpened: false
+    isDropdownOpened: false,
   };
 
   render() {
@@ -72,6 +73,18 @@ export default class Header extends React.Component<any, State> {
               </div>
             </ModalLink>
           </div>
+          <div className="header-dropdown-item">
+            <div className="a-none w-100 text-left cursor-pointer" onClick={this.logout}>
+              <div className="row">
+                <div className="col-1">
+                  <i className="fas fa-sign-out-alt"/>
+                </div>
+                <div className="col-11">
+                  Logout
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -81,10 +94,21 @@ export default class Header extends React.Component<any, State> {
     this.setState(state => ({
       ...state, isDropdownOpened: !state.isDropdownOpened
     }));
+  };
+
+  logout = () => {
+    this.props.userService
+      .logout(() => {
+        window.location.href = "/";
+      });
   }
 
 }
 
 type State = {
   isDropdownOpened: boolean
+}
+
+type Props = {
+  userService: UserService
 }

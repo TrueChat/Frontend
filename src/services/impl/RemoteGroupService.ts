@@ -157,4 +157,19 @@ export default class RemoteGroupService implements GroupService {
     );
   }
 
+  leaveGroup(groupId: string, onSuccess: ResponseHandler<any>): void {
+    this.userService.sendAuthorizedRequest({
+      method: "DELETE",
+      url: `${this.baseUrl}/chats/${groupId}/delete_member/`,
+    }, response => {
+      onSuccess({
+        status: response.status,
+        headers: response.headers,
+        data: undefined
+      });
+    }, () => {
+
+    });
+  }
+
 }

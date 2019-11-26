@@ -2,6 +2,7 @@ import React from "react";
 import GroupService, {GroupDetails, GroupMember} from "../../../../../../services/GroupService";
 import ModalLink from "../../../modals/ModalLink";
 import "./Header.scss"
+import UserService from "../../../../../../services/UserService";
 
 export default class Header extends React.Component<Props, State> {
 
@@ -33,9 +34,12 @@ export default class Header extends React.Component<Props, State> {
     if (!groupDetails.isDialog) {
       return groupDetails.name;
     }
-    let firstMember = groupDetails.members[0];
-
-    return this.displayUsername(firstMember);
+    if (this.props.userService.getCurrentUser() === groupDetails.creator.username) {
+      let firstMember = groupDetails.members[0];
+      return this.displayUsername(firstMember);
+    } else {
+      return this.displayUsername(groupDetails.creator);
+    }
   };
 
   displayUsername = (user: GroupMember) => {
@@ -74,6 +78,7 @@ export default class Header extends React.Component<Props, State> {
 
 type Props = {
   groupService: GroupService,
+  userService: UserService,
   groupId: string
 }
 

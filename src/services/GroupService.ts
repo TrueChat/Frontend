@@ -81,4 +81,6 @@ export default interface GroupService {
     onSuccess?: ResponseHandler<any>,
     onFailure?: ResponseHandler<any>
   ) : void;
+
+  leaveGroup(groupId: string, onSuccess: ResponseHandler<any>) : void;
 }

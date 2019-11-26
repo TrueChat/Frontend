@@ -5,6 +5,7 @@ import GroupService, {GroupDetails, GroupMember} from "../../../../services/Grou
 import UserService from "../../../../services/UserService";
 import {GroupInitialsAvatar, Initials, Spinner} from "../../../widgets/Widgets";
 import {Link} from "react-router-dom";
+import ModalLink from "../../../pages/main/modals/ModalLink";
 
 export default class GroupInfoView extends React.Component<Props, State> {
 
@@ -82,6 +83,29 @@ export default class GroupInfoView extends React.Component<Props, State> {
               </div>
               <div className="label-value">
                 {groupDetails.description}
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <ModalLink
+                className="a-none text-white font-weight-bold"
+                modalName={"groupStatistics"}
+                relativePath={`${groupDetails.groupId}`}
+              >
+                <i className="fas fa-chart-bar"/> Show statistics
+              </ModalLink>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="text-white font-weight-bold cursor-pointer" onClick={() => {
+                this.props.groupService
+                  .kickUser(this.props.groupId, this.props.userService.getCurrentUser(), () => {
+                    window.location.href = "/";
+                  })
+              }}>
+                Leave chat
               </div>
             </div>
           </div>

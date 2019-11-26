@@ -19,6 +19,7 @@ import ChatView from "./right-bar/chat-view/ChatView";
 import PrivateChatService from "../../../services/PrivateChatService";
 import StatisticsService from "../../../services/StatisticsService";
 import UserStatisticsModalView from "./modals/UserStatisticsModal";
+import GroupStatisticsModalView from "./modals/GroupStatisticsModal";
 
 type Props = {
   userService: UserService,
@@ -61,7 +62,7 @@ export default class MainPage extends React.Component<Props> {
 
             <div className="Main-page">
               <div className="left-bar">
-                <Header />
+                <Header userService={this.props.userService}/>
                 <GroupList
                   groupService={this.props.groupService}
                   userService={this.props.userService}
@@ -105,6 +106,7 @@ export default class MainPage extends React.Component<Props> {
         <Route exact path="/modal/groupCreation" component={this.GroupCreationModal}/>
         <Route exact path="/modal/search" component={this.SearchModal}/>
         <Route exact path="/modal/userStatistics" component={this.UserStatisticsModal} />
+        <Route exact path="/modal/groupStatistics/:groupId" component={this.GroupStatisticsModal}/>
       </React.Fragment>
     );
   }
@@ -149,6 +151,10 @@ export default class MainPage extends React.Component<Props> {
           ? <Route exact path="/modal/userStatistics" component={this.UserStatisticsModal} />
           : null
         }
+        {isActiveModal("groupStatistics")
+          ? <Route exact path="/modal/groupStatistics/:groupId" component={this.GroupStatisticsModal}/>
+          : null
+        }
       </React.Fragment>
     )
   }
@@ -177,6 +183,7 @@ export default class MainPage extends React.Component<Props> {
           userService={this.props.userService}
           groupService={this.props.groupService}
           groupId={(props.match.params as any)["groupId"]}
+          privateChatService={this.props.privateChatService}
         />
       </ModalView>
     )
@@ -210,6 +217,17 @@ export default class MainPage extends React.Component<Props> {
     return (
       <ModalView history={props.history}>
         <UserStatisticsModalView statisticsService={this.props.statisticsService} />
+      </ModalView>
+    )
+  };
+
+  GroupStatisticsModal = (props: RouteComponentProps) => {
+    return (
+      <ModalView history={props.history}>
+        <GroupStatisticsModalView
+          statisticsService={this.props.statisticsService}
+          groupId={(props.match.params as any)["groupId"]}
+        />
       </ModalView>
     )
   }

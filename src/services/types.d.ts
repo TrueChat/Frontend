@@ -6,7 +6,10 @@ export type Request = {
   method: "GET"|"POST"|"PUT"|"PATCH"|"DELETE",
   url: string,
   headers?: Headers,
-  body?: any
+  body?: any,
+  params?: {
+    [param: string]: string
+  }
   responseType?: string
 }
 
