@@ -196,6 +196,7 @@ export default class RemoteUserService implements UserService {
       method: request.method,
       url: request.url,
       data: request.body,
+      params: request.params,
       responseType: request.responseType ? request.responseType : "json",
     })
     .then((response: any) => {

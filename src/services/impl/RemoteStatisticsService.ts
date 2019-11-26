@@ -44,6 +44,9 @@ export default class RemoteStatisticsService implements StatisticsService {
       method: "GET",
       url: `${this.baseUrl}/api/user/plot/`,
       responseType: "blob",
+      params: {
+        time: (new Date()).toDateString()
+      }
     }, response => {
       const reader = new FileReader();
       reader.readAsDataURL(response.data);
@@ -65,7 +68,7 @@ export default class RemoteStatisticsService implements StatisticsService {
 
     this.userService.sendAuthorizedRequest({
       method: "GET",
-      url: `${this.baseUrl}/api/chat/${groupId}/`
+      url: `${this.baseUrl}/api/chat/${groupId}/`,
     }, response => {
       const data = response.data;
       responseHandler({
@@ -104,6 +107,9 @@ export default class RemoteStatisticsService implements StatisticsService {
       method: "GET",
       url: `${this.baseUrl}/api/chat/${groupId}/plot/`,
       responseType: "blob",
+      params: {
+        time: (new Date()).toDateString()
+      }
     }, response => {
       const reader = new FileReader();
       reader.readAsDataURL(response.data);
