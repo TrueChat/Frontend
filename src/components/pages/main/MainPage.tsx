@@ -183,6 +183,7 @@ export default class MainPage extends React.Component<Props> {
           userService={this.props.userService}
           groupService={this.props.groupService}
           groupId={(props.match.params as any)["groupId"]}
+          privateChatService={this.props.privateChatService}
         />
       </ModalView>
     )

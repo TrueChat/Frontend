@@ -77,7 +77,7 @@ export default class Header extends React.Component<Props, State> {
             <div className="a-none w-100 text-left cursor-pointer" onClick={this.logout}>
               <div className="row">
                 <div className="col-1">
-                  <i className="fas fa-sign-out"/>
+                  <i className="fas fa-sign-out-alt"/>
                 </div>
                 <div className="col-11">
                   Logout

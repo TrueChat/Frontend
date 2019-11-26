@@ -5,6 +5,10 @@ import GroupService, {GroupDetails} from "../../../../services/GroupService";
 import UserService from "../../../../services/UserService";
 import {Spinner} from "../../../widgets/Widgets";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Redirect } from "react-router-dom";
+import UserStatisticsModal from "./UserStatisticsModal";
+import UserProfileModal from "./UserProfileModal";
+import PrivateChatService from "../../../../services/PrivateChatService";
 
 export default class GroupProfileModal extends React.Component<Props, State> {
 
@@ -29,14 +33,23 @@ export default class GroupProfileModal extends React.Component<Props, State> {
 
     if (groupDetails) {
       if (groupDetails.isDialog) {
-        return (
-          <GroupInfoView
-            groupService={groupService}
-            userService={userService}
-            groupId={groupDetails.groupId}
-            groupDetails={groupDetails}
-          />
-        );
+        if (groupDetails.creator.username === userService.getCurrentUser()) {
+          return (
+            <UserProfileModal
+              userService={this.props.userService}
+              username={groupDetails.members[0].username}
+              privateChatService={this.props.privateChatService}
+            />
+          );
+        } else {
+          return (
+            <UserProfileModal
+              userService={this.props.userService}
+              username={groupDetails.creator.username}
+              privateChatService={this.props.privateChatService}
+            />
+          );
+        }
       } else if (groupDetails.creator.username === userService.getCurrentUser()) {
         return (
           <GroupEditView
@@ -64,7 +77,8 @@ export default class GroupProfileModal extends React.Component<Props, State> {
 type Props = {
   groupId: string,
   userService: UserService,
-  groupService: GroupService
+  groupService: GroupService,
+  privateChatService: PrivateChatService
 }
 
 type State = {

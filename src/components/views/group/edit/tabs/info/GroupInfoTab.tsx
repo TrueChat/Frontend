@@ -110,6 +110,18 @@ export default class GroupInfoTab extends React.Component<Props, State> {
               </ModalLink>
             </div>
           </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="text-white font-weight-bold cursor-pointer" onClick={() => {
+                this.props.groupService
+                  .kickUser(this.props.groupId, this.props.userService.getCurrentUser(), () => {
+                    window.location.href = "/";
+                  })
+              }}>
+                <i className="fas fa-sign-out-alt"/> Leave chat
+              </div>
+            </div>
+          </div>
         </div>
         <div className="group-members">
           <div className="row actions-row">
