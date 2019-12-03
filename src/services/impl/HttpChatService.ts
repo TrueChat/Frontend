@@ -130,14 +130,14 @@ class HttpChatSession implements ChatSession {
 
   deleteMessage(message: Message, onSuccess: () => void ): void {
     this.userService.sendAuthorizedRequest({
-      url: `${this.baseUrl}/chats/message/${message.id}/`,
+      url: `${this.baseUrl}/messages/${message.id}/`,
       method: "DELETE",
     }, onSuccess, () => { })
   }
 
   editMessage(message: Message): void {
     this.userService.sendAuthorizedRequest({
-      url: `${this.baseUrl}/chats/message/${message.id}/`,
+      url: `${this.baseUrl}/messages/${message.id}/`,
       method: "PATCH",
       body: {
         content: message.content
