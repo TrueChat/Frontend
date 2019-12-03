@@ -9,6 +9,7 @@ import MessageInput from "./input/MessageInput";
 import { Response } from "../../../../../services/types";
 import MessageGroupView, {mergeMessages} from "../message-group/MessageGroupView";
 import UserService from "../../../../../services/UserService";
+import AttachmentControl from "./attachment/AttachmentControl";
 
 export default class ChatView<P extends Props, S extends State> extends React.Component<P, S> {
 
@@ -23,7 +24,8 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
       mode: Mode.WRITE_NEW,
       messageInput: "",
       loading: true,
-      selectedMessage: undefined
+      selectedMessage: undefined,
+      attachments: [] as Attachment[]
     }
   }
 
@@ -131,7 +133,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   private connectToChat() {
     this.chatSession = this.props.chatService.connect(this.props.chatId);
     this.setState(state => ({
-      ...state, messages: [], loading: true
+      ...state, messages: [], loading: true, attachments: []
     }), () => {
       if (this.chatSession) {
         const chatId = this.props.chatId;
@@ -146,7 +148,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   }
 
   render() {
-    const { loading, messageInput, mode } = this.state;
+    const { loading, messageInput, mode, attachments } = this.state;
     if (loading) {
       return (
         <div className="Chat-view">
@@ -164,6 +166,10 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
           userService={this.props.userService}
           groupId={this.props.chatId}
         />
+        {mode === Mode.SEND_IMAGE
+          ? this.sendImageOverlay()
+          : null
+        }
         <div className="body">
           {mode === Mode.EDIT
             ? <div className="overlay"/>
@@ -185,20 +191,22 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
         <div className="message-input-container">
           <div className="container">
             <div className="row">
-              <div className="col-2">
-
+              <div className="col-2 text-right">
+                <AttachmentControl onSelect={this.addAttachment}/>
               </div>
               <div className="col-8">
                 {mode === Mode.EDIT
                   ? this.renderUndoEditButton()
                   : null
                 }
-                <MessageInput
-                  value={messageInput}
-                  onEnter={this.onMessageEnter}
-                  onChange={this.updateMessageInput}
-                  placeholder="Write a message"
-                />
+                <div>
+                  <MessageInput
+                    value={messageInput}
+                    onEnter={this.onMessageEnter}
+                    onChange={this.updateMessageInput}
+                    placeholder="Write a message"
+                  />
+                </div>
               </div>
               <div className="col-2">
                 <i
@@ -307,6 +315,71 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
     return messages;
   };
 
+  addAttachment = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      this.setState(state => ({
+        ...state,
+        mode: Mode.SEND_IMAGE,
+        attachments: [...state.attachments, { file: file, image: reader.result }]
+      }));
+    }
+  };
+
+  sendImageOverlay() {
+    const { attachments, messageInput } = this.state;
+    return (
+      <div className="send-image-overlay" onClick={(e) => {
+        this.setState({mode: Mode.WRITE_NEW, attachments: []});
+      }}>
+        <div className="send-image-dialog" onClick={e => {
+          e.stopPropagation();
+        }}>
+          <div className="header font-weight-bold mb-2">
+            Send an image
+          </div>
+          <div className="image">
+            <img src={attachments[0].image} width="100%" />
+          </div>
+          <div className="caption mt-3">
+            <div className="caption-text">Caption</div>
+            <div className="row">
+              <div className="col-10">
+                <div>
+                  <MessageInput
+                    value={messageInput}
+                    onEnter={this.sendMessageWithImage}
+                    onChange={this.updateMessageInput}
+                    placeholder="Write a message"
+                  />
+                </div>
+              </div>
+              <div className="col-2">
+                <i
+                  className="fas fa-angle-double-right send-message-icon"
+                  onClick={this.sendMessageWithImage}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  sendMessageWithImage = () => {
+    const { messageInput, attachments } = this.state;
+    this.setState({mode: Mode.WRITE_NEW, messageInput: "", attachments: []}, () => {
+      this.chatSession && this.chatSession
+        .sendMessageWithAttachment(messageInput, attachments[0].file, () => { })
+    });
+  }
+}
+
+export interface Attachment {
+  file: File,
+  image: string
 }
 
 export interface Props {
@@ -321,9 +394,10 @@ export interface State {
   mode: Mode,
   loading: boolean,
   messageInput: string,
-  selectedMessage: Message|undefined
+  selectedMessage: Message|undefined,
+  attachments: Attachment[]
 }
 
 enum Mode {
-  EDIT, WRITE_NEW
+  EDIT, WRITE_NEW, SEND_IMAGE
 }

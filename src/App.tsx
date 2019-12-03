@@ -32,11 +32,11 @@ export default class App extends React.Component {
   private readonly chatService = new HttpChatService(this.userService, 1000, this.baseUrl);
   private readonly privateChatService = new RemotePrivateChatService(this.baseUrl, this.userService);
   private readonly statisticsService= new RemoteStatisticsService(this.statisticsBaseUrl, this.userService);
-
+  //
   // For testing purposes
   // private readonly userService = new MockUserService(300);
   // private readonly groupService = new MockGroupService(300);
-  // private readonly chatService = new MockChatService(1000);
+  // private readonly chatService = new MockChatService(50000);
   // private readonly privateChatService = new MockPrivateChatService();
   // private readonly statisticsService = new MockStatisticsService(300);
 

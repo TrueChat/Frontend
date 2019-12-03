@@ -57,8 +57,9 @@ class MockChatSession implements ChatSession {
         username: "mock_user"
       },
       content: content ? content : "mock long chat message",
-      dateCreated: date ? date : new Date()
-    }
+      dateCreated: date ? date : new Date(),
+      images: []
+    };
   }
 
   loadAllMessages(handler: ResponseHandler<Message[]>) : void {
@@ -95,6 +96,10 @@ class MockChatSession implements ChatSession {
 
   addMessagesEditingListener(listener: (messages: Message[]) => void): void {
     this.messagesEditingListeners.push(listener);
+  }
+
+  sendMessageWithAttachment(message: string, attachment: File, onSuccess: (message: Message) => void): void {
+    this.sendMessage(message, () => { });
   }
 
 }

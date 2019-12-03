@@ -68,4 +68,29 @@
       cursor: pointer;
     }
   }
+
+  .send-image-overlay {
+    width: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 9998;
+    height: 100%;
+
+    .send-image-dialog {
+      background-color: $BACKGROUND;
+      width: 50%;
+      height: 40vh;
+      padding: 1rem 2rem;
+      margin: 15vh auto;
+      border-radius: $BORDER_RADIUS;
+      color: $WHITE_70;
+
+      .image {
+      }
+
+      .caption {
+
+      }
+    }
+  }
 }
