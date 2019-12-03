@@ -176,7 +176,8 @@ class HttpChatSession implements ChatSession {
         username: message.user.username as string
       },
       content: message.content as string,
-      dateCreated: new Date(message.date_created)
+      dateCreated: new Date(message.date_created),
+      images: message.images
     };
   }
 
@@ -202,6 +203,25 @@ class HttpChatSession implements ChatSession {
 
   addMessagesEditingListener(listener: ChatEventListener): void {
     this.messagesEditingListeners.push(listener);
+  }
+
+  sendMessageWithAttachment(message: string, attachment: File, onSuccess: (message: Message) => void): void {
+    this.sendMessage(message, newMessage => {
+      const formData = new FormData();
+      formData.append("file", attachment);
+      this.userService.sendAuthorizedRequest({
+        method: "POST",
+        url: `${this.baseUrl}/messages/${newMessage.id}/upload_photo/`,
+        body: formData,
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      }, () => {
+        onSuccess(newMessage);
+      }, () => {
+
+      });
+    });
   }
 
 }

@@ -7,11 +7,16 @@ export interface Sender {
   lastName: string
 }
 
+export interface Image {
+  imageURL: string
+}
+
 export interface Message {
   id: number,
   content: string
   dateCreated: Date,
-  sender: Sender
+  sender: Sender,
+  images: Image[]
 }
 
 export interface Page<T> {
@@ -39,6 +44,8 @@ export default interface ChatSession {
   editMessage(message: Message) : void;
 
   sendMessage(message: string, onSuccess: (message: Message) => void) : void;
+
+  sendMessageWithAttachment(message: string, attachment: File, onSuccess: (message: Message) => void) : void;
 
   deleteMessage(message: Message, onSuccess: () => void) : void;
 }
