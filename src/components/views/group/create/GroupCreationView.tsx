@@ -46,7 +46,7 @@ export default class GroupCreationView extends React.Component<Props, State> {
         <div className="body">
           <div className="row">
             <div className="col-3">
-              <GroupInitialsAvatar groupData={data} />
+              <GroupInitialsAvatar groupData={{...data, images: []}} />
             </div>
             <div className="col-9">
               <div>

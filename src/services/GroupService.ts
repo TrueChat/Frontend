@@ -1,4 +1,5 @@
 import {ConstraintViolation, ResponseHandler} from "./types";
+import {Image} from "./UserService";
 
 export type GroupCreationData = {
   name: string,
@@ -7,14 +8,16 @@ export type GroupCreationData = {
 
 export type GroupData = {
   name: string,
-  description: string
+  description: string,
+  images: Image[]
 }
 
 export type GroupMember = {
   id: string,
   firstName: string,
   lastName: string
-  username: string
+  username: string,
+  images: Image[],
 }
 
 export type GroupDetails = {
@@ -24,7 +27,8 @@ export type GroupDetails = {
   members: GroupMember[],
   creator: GroupMember,
   isDialog: boolean,
-  lastMessage?: string
+  lastMessage?: string,
+  images: Image[]
 }
 
 

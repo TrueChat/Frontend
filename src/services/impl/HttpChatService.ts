@@ -1,7 +1,7 @@
 import ChatService from "../ChatService";
 import ChatSession, {ChatEventListener, Message} from "../ChatSession";
 import {ResponseHandler} from "../types";
-import UserService from "../UserService";
+import UserService, {Image} from "../UserService";
 import {listeners} from "cluster";
 
 
@@ -173,7 +173,8 @@ class HttpChatSession implements ChatSession {
         id: message.user.id as number,
         firstName: message.user.first_name as string,
         lastName: message.user.last_name as string,
-        username: message.user.username as string
+        username: message.user.username as string,
+        images: message.user.images as Image[]
       },
       content: message.content as string,
       dateCreated: new Date(message.date_created),

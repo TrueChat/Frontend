@@ -251,8 +251,9 @@ const MemberDetails = (props: MemberDetailsProps) => (
         profile={{
           first_name: props.member.firstName,
           last_name: props.member.lastName,
-          about: "",
-          username: props.member.username
+          username: props.member.username,
+          images: props.member.images,
+          about: ""
         }}/>
     </div>
     <div className="col-8">

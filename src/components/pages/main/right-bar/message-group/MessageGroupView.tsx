@@ -23,6 +23,7 @@ export default class MessageGroupView extends React.Component<Props> {
               first_name: messageGroup.sender.firstName,
               last_name: messageGroup.sender.lastName,
               username: messageGroup.sender.username,
+              images: messageGroup.sender.images,
               about: ""
             }}/>
           </div>
