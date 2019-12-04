@@ -15,6 +15,7 @@ import {ConstraintViolation} from "../../../../../../services/types";
 import {findConstraintViolation, hasViolation} from "../../../../../../services/utils";
 import ErrorMessage from "../../../../../pages/auth/components/common/ErrorMessage";
 import ModalLink from "../../../../../pages/main/modals/ModalLink";
+import AttachmentControl from "../../../../../pages/main/right-bar/chat-view/attachment/AttachmentControl";
 
 export default class GroupInfoTab extends React.Component<Props, State> {
 
@@ -73,10 +74,20 @@ export default class GroupInfoTab extends React.Component<Props, State> {
       <div className="Group-info-tab">
         <div className="data-section">
           <div className="row">
-            <div className="col-3">
-              <GroupInitialsAvatar groupData={groupDetails}/>
+            <div className="col-4">
+              <div className="avatar-editor">
+                <div className="avatar">
+                  <GroupInitialsAvatar groupData={groupDetails}/>
+                </div>
+                <div className="avatar-attachment-control">
+                  <AttachmentControl
+                    icon="fas fa-upload"
+                    onSelect={this.selectImage}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="col-9">
+            <div className="col-8">
               <div>
                 <div className="input-label">
                   Name
@@ -168,9 +179,20 @@ export default class GroupInfoTab extends React.Component<Props, State> {
   };
 
   private handleUpdateSuccess = () => {
-    this.setState(state => ({
-      ...state, loading: false, violations: []
-    }))
+    if (this.state.imageToUpload) {
+      this.props.groupService.uploadImage(
+        this.props.groupId,
+        this.state.imageToUpload,
+        () => this.setState({loading: false, violations: [], imageToUpload: undefined}),
+        () => {
+          this.setState({ loading: false, violations: [], imageToUpload: undefined })
+        }
+      );
+    } else {
+      this.setState(state => ({
+        ...state, loading: false, violations: []
+      }))
+    }
   };
 
   private handleUpdateFailure = (response: Response<ConstraintViolation[]>) => {
@@ -236,6 +258,21 @@ export default class GroupInfoTab extends React.Component<Props, State> {
         description: description
       }
     }))
+  };
+
+  private selectImage = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      this.setState(state => ({
+        ...state,
+        imageToUpload: file,
+        groupDetails: {
+          ...state.groupDetails as GroupDetails,
+          images: [{ imageURL: reader.result as string}, ...(state.groupDetails as GroupDetails).images]
+        }
+      }))
+    }
   }
 }
 
@@ -294,5 +331,7 @@ type Props = {
 type State = {
   groupDetails?: GroupDetails,
   loading: boolean,
-  violations: ConstraintViolation[]
+  violations: ConstraintViolation[],
+
+  imageToUpload?: File
 }

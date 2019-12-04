@@ -8,7 +8,7 @@ export const Initials = ({initials} : {initials: string}) => (
   <span className="Initials-avatar">
     <span className="initials">{initials}</span>
   </span>
-)
+);
 
 export const UserInitialsAvatar = ({profile}: {profile: UserProfile}) => {
   if (profile.images.length !== 0) {

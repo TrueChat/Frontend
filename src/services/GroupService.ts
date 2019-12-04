@@ -87,4 +87,11 @@ export default interface GroupService {
   ) : void;
 
   leaveGroup(groupId: string, onSuccess: ResponseHandler<any>) : void;
+
+  uploadImage(
+    groupId: string,
+    image: File,
+    onSuccess: ResponseHandler<any>,
+    onFailure: ResponseHandler<any>
+  ) : void;
 }

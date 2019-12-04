@@ -121,4 +121,10 @@ export default class MockGroupService implements GroupService {
     })
   }
 
+  uploadImage(groupId: string, image: File, onSuccess: (response: Response<any>) => void, onFailure: (response: Response<any>) => void): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess(this.mockResponse());
+    });
+  }
+
 }

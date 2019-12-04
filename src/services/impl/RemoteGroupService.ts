@@ -174,4 +174,24 @@ export default class RemoteGroupService implements GroupService {
     });
   }
 
+  uploadImage(
+      groupId: string,
+      image: File,
+      onSuccess: (response: Response<any>) => void,
+      onFailure: (response: Response<any>) => void): void {
+
+    const data = new FormData();
+    data.set("file", image);
+
+    this.userService.sendAuthorizedRequest({
+        method: "POST",
+        url: `${this.baseUrl}/chats/${groupId}/upload_image/`,
+        body: data
+      },
+      response => onSuccess(response),
+      response => onFailure(response)
+    );
+
+  }
+
 }
