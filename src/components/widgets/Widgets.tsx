@@ -14,7 +14,9 @@ export const UserInitialsAvatar = ({profile}: {profile: UserProfile}) => {
   if (profile.images.length !== 0) {
     return (
       <div className="Initials-avatar rounded-avatar">
-        <img src={profile.images[0].imageURL} alt="" height="100%" width="100%"/>
+        <img src={profile.images[0].imageURL} alt="" height="100%" width="100%" style={{
+          objectFit: "cover"
+        }}/>
       </div>
     );
   }
@@ -32,7 +34,9 @@ export const GroupInitialsAvatar = ({groupData} : {groupData: GroupData}) => {
   if (groupData.images.length !== 0) {
     return (
       <div className="Initials-avatar rounded-avatar">
-        <img src={groupData.images[0].imageURL} alt="" height="100%" width="100%"/>
+        <img src={groupData.images[0].imageURL} alt="" height="100%" width="100%" style={{
+          objectFit: "cover"
+        }}/>
       </div>
     )
   }
