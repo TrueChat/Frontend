@@ -39,18 +39,33 @@ export default class UserProfileEditView extends React.Component<Props, State> {
     );
   }
 
-  private handleSubmit = (userProfile: UserProfile, onSuccess?: SubmissionSuccessHandler, onFailure?: SubmissionFailureHandler) => {
+  private handleSubmit = (
+      userProfile: UserProfile,
+      onSuccess?: SubmissionSuccessHandler,
+      onFailure?: SubmissionFailureHandler,
+      imageToSend?: File
+  ) => {
+
+    // MESS
     const _onSuccess = () => {
-      this.setState(state => {
-        if (onSuccess) {
-          onSuccess();
-        }
-        return {
-          ...state,
-          userProfile: userProfile
-        }
-      })
+      if (imageToSend) {
+        this.props.userService.uploadImage(imageToSend,
+          () => {
+            this.setState({userProfile: userProfile}, () => {
+              onSuccess && onSuccess()
+            });
+          },
+          () => { }
+        )
+      } else {
+        this.setState({userProfile: userProfile}, () => {
+          if (onSuccess) {
+            onSuccess();
+          }
+        });
+      }
     };
+
     this.props.userService.updateProfileForCurrentUser(userProfile, _onSuccess, onFailure);
   };
 

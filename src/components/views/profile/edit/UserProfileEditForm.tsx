@@ -4,6 +4,7 @@ import "./UserProfileEditForm.scss";
 import {SubmissionFailureHandler, SubmissionSuccessHandler, UserProfile} from "../../../../services/UserService";
 import {Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
 import SubmitButton from "../../../widgets/SubmitButton";
+import AttachmentControl from "../../../pages/main/right-bar/chat-view/attachment/AttachmentControl";
 
 export default class UserProfileEditForm extends React.Component<Props, State> {
 
@@ -24,7 +25,7 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { loading, submissionResult, userProfile } = this.state;
+    const { loading, submissionResult, userProfile, imageToSendUrl } = this.state;
     const SubmissionMessage = ({message} : {message: string}) => (
       <div className="text-center m-1 c-attention">
         {message}
@@ -38,12 +39,25 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
         </div>
         <div className="body">
           <div className="row info-row align-center">
-            <div className="col-3">
+            <div className="col-4">
               <div className="user-image-container">
-                <UserInitialsAvatar profile={userProfile}/>
+                <div className="avatar-editor">
+                  <div className="avatar">
+                    <UserInitialsAvatar profile={{
+                      ...userProfile,
+                      images: imageToSendUrl ? [{imageURL: imageToSendUrl}] : userProfile.images
+                    }}/>
+                  </div>
+                  <div className="avatar-attachment-control">
+                    <AttachmentControl
+                      icon="fas fa-upload"
+                      onSelect={this.selectImage}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="col-9">
+            <div className="col-8">
               <div className="row">
                 <div className="w-100">
                   <div className="row-title">First Name</div>
@@ -100,26 +114,24 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
       this.setState(state => ({
         ...state,
         loading: false,
-        submissionResult: true
+        submissionResult: true,
+        imageToSend: undefined,
       }));
     };
     const onFail = () => {
       this.setState(state => ({
         ...state,
         loading: false,
-        submissionResult: false
+        submissionResult: false,
+        imageToSend: undefined,
       }));
     };
     this.setState(state => ({
       ...state,
       loading: true
     }), () => {
-      this.props.onSubmit(this.state.userProfile, onSuccess, onFail);
+      this.props.onSubmit(this.state.userProfile, onSuccess, onFail, this.state.imageToSend);
     });
-  };
-
-  private updateUsername = (value: string) => {
-    this.updateProfileField("username", value);
   };
 
   private updateFirstName = (value: string) => {
@@ -143,6 +155,16 @@ export default class UserProfileEditForm extends React.Component<Props, State> {
       }
     }));
   }
+
+  private selectImage = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      this.setState(state => ({
+        ...state, imageToSend: file, imageToSendUrl: reader.result as string
+      }))
+    }
+  }
 }
 
 type Props = {
@@ -150,13 +172,15 @@ type Props = {
   onSubmit: (
     userProfile: UserProfile,
     onSuccess?: SubmissionSuccessHandler,
-    onFailure?: SubmissionFailureHandler
+    onFailure?: SubmissionFailureHandler,
+    imageToSend?: File
   ) => void
 }
+
 type State = {
   userProfile: UserProfile,
   submissionResult?: boolean,
-  loading: boolean
+  loading: boolean,
+  imageToSend?: File
+  imageToSendUrl?: string
 }
-
-// Without this comment it will not compile

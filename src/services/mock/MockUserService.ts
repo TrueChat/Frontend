@@ -99,4 +99,14 @@ export default class MockUserService implements UserService {
       onSuccess: (response: Response<any>) => void,
       onFailure: (response: Response<any>) => void): void { }
 
+  uploadImage(file: File, onSuccess: (response: Response<any>) => void, onFailure: (response: Response<any>) => void): void {
+    this.useTimeout(() => {
+      onSuccess && onSuccess({
+        headers: { },
+        status: 200,
+        data: undefined
+      });
+    });
+  }
+
 }

@@ -12,6 +12,26 @@
     }
   }
 
+  .avatar-editor {
+    position: relative;
+
+    .avatar-attachment-control {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      color: $WHITE_90;
+      font-size: 1.3rem;
+    }
+
+    &:hover {
+      .avatar-attachment-control {
+        display: block;
+      }
+    }
+  }
+
   .info-row {
     padding: 0.25rem;
     background-color: $DARK;
