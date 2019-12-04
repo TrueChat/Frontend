@@ -54,7 +54,8 @@ class MockChatSession implements ChatSession {
         firstName: "User",
         lastName: "Mock",
         id: senderId ? senderId : 0,
-        username: "mock_user"
+        username: "mock_user",
+        images: []
       },
       content: content ? content : "mock long chat message",
       dateCreated: date ? date : new Date(),

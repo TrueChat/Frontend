@@ -1,14 +1,12 @@
 import {ResponseHandler} from "./types";
+import {Image} from "./UserService";
 
 export interface Sender {
   id: number,
   username: string,
   firstName: string,
-  lastName: string
-}
-
-export interface Image {
-  imageURL: string
+  lastName: string,
+  images: Image[]
 }
 
 export interface Message {

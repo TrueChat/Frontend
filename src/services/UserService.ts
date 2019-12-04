@@ -1,11 +1,16 @@
 import {RegistrationData} from "./AuthService";
-import {ConstraintViolation, Request, Response} from "./types";
+import {ConstraintViolation, Request, Response, ResponseHandler} from "./types";
+
+export interface Image {
+  imageURL: string
+}
 
 export type UserProfile = {
   first_name: string,
   last_name: string,
   username: string,
-  about: string
+  about: string,
+  images: Image[]
 }
 
 export type SubmissionFailureHandler = (violations: ConstraintViolation[]) => void;
@@ -49,4 +54,10 @@ export default interface UserService {
   ) : void;
 
   logout(doAfter: () => void) : void;
+
+  uploadImage(
+    file: File,
+    onSuccess: ResponseHandler<any>,
+    onFailure: ResponseHandler<any>
+  ) : void;
 }

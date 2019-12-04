@@ -59,19 +59,21 @@ export default class RemoteGroupService implements GroupService {
       creator: this.mapChatMemberToGroupMember(chat.creator),
       isDialog: chat.is_dialog,
       members: chat.users.map(this.mapChatMemberToGroupMember),
-      lastMessage: (chat.last_message ? chat.last_message.content : undefined)
+      lastMessage: (chat.last_message ? chat.last_message.content : undefined),
+      images: chat.images
     }
   }
 
   private mapChatMemberToGroupMember(chatMember: any) : GroupMember {
     if (chatMember === null) {
-      return { id: "", username: "", firstName: "", lastName: "" };
+      return { id: "", username: "", firstName: "", lastName: "", images: []};
     }
     return {
       id: chatMember.id,
       username: chatMember.username,
       firstName: chatMember.first_name,
-      lastName: chatMember.last_name
+      lastName: chatMember.last_name,
+      images: chatMember.images
     }
   }
 
@@ -170,6 +172,26 @@ export default class RemoteGroupService implements GroupService {
     }, () => {
 
     });
+  }
+
+  uploadImage(
+      groupId: string,
+      image: File,
+      onSuccess: (response: Response<any>) => void,
+      onFailure: (response: Response<any>) => void): void {
+
+    const data = new FormData();
+    data.set("file", image);
+
+    this.userService.sendAuthorizedRequest({
+        method: "POST",
+        url: `${this.baseUrl}/chats/${groupId}/upload_image/`,
+        body: data
+      },
+      response => onSuccess(response),
+      response => onFailure(response)
+    );
+
   }
 
 }

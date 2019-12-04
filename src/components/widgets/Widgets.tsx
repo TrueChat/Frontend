@@ -2,6 +2,7 @@ import React from "react";
 import {UserProfile} from "../../services/UserService";
 import {GroupData} from "../../services/GroupService";
 import {ClipLoader} from "react-spinners";
+import "./RoundedAvatar.scss";
 
 export const Initials = ({initials} : {initials: string}) => (
   <span className="Initials-avatar">
@@ -9,21 +10,45 @@ export const Initials = ({initials} : {initials: string}) => (
   </span>
 );
 
-export const UserInitialsAvatar = ({profile}: {profile: UserProfile}) => (
-  <Initials initials={
-    profile.first_name && profile.last_name
-      ? `${profile.first_name[0]}${profile.last_name[0]}`
-      : "NS"
-  }/>
-);
+export const UserInitialsAvatar = ({profile}: {profile: UserProfile}) => {
+  if (profile.images.length !== 0) {
+    return (
+      <div className="Initials-avatar rounded-avatar">
+        <img src={profile.images[0].imageURL} alt="" height="100%" width="100%" style={{
+          objectFit: "cover"
+        }}/>
+      </div>
+    );
+  }
 
-export const GroupInitialsAvatar = ({groupData} : {groupData: GroupData}) => (
-  <Initials initials={
-    groupData.name.length < 2
-      ? "GN"
-      : groupData.name.substr(0, 2)
-  }/>
-);
+  return (
+    <Initials initials={
+      profile.first_name && profile.last_name
+        ? `${profile.first_name[0]}${profile.last_name[0]}`
+        : "NS"
+    }/>
+  );
+};
+
+export const GroupInitialsAvatar = ({groupData} : {groupData: GroupData}) => {
+  if (groupData.images.length !== 0) {
+    return (
+      <div className="Initials-avatar rounded-avatar">
+        <img src={groupData.images[0].imageURL} alt="" height="100%" width="100%" style={{
+          objectFit: "cover"
+        }}/>
+      </div>
+    )
+  }
+  
+  return (
+    <Initials initials={
+      groupData.name.length < 2
+        ? "GN"
+        : groupData.name.substr(0, 2)
+    }/>
+  )
+};
 
 export const Spinner = () => (
   <ClipLoader color="rgb(153, 153, 153)"/>

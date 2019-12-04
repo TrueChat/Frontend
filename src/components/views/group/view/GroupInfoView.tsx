@@ -140,6 +140,7 @@ const MemberDetails = (props: MemberDetailsProps) => (
         username: props.member.username,
         last_name: props.member.lastName,
         first_name: props.member.firstName,
+        images: props.member.images,
         about: ""
       }}/>
     </div>

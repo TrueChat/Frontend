@@ -5,6 +5,26 @@
   @import "../../../../../widgets/InitialsAvatar";
   @import "../../../../../widgets/Dropdown";
 
+  .avatar-editor {
+    position: relative;
+
+    .avatar-attachment-control {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      color: $WHITE_90;
+      font-size: 1.3rem;
+    }
+
+    &:hover {
+      .avatar-attachment-control {
+        display: block;
+      }
+    }
+  }
+
   .group-members {
 
     .actions-row {

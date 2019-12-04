@@ -7,7 +7,7 @@ import UserService, {
   UserProfile
 } from "../UserService";
 import {RegistrationData} from "../AuthService";
-import {Headers, Response, Request, ConstraintViolation} from "../types";
+import {Headers, Response, Request, ConstraintViolation, ResponseHandler} from "../types";
 
 type UserData = {
   authToken: string,
@@ -240,5 +240,18 @@ export default class RemoteUserService implements UserService {
 
   public getCurrentUser(): string {
     return (Cookies.getJSON("userData") as UserData).username;
+  }
+
+  uploadImage(file: File, onSuccess: ResponseHandler<any>, onFailure: ResponseHandler<any>): void {
+    const formData = new FormData();
+    formData.set("file", file);
+    this.sendAuthorizedRequest({
+        url: `${this.baseUrl}/profile/upload_image/`,
+        method: "POST",
+        body: formData
+      },
+      response => onSuccess(response),
+      response => onFailure(response)
+    );
   }
 }
