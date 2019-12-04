@@ -47,9 +47,13 @@ export default class MessageGroupView extends React.Component<Props> {
                 <div key={`message-${message.id}`} className="row mt-1 message">
                   <div className="col-10">
                     {message.images.map((image, i) => (
-                      <img src={image.imageURL} className="mt-2 mb-2" width="100%"/>
+                      <div key={i} className="mt-2 mb-2">
+                        <img src={image.imageURL} width="75%"/>
+                      </div>
                     ))}
-                    {message.content}
+                    <div>
+                      {message.content}
+                    </div>
                   </div>
                   <div className="col-2 text-right message-dropdown">
                     {currentUser === message.sender.username
