@@ -14,7 +14,7 @@ export default class AttachmentControl extends React.Component<Props> {
     const { className, icon } = this.props;
     return (
       <span className={className}>
-        <input type="file" className="d-none" ref={this.ref} onChange={this.handleChange}/>
+        <input type="file" className="d-none" ref={this.ref} onChange={this.handleChange} accept="image/*"/>
         <i className={`${icon ? icon : "fas fa-paperclip"} cursor-pointer`} onClick={e => {
           this.ref.current && this.ref.current.click();
         }}/>

@@ -2,7 +2,6 @@ import ChatService from "../ChatService";
 import ChatSession, {ChatEventListener, Message} from "../ChatSession";
 import {ResponseHandler} from "../types";
 import UserService, {Image} from "../UserService";
-import {listeners} from "cluster";
 
 
 class HttpChatSession implements ChatSession {
@@ -42,7 +41,7 @@ class HttpChatSession implements ChatSession {
         return;
       }
       this.callStackSize--;
-      this.notifyListeners(response.data)
+      this.notifyListeners(response.data);
       if (!this.closed) {
         this.load();
       }
