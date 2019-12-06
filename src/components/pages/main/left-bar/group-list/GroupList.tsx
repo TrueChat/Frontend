@@ -15,11 +15,27 @@ export default class GroupList extends React.Component<Props, State> {
   private intervalId: any;
 
   loadGroups = () => {
-    this.props.groupService.findAll(result => this.updateGroups(result.data));
+    this.props.groupService.findAll(result => {
+      this.updateGroups(result.data);
+      if (this.stackSize === 0) {
+        return;
+      }
+      this.stackSize--;
+      this.loadGroups();
+    });
   };
 
+  private maxStackSize = 500;
+
+  private stackSize = 0;
+
   componentDidMount(): void {
-    this.intervalId = setInterval(this.loadGroups, 2000);
+    this.intervalId = setInterval(() => {
+      if (this.stackSize === 0) {
+        this.stackSize = this.maxStackSize;
+        this.loadGroups();
+      }
+    }, 500);
   }
 
   componentWillUnmount(): void {
