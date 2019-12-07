@@ -137,13 +137,14 @@ export default class GroupInfoTab extends React.Component<Props, State> {
         <div className="group-members">
           <div className="row actions-row">
             <div className="col-4">
-              {groupDetails.members.length} members
+              {groupDetails.members.length + 1} members
             </div>
             <div className="col-8 text-right">
               <span onClick={this.showMembersSearchTab} className="cursor-pointer">Add</span>
             </div>
           </div>
           <div className="members">
+            <MemberDetails member={groupDetails.creator} onActionSelected={action => { }}/>
             {groupDetails.members.map(member => (
               <MemberDetails
                 key={`${groupDetails.groupId}-member-${member.id}-details`}
@@ -298,14 +299,9 @@ const MemberDetails = (props: MemberDetailsProps) => (
         {props.member.firstName} {props.member.lastName}
       </div>
       <div className="member-username">
-        <Link to={{
-          pathname:`/modal/userProfile/${props.member.username}`,
-          state: {
-            modal: { name: "userProfile" }
-          }
-        }} className="link">
+        <ModalLink modalName="userProfile" relativePath={props.member.username} className="link">
           @{props.member.username}
-        </Link>
+        </ModalLink>
       </div>
     </div>
     <div className="col-2">
