@@ -362,7 +362,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
           <div className="caption mt-3">
             <div className="caption-text mb-2">Caption</div>
             {displayEmptyCaptionWarning &&
-              <div className="text-warning">caption may not be blank</div>
+              <div className="c-attention mb-2">caption may not be blank</div>
             }
             <div className="row">
               <div className="col-10">
@@ -375,9 +375,9 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
                   />
                 </div>
               </div>
-              <div className="col-2">
+              <div className="col-2 font-size-large">
                 <i
-                  className="fas fa-angle-double-right send-message-icon"
+                  className="fas fa-angle-double-right send-message-icon cursor-pointer"
                   onClick={this.sendMessageWithImage}
                 />
               </div>
