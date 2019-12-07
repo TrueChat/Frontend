@@ -68,9 +68,20 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
         return;
       }
 
+      if (messagesAdded.length == 0) {
+        return;
+      }
+
       this.setState(state => ({
         ...state, messages: [...state.messages, ...messagesAdded]
-      }));
+      }), () => {
+        if (this.body.current) {
+          const body = this.body.current;
+          if (body.scrollHeight - body.scrollTop * 2 <= body.clientHeight) {
+            body.scrollTo({ top: body.scrollHeight });
+          }
+        }
+      });
     }
   }
 
@@ -131,9 +142,8 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
         ...state, messages: [...response.data, ...state.messages], loading: false
       }), () => {
         if (this.body.current) {
-          this.body.current.scrollTo({
-            top: this.body.current.scrollHeight
-          })
+          const body = this.body.current;
+          body.scrollTo({ top: body.scrollHeight });
         }
       });
     }
@@ -157,7 +167,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   }
 
   render() {
-    const { loading, messageInput, mode } = this.state;
+    const { loading, mode } = this.state;
     if (loading) {
       return (
         <div className="Chat-view">
