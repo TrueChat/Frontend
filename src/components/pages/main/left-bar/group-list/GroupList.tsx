@@ -54,9 +54,16 @@ export default class GroupList extends React.Component<Props, State> {
     if (!groupDetails.isDialog) {
       return groupDetails.name;
     }
-    let firstMember = groupDetails.members[0];
+    return this.displayUsername(this.getDialogParticipant(groupDetails));
+  };
 
-    return this.displayUsername(firstMember);
+  getDialogParticipant = (dialog: GroupDetails) : GroupMember => {
+    let firstMember = dialog.members[0];
+    if (this.props.userService.getCurrentUser() === firstMember.username) {
+      return dialog.creator;
+    } else {
+      return firstMember;
+    }
   };
 
   displayUsername = (user: GroupMember) => {
@@ -79,6 +86,23 @@ export default class GroupList extends React.Component<Props, State> {
     return message;
   };
 
+  displayGroupAvatar(groupDetails: GroupDetails) {
+    if (groupDetails.isDialog) {
+      const participant = this.getDialogParticipant(groupDetails);
+      return (
+        <GroupInitialsAvatar
+          groupData={{
+            ...groupDetails,
+            name: this.displayUsername(participant),
+            images: [...participant.images]
+          }}
+        />
+      )
+    } else {
+      return <GroupInitialsAvatar groupData={groupDetails} />
+    }
+  }
+
   render() {
     const groups = (this.state.groups as GroupDetails[]|undefined);
 
@@ -93,7 +117,7 @@ export default class GroupList extends React.Component<Props, State> {
             <div className="row">
               <div className="col-2">
                 <Link to={`/group/${details.groupId}`} className="a-none">
-                  <GroupInitialsAvatar groupData={details} />
+                  {this.displayGroupAvatar(details)}
                 </Link>
               </div>
               <div className="col-10">
