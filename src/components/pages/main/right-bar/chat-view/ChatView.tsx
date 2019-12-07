@@ -15,6 +15,8 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
   chatSession?: ChatSession;
 
+  body = React.createRef<HTMLDivElement>();
+
   constructor(props: P) {
     super(props);
 
@@ -25,7 +27,8 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
       messageInput: "",
       loading: true,
       selectedMessage: undefined,
-      attachments: [] as Attachment[]
+      attachments: [] as Attachment[],
+      displayEmptyCaptionWarning: false
     }
   }
 
@@ -65,9 +68,20 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
         return;
       }
 
+      if (messagesAdded.length == 0) {
+        return;
+      }
+
       this.setState(state => ({
         ...state, messages: [...state.messages, ...messagesAdded]
-      }));
+      }), () => {
+        if (this.body.current) {
+          const body = this.body.current;
+          if (body.scrollHeight - body.scrollTop * 2 <= body.clientHeight) {
+            body.scrollTo({ top: body.scrollHeight });
+          }
+        }
+      });
     }
   }
 
@@ -126,7 +140,12 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
       this.setState(state => ({
         ...state, messages: [...response.data, ...state.messages], loading: false
-      }));
+      }), () => {
+        if (this.body.current) {
+          const body = this.body.current;
+          body.scrollTo({ top: body.scrollHeight });
+        }
+      });
     }
   };
 
@@ -148,7 +167,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   }
 
   render() {
-    const { loading, messageInput, mode, attachments } = this.state;
+    const { loading, mode } = this.state;
     if (loading) {
       return (
         <div className="Chat-view">
@@ -170,7 +189,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
           ? this.sendImageOverlay()
           : null
         }
-        <div className="body">
+        <div className="body" ref={this.body}>
           {mode === Mode.EDIT
             ? <div className="overlay"/>
             : null
@@ -188,37 +207,45 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
             })}
           </div>
         </div>
-        <div className="message-input-container">
-          <div className="container">
-            <div className="row">
-              <div className="col-2 text-right">
-                <AttachmentControl onSelect={this.addAttachment}/>
-              </div>
-              <div className="col-8">
-                {mode === Mode.EDIT
-                  ? this.renderUndoEditButton()
-                  : null
-                }
-                <div>
-                  <MessageInput
-                    value={messageInput}
-                    onEnter={this.onMessageEnter}
-                    onChange={this.updateMessageInput}
-                    placeholder="Write a message"
-                  />
-                </div>
-              </div>
-              <div className="col-2">
-                <i
-                  className="fas fa-angle-double-right send-message-icon"
-                  onClick={this.onMessageEnter}
+        {this.messageInputContainer()}
+      </div>
+    );
+  }
+
+  messageInputContainer() {
+    const { loading, messageInput, mode } = this.state;
+
+    return (
+      <div className="message-input-container">
+        <div className="container">
+          <div className="row">
+            <div className="col-2 text-right">
+              <AttachmentControl onSelect={this.addAttachment}/>
+            </div>
+            <div className="col-8">
+              {mode === Mode.EDIT
+                ? this.renderUndoEditButton()
+                : null
+              }
+              <div>
+                <MessageInput
+                  value={messageInput}
+                  onEnter={this.onMessageEnter}
+                  onChange={this.updateMessageInput}
+                  placeholder="Write a message"
                 />
               </div>
+            </div>
+            <div className="col-2">
+              <i
+                className="fas fa-angle-double-right send-message-icon"
+                onClick={this.onMessageEnter}
+              />
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   renderUndoEditButton = () => {
@@ -328,7 +355,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   };
 
   sendImageOverlay() {
-    const { attachments, messageInput } = this.state;
+    const { attachments, messageInput, displayEmptyCaptionWarning } = this.state;
     return (
       <div className="send-image-overlay" onClick={(e) => {
         this.setState({mode: Mode.WRITE_NEW, attachments: []});
@@ -343,7 +370,10 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
             <img src={attachments[0].image} width="100%" />
           </div>
           <div className="caption mt-3">
-            <div className="caption-text">Caption</div>
+            <div className="caption-text mb-2">Caption</div>
+            {displayEmptyCaptionWarning &&
+              <div className="c-attention mb-2">caption may not be blank</div>
+            }
             <div className="row">
               <div className="col-10">
                 <div>
@@ -355,9 +385,9 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
                   />
                 </div>
               </div>
-              <div className="col-2">
+              <div className="col-2 font-size-large">
                 <i
-                  className="fas fa-angle-double-right send-message-icon"
+                  className="fas fa-angle-double-right send-message-icon cursor-pointer"
                   onClick={this.sendMessageWithImage}
                 />
               </div>
@@ -370,7 +400,11 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
   sendMessageWithImage = () => {
     const { messageInput, attachments } = this.state;
-    this.setState({mode: Mode.WRITE_NEW, messageInput: "", attachments: []}, () => {
+    if (messageInput.length === 0) {
+      this.setState({ displayEmptyCaptionWarning: true });
+      return;
+    }
+    this.setState({mode: Mode.WRITE_NEW, messageInput: "", attachments: [], displayEmptyCaptionWarning: false}, () => {
       this.chatSession && this.chatSession
         .sendMessageWithAttachment(messageInput, attachments[0].file, () => { })
     });
@@ -394,6 +428,7 @@ export interface State {
   mode: Mode,
   loading: boolean,
   messageInput: string,
+  displayEmptyCaptionWarning: boolean,
   selectedMessage: Message|undefined,
   attachments: Attachment[]
 }
