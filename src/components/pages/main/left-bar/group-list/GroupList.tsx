@@ -105,7 +105,7 @@ export default class GroupList extends React.Component<Props, State> {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-12 group-first-message">
+                  <div className="col-12 group-first-message text-break">
                     <Link to={`/group/${details.groupId}`} className="a-none">
                       {this.displayLastMessage(details.lastMessage)}
                     </Link>

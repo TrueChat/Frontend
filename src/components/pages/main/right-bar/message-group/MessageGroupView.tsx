@@ -51,7 +51,7 @@ export default class MessageGroupView extends React.Component<Props> {
                         <img src={image.imageURL} width="75%"/>
                       </div>
                     ))}
-                    <div>
+                    <div className="text-break">
                       {message.content}
                     </div>
                   </div>
