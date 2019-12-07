@@ -197,37 +197,45 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
             })}
           </div>
         </div>
-        <div className="message-input-container">
-          <div className="container">
-            <div className="row">
-              <div className="col-2 text-right">
-                <AttachmentControl onSelect={this.addAttachment}/>
-              </div>
-              <div className="col-8">
-                {mode === Mode.EDIT
-                  ? this.renderUndoEditButton()
-                  : null
-                }
-                <div>
-                  <MessageInput
-                    value={messageInput}
-                    onEnter={this.onMessageEnter}
-                    onChange={this.updateMessageInput}
-                    placeholder="Write a message"
-                  />
-                </div>
-              </div>
-              <div className="col-2">
-                <i
-                  className="fas fa-angle-double-right send-message-icon"
-                  onClick={this.onMessageEnter}
+        {this.messageInputContainer()}
+      </div>
+    );
+  }
+
+  messageInputContainer() {
+    const { loading, messageInput, mode } = this.state;
+
+    return (
+      <div className="message-input-container">
+        <div className="container">
+          <div className="row">
+            <div className="col-2 text-right">
+              <AttachmentControl onSelect={this.addAttachment}/>
+            </div>
+            <div className="col-8">
+              {mode === Mode.EDIT
+                ? this.renderUndoEditButton()
+                : null
+              }
+              <div>
+                <MessageInput
+                  value={messageInput}
+                  onEnter={this.onMessageEnter}
+                  onChange={this.updateMessageInput}
+                  placeholder="Write a message"
                 />
               </div>
+            </div>
+            <div className="col-2">
+              <i
+                className="fas fa-angle-double-right send-message-icon"
+                onClick={this.onMessageEnter}
+              />
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   renderUndoEditButton = () => {

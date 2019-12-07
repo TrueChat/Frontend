@@ -10,10 +10,11 @@
   $message-input-container-height: 5rem;
 
   .body {
-    height: calc(100% - 5rem);
+    height: calc(100%);
     @extend .scrollable;
     overflow-y: scroll;
     padding-top: 3.5rem;
+    padding-bottom: 5rem;
     position: relative;
 
     .overlay {
@@ -37,7 +38,7 @@
   .message-input-container {
     position: absolute;
     height: $message-input-container-height;
-    background-color: $DARKER ;
+    background-color: $BACKGROUND_DARK;
     bottom: 0;
     left: 0;
     width: 100%;
