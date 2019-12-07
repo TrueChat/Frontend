@@ -3,8 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./GroupInfoView.scss";
 import GroupService, {GroupDetails, GroupMember} from "../../../../services/GroupService";
 import UserService from "../../../../services/UserService";
-import {GroupInitialsAvatar, Initials, Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
-import {Link} from "react-router-dom";
+import {GroupInitialsAvatar, Spinner, UserInitialsAvatar} from "../../../widgets/Widgets";
 import ModalLink from "../../../pages/main/modals/ModalLink";
 
 export default class GroupInfoView extends React.Component<Props, State> {
@@ -113,10 +112,11 @@ export default class GroupInfoView extends React.Component<Props, State> {
         <div className="group-members">
           <div className="row actions-row">
             <div className="col-12">
-              {groupDetails.members.length} members
+              {groupDetails.members.length + 1} members
             </div>
           </div>
           <div className="members">
+            <MemberDetails key="creator" member={groupDetails.creator} />
             {groupDetails.members.map(member => (
               <MemberDetails
                 key={`${groupDetails.groupId}-member-${member.id}-details`}
@@ -149,9 +149,9 @@ const MemberDetails = (props: MemberDetailsProps) => (
         {props.member.firstName} {props.member.lastName}
       </div>
       <div className="member-username">
-        <Link to={`/profile/${props.member.username}`} className="link">
+        <ModalLink modalName="userProfile" relativePath={props.member.username} className="link">
           @{props.member.username}
-        </Link>
+        </ModalLink>
       </div>
     </div>
   </div>
