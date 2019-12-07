@@ -15,6 +15,8 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
   chatSession?: ChatSession;
 
+  body = React.createRef<HTMLDivElement>();
+
   constructor(props: P) {
     super(props);
 
@@ -127,7 +129,13 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
       this.setState(state => ({
         ...state, messages: [...response.data, ...state.messages], loading: false
-      }));
+      }), () => {
+        if (this.body.current) {
+          this.body.current.scrollTo({
+            top: this.body.current.scrollHeight
+          })
+        }
+      });
     }
   };
 
@@ -171,7 +179,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
           ? this.sendImageOverlay()
           : null
         }
-        <div className="body">
+        <div className="body" ref={this.body}>
           {mode === Mode.EDIT
             ? <div className="overlay"/>
             : null
