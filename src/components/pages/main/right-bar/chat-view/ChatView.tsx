@@ -25,7 +25,8 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
       messageInput: "",
       loading: true,
       selectedMessage: undefined,
-      attachments: [] as Attachment[]
+      attachments: [] as Attachment[],
+      displayEmptyCaptionWarning: false
     }
   }
 
@@ -148,7 +149,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   }
 
   render() {
-    const { loading, messageInput, mode, attachments } = this.state;
+    const { loading, messageInput, mode } = this.state;
     if (loading) {
       return (
         <div className="Chat-view">
@@ -328,7 +329,7 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
   };
 
   sendImageOverlay() {
-    const { attachments, messageInput } = this.state;
+    const { attachments, messageInput, displayEmptyCaptionWarning } = this.state;
     return (
       <div className="send-image-overlay" onClick={(e) => {
         this.setState({mode: Mode.WRITE_NEW, attachments: []});
@@ -343,7 +344,10 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
             <img src={attachments[0].image} width="100%" />
           </div>
           <div className="caption mt-3">
-            <div className="caption-text">Caption</div>
+            <div className="caption-text mb-2">Caption</div>
+            {displayEmptyCaptionWarning &&
+              <div className="text-warning">caption may not be blank</div>
+            }
             <div className="row">
               <div className="col-10">
                 <div>
@@ -370,7 +374,11 @@ export default class ChatView<P extends Props, S extends State> extends React.Co
 
   sendMessageWithImage = () => {
     const { messageInput, attachments } = this.state;
-    this.setState({mode: Mode.WRITE_NEW, messageInput: "", attachments: []}, () => {
+    if (messageInput.length === 0) {
+      this.setState({ displayEmptyCaptionWarning: true });
+      return;
+    }
+    this.setState({mode: Mode.WRITE_NEW, messageInput: "", attachments: [], displayEmptyCaptionWarning: false}, () => {
       this.chatSession && this.chatSession
         .sendMessageWithAttachment(messageInput, attachments[0].file, () => { })
     });
@@ -394,6 +402,7 @@ export interface State {
   mode: Mode,
   loading: boolean,
   messageInput: string,
+  displayEmptyCaptionWarning: boolean,
   selectedMessage: Message|undefined,
   attachments: Attachment[]
 }
